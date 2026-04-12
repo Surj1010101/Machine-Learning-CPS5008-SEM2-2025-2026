@@ -14,6 +14,15 @@ os.chdir(os.path.join(os.path.dirname(__file__), '..', '..'))
 #Reproducibility
 np.random.seed(42)
 
+#feature group constants
+EXCLUDE_COLS = ['escalation_level', 'resolution_time', 'manual_annotation',
+                'customer_id', 'timestamp', 'escalated', 'email_body_text']
+TEXT_COL_CLEAN = 'email_body_text_clean'
+CATEGORICAL_COLS = ['customer_type', 'tenure_type', 'meter_type', 'region',
+                    'issue_category', 'sentiment']
+NUMERIC_COLS = ['emotion_intensity', 'hour', 'day_of_week', 'month']
+
+
 def clean_text(text):
     """Minimal text cleaning for short email fragments."""
     text = text.lower().strip()
