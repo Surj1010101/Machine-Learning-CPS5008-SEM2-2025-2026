@@ -1,5 +1,18 @@
 import re
 import pandas as pd 
+import numpy as np
+import os
+import sys
+import warnings
+
+warnings.filterwarnings('ignore')
+sys.stdout.reconfigure(encoding='utf-8')
+
+# thi is to make sure its working directory is project root
+os.chdir(os.path.join(os.path.dirname(__file__), '..', '..'))
+
+#Reproducibility
+np.random.seed(42)
 
 def clean_text(text):
     """Minimal text cleaning for short email fragments."""
