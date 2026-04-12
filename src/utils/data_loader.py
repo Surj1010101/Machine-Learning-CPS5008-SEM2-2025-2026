@@ -29,3 +29,18 @@ def load_and_prepare_data():
     df['day_of_week'] = df['timestamp'].dt.dayofweek
     df['month'] = df['timestamp'].dt.month
     
+
+    #Handleing missing values sentiment
+    df['sentiment'] = df['sentiment'].fillna('Unknown')
+
+    # Clean text
+    df['email_body_text_clean'] = df['email_body_text'].apply(clean_text)
+
+    # Build feature matrix
+    X = df.drop(columns=EXCLUDE_COLS)
+    y = df['escalated'].values
+    groups = df['customer_id'].values
+
+    return df, X, y, groups
+
+
