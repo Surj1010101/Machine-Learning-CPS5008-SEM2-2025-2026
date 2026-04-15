@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-from .data_loader import TEXT_COL_CLEAN, CATEGORICAL_COLS, NUMERIC_COLS
-
-#SHARING CV SPLITTER 
-sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
-def make_preprocessor():
-=======
 """
 Shared pipeline utilities: preprocessor factory and threshold tuning.
 """
@@ -51,4 +44,3 @@ def find_best_threshold_f2(y_true,y_prob):
     if len(f2_scores) == 0:
         return 0.5
     return thresholds[np.argmax(f2_scores)]
->>>>>>> a3ad2e9d20e04efa2fa61bd801d15919da8381b6
