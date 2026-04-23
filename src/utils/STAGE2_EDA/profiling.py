@@ -65,47 +65,29 @@ def run_text_analysis(df):
     print(df.groupby('escalated')['word_count'].describe())
 
     return df
-
 def run_timestamp_analysis(df):
-    """Analuse temporal patterns in email escalation."""
-    print("/n" + "="*70)
+    """Analyse temporal patterns in email escalation."""
+    print("\n" + "="*70)
     print("TIMESTAMP ANALYSIS")
     print("="*70)
 
     df['timestamp'] = pd.to_datetime(df['timestamp'])
     df['year'] = df['timestamp'].dt.year
     df['month'] = df['timestamp'].dt.month
-    df['day_of_week'] = df['timestamp'] .dt.day_name()
+    df['day_of_week'] = df['timestamp'].dt.day_name()
     df['hour'] = df['timestamp'].dt.hour
 
-    print (f"/nDate range: {df['timestamp'].min()} to {df['timestamp'].max()}")
-    print(f"/nEmails by year:/n{df['year'].value_counts().sort_index()}")
-    print(f"/nEscalation rate by year:")
-    print(df.groupby('year')['escalated'.agg(['mean', 'count']))
-    
+    print(f"\nDate range: {df['timestamp'].min()} to {df['timestamp'].max()}")
+    print(f"\nEmails by year:\n{df['year'].value_counts().sort_index()}")
+    print(f"\nEscalation rate by year:")
+    print(df.groupby('year')['escalated'].agg(['mean', 'count']))
 
-    print(f"/nEscalation rate by day of week:")
-    dow_esc = df.groupby('day_of_week')['escalted'].agg(['mean', 'count'])
+    print(f"\nEscalation rate by day of week:")
+    dow_esc = df.groupby('day_of_week')['escalated'].agg(['mean', 'count'])
     print(dow_esc.sort_values('mean', ascending=False))
 
-    print(f"/nEscalation rate by hour (top 5 hours):")
-    hour_esc = df.groupby('hour') ['escalated'].agg(['mean', 'Counter'])
+    print(f"\nEscalation rate by hour (top 5 hours):")
+    hour_esc = df.groupby('hour')['escalated'].agg(['mean', 'count'])
     print(hour_esc.sort_values('mean', ascending=False).head(5))
 
-    return df 
-
-
-    
-
-          
-                    
-
-
-
-
-    
-
-
-
-
-    
+    return df
