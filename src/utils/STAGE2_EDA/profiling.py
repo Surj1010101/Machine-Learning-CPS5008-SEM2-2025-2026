@@ -31,7 +31,7 @@ def run_feature_profiling(df):
 
 
 def run_text_analysis(df):
-    """Analyse email text: length, duplicates, word frequency."""
+    """Analyse email text:length, duplicates and word frequency."""
     print("\n" + "="*70)
     print("EMAIL TEXT ANALYSIS")
     print("="*70)
