@@ -12,7 +12,7 @@ def run_feature_profiling(df):
     # Categorical features
     cat_cols = ['customer_type', 'tenure_type', 'meter_type', 'region',
                 'sentiment', 'issue_category', 'manual_annotation']
-    
+
     for col in cat_cols:
         print(f"\n── {col} ──")
         vc = df[col].value_counts(dropna=False)
@@ -23,49 +23,48 @@ def run_feature_profiling(df):
             print(f"\nEscalation rate by {col}:")
             print(cross.sort_values('escalation_rate', ascending=False))
 
-
-    #numeric feature
-    print(f"/n-- emotion_intensity --")
+    # Numeric features
+    print(f"\n── emotion_intensity ──")
     print(df['emotion_intensity'].describe())
-    print(f"/n-- resolution_time (EXCLUDED - for refernce only) --")
+    print(f"\n── resolution_time (EXCLUDED - for reference only) ──")
     print(df['resolution_time'].describe())
 
 
 def run_text_analysis(df):
-    """Analyse email text: length, duplicate, word frequency."""
-    print("/n" + "="*70)
+    """Analyse email text: length, duplicates, word frequency."""
+    print("\n" + "="*70)
     print("EMAIL TEXT ANALYSIS")
     print("="*70)
 
-    
     df['text_len'] = df['email_body_text'].str.len()
-    df['word'] = df ['email_body_text'].str.spilt().str.len()
-    print(f"/nCharacter lenghth stats:/n{df['text_len'].describe ()}")
-    print (f"/nWord count stats:m{df['word_count'].describe()}")
-    
+    df['word_count'] = df['email_body_text'].str.split().str.len()
+
+    print(f"\nCharacter length stats:\n{df['text_len'].describe()}")
+    print(f"\nWord count stats:\n{df['word_count'].describe()}")
+
     n_unique_texts = df['email_body_text'].nunique()
     n_total = len(df)
-    print(f"/nUnique email texts:  {n_unique_texts} / [n_total]")
+    print(f"\nUnique email texts: {n_unique_texts} / {n_total}")
     if n_unique_texts < n_total:
         dupes = df[df.duplicated(subset='email_body_text', keep=False)]
         print(f"Duplicate texts found: {n_total - n_unique_texts} duplicated entries")
         print(f"Sample duplicates:")
-        print(dupes.groupby('email_body_text').size().sort_values(ascending =False).head(5))
+        print(dupes.groupby('email_body_text').size().sort_values(ascending=False).head(5))
 
-    print (f"/nTEXTS with < 10 charachters: {(df['text_len'] < 10).sum()}")
-    print(f"Texts with <3 words: {(df['word_count'] < 3).sum()}")
+    print(f"\nTexts with < 10 characters: {(df['text_len'] < 10).sum()}")
+    print(f"Texts with < 3 words: {(df['word_count'] < 3).sum()}")
 
-    all_words = '  '.join(df['email_body_text'].str.lower()).split()
+    all_words = ' '.join(df['email_body_text'].str.lower()).split()
     word_freq = Counter(all_words)
-    print(f"/nVocubulary size: {len(word_freq)}")
-    print(f"Top 20 wwords: {word_freq.most_common(20)}")
+    print(f"\nVocabulary size: {len(word_freq)}")
+    print(f"Top 20 words: {word_freq.most_common(20)}")
 
-    print(f"/nText lenghth by esacalation status:")
+    print(f"\nText length by escalation status:")
     print(df.groupby('escalated')['text_len'].describe())
-    print(f"/nWord count by escalation status:")
+    print(f"\nWord count by escalation status:")
     print(df.groupby('escalated')['word_count'].describe())
 
-    return df 
+    return df
 
 def run_timestamp_analysis(df):
     """Analuse temporal patterns in email escalation."""
