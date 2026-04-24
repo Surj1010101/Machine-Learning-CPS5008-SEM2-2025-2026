@@ -1,3 +1,4 @@
+"""Sentiment ablation experiment: test with vs without sentiment feature."""
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
