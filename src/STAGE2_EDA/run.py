@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 os.makedirs('outputs/stage2', exist_ok=True)
 
 print("="*70)
-print("STAGE 2: EXPLORATORY DATA ANALYSIS & RISK IDENTIFICATION")
+print("STAGE 2:EXPLORATORY DATA ANALYSIS ANDD RISK IDENTIFICATION")
 print("="*70)
 
 #Loads raw data (not the modelling ready version we still need all columns for EDA)
