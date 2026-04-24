@@ -67,6 +67,34 @@ def generate_visualisations(df, corr):
 
 
 
-    
+    plt.tight_layout()
+    plt.savefig('outputs/stage2/eda_overview.png', dpi=150, bbox_inches='tight')
+    print("Saved: outputs/stage2/eda_overview.png")
+
+    #correlation heatmap
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    sns.heatmap(corr, annot=True, cmap='RdBu_r', center=0, fmt='.3f', ax=ax2)
+    ax2.set_title('Numeric Feature Correlations')
+    plt.tight_layout()
+    plt.savefig('outputs/stage2/correlation_heatmap.png', dpi=150, bbox_inches='tight')
+    print("Saved: outputs/stage2/correlation_heatmap.png")
+
+    #escalation by region
+    fig3, ax3 = plt.subplots(figsize=(8, 5))
+    region_esc = df.groupby('region')['escalated'].agg(['mean', 'count'])
+    ax3.bar(region_esc.index, region_esc['mean'],
+            color=['#2196F3', '#FF9800', '#4CAF50'])
+    ax3.set_title('Escalation Rate by Region')
+    ax3.set_ylabel('Escalation Rate')
+    for i, (idx, row) in enumerate(region_esc.iterrows()):
+        ax3.text(i, row['mean'] + 0.005, f"n={row['count']:.0f}",
+                 ha='center', fontsize=9)
+    plt.tight_layout()
+    plt.savefig('outputs/stage2/escalation_by_region.png', dpi=150, bbox_inches='tight')
+    print("Saved: outputs/stage2/escalation_by_region.png")
+
+
+
+
 
 
