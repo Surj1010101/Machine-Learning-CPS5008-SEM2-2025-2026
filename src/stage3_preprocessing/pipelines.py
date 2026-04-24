@@ -53,3 +53,44 @@ def run_cross_validation(X, y, groups, pipeline):
             'n_train': len(train_idx), 'n_val': len(val_idx),
             'n_pos_train': y_train.sum(), 'n_pos_val': y_val.sum(),
         })
+        
+
+        all_y_true.extend(y_val)
+        all_y_pred.extend(y_pred)
+        all_y_prob.extend(y_prob)
+
+        print(f"\nFold {fold_idx+1}:")
+        print(f"  Train: {len(train_idx)} ({y_train.sum()} pos) | "
+              f"Val: {len(val_idx)} ({y_val.sum()} pos)")
+        print(f"  F2={f2:.4f} | PR-AUC={pr_auc:.4f} | "
+              f"Precision={fold_results[-1]['precision']:.4f} | "
+              f"Recall={fold_results[-1]['recall']:.4f}")
+        print(f"  Confusion: TN={tn}, FP={fp}, FN={fn}, TP={tp}")
+        print(f"  Customer overlap: {len(overlap)} (verified clean)")
+
+    return pd.DataFrame(fold_results), np.array(all_y_true), np.array(all_y_pred)
+
+
+def print_aggregate_results(results_df, all_y_true, all_y_pred):
+    """Print summary statistics across all folds."""
+    print("\n" + "="*70)
+    print("AGGREGATE CROSS-VALIDATION RESULTS")
+    print("="*70)
+
+    print(f"\n{'Metric':<12} {'Mean':>8} {'Std':>8} {'Min':>8} {'Max':>8}")
+    print("-" * 48)
+    for metric in ['f2', 'pr_auc', 'precision', 'recall']:
+        vals = results_df[metric]
+        print(f"{metric:<12} {vals.mean():>8.4f} {vals.std():>8.4f} "
+              f"{vals.min():>8.4f} {vals.max():>8.4f}")
+
+    cm_total = confusion_matrix(all_y_true, all_y_pred)
+    tn_t, fp_t, fn_t, tp_t = cm_total.ravel()
+    print(f"\nOverall confusion matrix (aggregated across folds):")
+    print(f"  TN={tn_t}, FP={fp_t}, FN={fn_t}, TP={tp_t}")
+    print(f"  Overall F2: {fbeta_score(all_y_true, all_y_pred, beta=2):.4f}")
+
+    dummy_f2 = fbeta_score(all_y_true, np.zeros_like(all_y_true), beta=2)
+    print(f"\nDummy (all-negative) F2: {dummy_f2:.4f}")
+    dummy_f2_all1 = fbeta_score(all_y_true, np.ones_like(all_y_true), beta=2)
+    print(f"Dummy (all-positive) F2: {dummy_f2_all1:.4f}")
