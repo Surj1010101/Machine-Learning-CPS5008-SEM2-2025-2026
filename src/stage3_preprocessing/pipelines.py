@@ -20,7 +20,7 @@ def build_baseline_pipeline():
 
 
 def run_cross_validation(X, y, groups, pipeline):
-    """Run Stratified GroupKFold CV and return per-fold results."""
+    """run Stratified GroupKFold CV and return perfold results."""
     print("\n" + "="*70)
     print("CROSS-VALIDATION: Stratified GroupKFold (k=5)")
     print("="*70)
@@ -74,7 +74,7 @@ def run_cross_validation(X, y, groups, pipeline):
 
 
 def print_aggregate_results(results_df, all_y_true, all_y_pred):
-    """Print summary statistics across all folds."""
+    """print summary statistics across all folds."""
     print("\n" + "="*70)
     print("AGGREGATE CROSS-VALIDATION RESULTS")
     print("="*70)
