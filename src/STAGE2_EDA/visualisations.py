@@ -1,3 +1,6 @@
+
+"""Stage 2 visualisations: EDA overview, correlation heatmap andd region plot."""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
