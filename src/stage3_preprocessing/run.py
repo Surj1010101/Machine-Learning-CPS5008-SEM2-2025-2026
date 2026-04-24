@@ -1,3 +1,12 @@
+"""
+Stage 3:Preprocessing Pipeline
+
+Builds reproducible scikitlearn pipelines for the escalation prediction task.
+.
+All preprocessing is inside the CV  to prevent data leakage.
+
+Run with: py src/stage3_preprocessing/run.py
+"""
 
 import os
 import sys
