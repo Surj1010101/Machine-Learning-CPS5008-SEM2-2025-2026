@@ -1,12 +1,17 @@
+"""
+Stage 2:Data Analysis and risk Identification
+Run with: py src/stage2_eda/run.py
+"""
+
 import os
+import sys
 import pandas as pd
 import numpy as np
 
-#Added project root to path
-import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.stdout.reconfigure(encoding='utf-8')
 
-from common.data_loader import load_and_prepare_data
+#Added project root to path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 os.makedirs('outputs/stage2', exist_ok=True)
 
