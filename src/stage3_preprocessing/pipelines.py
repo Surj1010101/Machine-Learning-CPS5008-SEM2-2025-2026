@@ -6,7 +6,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import fbeta_score, precision_recall_curve, auc, confusion_matrix
 
-from common.pipeline_utils import make_preprocessor, sgkf
+from utils.pipeline_utils import make_preprocessor, sgkf
 
 
 def build_baseline_pipeline():

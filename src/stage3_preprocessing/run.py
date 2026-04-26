@@ -2,7 +2,7 @@
 Stage 3:Preprocessing Pipeline
 
 Builds reproducible scikitlearn pipelines for the escalation prediction task.
-.
+
 All preprocessing is inside the CV  to prevent data leakage.
 
 Run with: py src/stage3_preprocessing/run.py
@@ -14,7 +14,9 @@ import pandas as pd
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from common.data_loader import load_and_prepare_data, CATEGORICAL_COLS, NUMERIC_COLS
+sys.stdout.reconfigure(encoding='utf-8')
+
+from utils.data_loader import load_and_prepare_data, CATEGORICAL_COLS, NUMERIC_COLS
 
 os.makedirs('outputs/stage3', exist_ok=True)
 
@@ -31,8 +33,8 @@ print(f"  Categorical: {CATEGORICAL_COLS}")
 print(f"  Numeric: {NUMERIC_COLS}")
 
 # Build and evaluate pipeline
-from stage3_preprocessing.pipeline import (build_baseline_pipeline, run_cross_validation,
-                                            print_aggregate_results)
+from stage3_preprocessing.pipelines import (build_baseline_pipeline, run_cross_validation,
+                                             print_aggregate_results)
 
 pipeline = build_baseline_pipeline()
 print("\n" + "="*70)
