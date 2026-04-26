@@ -4,7 +4,7 @@ Stage 3b:feature Engineering Impact andd Multicollinearity Analysis
 evaluates the impact of different feature engineering choices on model performance
 and demonstrates awareness of multicollinearity in the feature space.
 
-Run with: py src/stage3b_feature_engineering/run.py
+Run with:py src/stage3b_feature_engineering/run.py
 """
 
 
