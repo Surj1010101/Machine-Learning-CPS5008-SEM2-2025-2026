@@ -123,14 +123,14 @@ def evaluate_config(X_data, y_data, groups_data, preprocessor, config_name, sgkf
 
 
 def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
-    """Run all 7 ablation configurations and return results as a list of dicts."""
+    """Run all 7 ablation configurations and returnss results as a list of dicts."""
     sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
 
     print("\n" + "=" * 70)
     print("FEATURE ENGINEERING ABLATION STUDY")
     print("=" * 70)
 
-    # 1. Full pipeline
+    # 1.full pipeline
     print("\n[1/7] Full pipeline (TF-IDF bigrams + categorical + numeric)...")
     full_preprocessor = ColumnTransformer(
         transformers=[
@@ -144,7 +144,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_full = evaluate_config(X, y, groups, full_preprocessor, 'Full pipeline', sgkf)
     print(f"   F2={result_full['f2_mean']:.4f} (+/-{result_full['f2_std']:.4f})")
 
-    # 2. TF-IDF unigrams only
+    # 2.TF-IDF unigrams only
     print("\n[2/7] TF-IDF unigrams only (no bigrams)...")
     unigram_preprocessor = ColumnTransformer(
         transformers=[
@@ -159,4 +159,71 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     print(f"   F2={result_unigram['f2_mean']:.4f} (+/-{result_unigram['f2_std']:.4f})")
 
 
+   # 3. Text only
+    print("\n[3/7] Text only (TF-IDF bigrams, no metadata)...")
+    text_only_preprocessor = ColumnTransformer(
+        transformers=[
+            ('text', TfidfVectorizer(max_features=500, ngram_range=(1, 2),
+                                     min_df=3, max_df=0.95, sublinear_tf=True,
+                                     strip_accents='unicode'), text_col),
+        ], remainder='drop')
+    result_text_only = evaluate_config(X, y, groups, text_only_preprocessor, 'Text only', sgkf)
+    print(f"   F2={result_text_only['f2_mean']:.4f} (+/-{result_text_only['f2_std']:.4f})")
+
+    # 4. Structured only
+    print("\n[4/7] Structured features only (no text)...")
+    struct_only_preprocessor = ColumnTransformer(
+        transformers=[
+            ('cat', OneHotEncoder(drop='first', sparse_output=True,
+                                  handle_unknown='ignore'), categorical_cols),
+            ('num', StandardScaler(), numeric_cols),
+        ], remainder='drop')
+    result_struct_only = evaluate_config(X, y, groups, struct_only_preprocessor, 'Structured only', sgkf)
+    print(f"   F2={result_struct_only['f2_mean']:.4f} (+/-{result_struct_only['f2_std']:.4f})")
+
+    # 5. TF-IDF 1000
+    print("\n[5/7] TF-IDF max_features=1000...")
+    big_tfidf_preprocessor = ColumnTransformer(
+        transformers=[
+            ('text', TfidfVectorizer(max_features=1000, ngram_range=(1, 2),
+                                     min_df=3, max_df=0.95, sublinear_tf=True,
+                                     strip_accents='unicode'), text_col),
+            ('cat', OneHotEncoder(drop='first', sparse_output=True,
+                                  handle_unknown='ignore'), categorical_cols),
+            ('num', StandardScaler(), numeric_cols),
+        ], remainder='drop')
+    result_big_tfidf = evaluate_config(X, y, groups, big_tfidf_preprocessor, 'TF-IDF 1000', sgkf)
+    print(f"   F2={result_big_tfidf['f2_mean']:.4f} (+/-{result_big_tfidf['f2_std']:.4f})")
+
+    # 6. TF-IDF 200
+    print("\n[6/7] TF-IDF max_features=200...")
+    small_tfidf_preprocessor = ColumnTransformer(
+        transformers=[
+            ('text', TfidfVectorizer(max_features=200, ngram_range=(1, 2),
+                                     min_df=3, max_df=0.95, sublinear_tf=True,
+                                     strip_accents='unicode'), text_col),
+            ('cat', OneHotEncoder(drop='first', sparse_output=True,
+                                  handle_unknown='ignore'), categorical_cols),
+            ('num', StandardScaler(), numeric_cols),
+        ], remainder='drop')
+    result_small_tfidf = evaluate_config(X, y, groups, small_tfidf_preprocessor, 'TF-IDF 200', sgkf)
+    print(f"   F2={result_small_tfidf['f2_mean']:.4f} (+/-{result_small_tfidf['f2_std']:.4f})")
+
+    # 7. No temporal features
+    print("\n[7/7] No temporal features...")
+    no_time_cols = ['emotion_intensity']
+    no_time_preprocessor = ColumnTransformer(
+        transformers=[
+            ('text', TfidfVectorizer(max_features=500, ngram_range=(1, 2),
+                                     min_df=3, max_df=0.95, sublinear_tf=True,
+                                     strip_accents='unicode'), text_col),
+            ('cat', OneHotEncoder(drop='first', sparse_output=True,
+                                  handle_unknown='ignore'), categorical_cols),
+            ('num', StandardScaler(), no_time_cols),
+        ], remainder='drop')
+    result_no_time = evaluate_config(X, y, groups, no_time_preprocessor, 'No temporal', sgkf)
+    print(f"   F2={result_no_time['f2_mean']:.4f} (+/-{result_no_time['f2_std']:.4f})")
+
+    return [result_full, result_unigram, result_text_only, result_struct_only,
+            result_big_tfidf, result_small_tfidf, result_no_time]
 
