@@ -1,3 +1,5 @@
+"""feature engineering ablation: 7 pipeline configs compared on F2."""
+
 import numpy as np
 from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.feature_extraction.text import TfidfVectorizer
