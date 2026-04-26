@@ -209,7 +209,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_small_tfidf = evaluate_config(X, y, groups, small_tfidf_preprocessor, 'TF-IDF 200', sgkf)
     print(f"   F2={result_small_tfidf['f2_mean']:.4f} (+/-{result_small_tfidf['f2_std']:.4f})")
 
-    # 7. No temporal features
+    # 7.No temporal features
     print("\n[7/7] No temporal features...")
     no_time_cols = ['emotion_intensity']
     no_time_preprocessor = ColumnTransformer(
