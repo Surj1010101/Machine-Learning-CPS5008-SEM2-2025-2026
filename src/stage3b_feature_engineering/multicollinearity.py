@@ -1,3 +1,5 @@
+"""multicollinearity analysi with numeric correlations and Cramer's V, and VIF."""
+
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -106,7 +108,7 @@ def run_vif_analysis(df, numeric_cols):
 
 
 def print_mitigation_summary():
-    """Print summary of multicollinearity mitigations in the pipeline."""
+    """Print summary of multicollinearity in the pipeline."""
     print("\n── Multicollinearity Mitigation in Pipeline ──")
     print("1. OneHotEncoder uses drop='first' to avoid the dummy variable trap")
     print("   (perfect multicollinearity among one-hot columns for each feature)")
