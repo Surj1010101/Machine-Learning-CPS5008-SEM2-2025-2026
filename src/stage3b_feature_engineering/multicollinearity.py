@@ -68,3 +68,51 @@ def run_cramers_v_analysis(df, cat_features):
         print("NOTE: Some categorical features show moderate association")
 
     return cramers_df, max_v
+
+
+def run_vif_analysis(df, numeric_cols):
+    """Variance Inflation Factor for numeric features."""
+    print("\n── Variance Inflation Factor (VIF) for Numeric Features ──")
+    numeric_features = df[numeric_cols].copy()
+
+    vif_results = []
+    for col in numeric_features.columns:
+        other_cols = [c for c in numeric_features.columns if c != col]
+        X_vif = numeric_features[other_cols].values
+        y_vif = numeric_features[col].values
+
+        X_vif = np.column_stack([np.ones(len(X_vif)), X_vif])
+        coeffs, _, _, _ = lstsq(X_vif, y_vif, rcond=None)
+        y_pred = X_vif @ coeffs
+        ss_res = np.sum((y_vif - y_pred) ** 2)
+        ss_tot = np.sum((y_vif - y_vif.mean()) ** 2)
+        r_squared = 1 - ss_res / ss_tot if ss_tot > 0 else 0
+
+        vif = 1 / (1 - r_squared) if r_squared < 1 else float('inf')
+        vif_results.append({'Feature': col, 'VIF': vif, 'R_squared': r_squared})
+        print(f"  {col:<20s}: VIF = {vif:.3f} (R² = {r_squared:.4f})")
+
+    vif_df = pd.DataFrame(vif_results)
+    max_vif = vif_df['VIF'].max()
+    print(f"\nMax VIF: {max_vif:.3f}")
+    if max_vif < 5:
+        print("CONCLUSION: All VIF values < 5. No multicollinearity concern.")
+    elif max_vif < 10:
+        print("NOTE: Moderate VIF detected. Monitor but not actionable.")
+    else:
+        print("WARNING: High VIF detected. Consider removing correlated features.")
+
+    return vif_df, max_vif
+
+
+def print_mitigation_summary():
+    """Print summary of multicollinearity mitigations in the pipeline."""
+    print("\n── Multicollinearity Mitigation in Pipeline ──")
+    print("1. OneHotEncoder uses drop='first' to avoid the dummy variable trap")
+    print("   (perfect multicollinearity among one-hot columns for each feature)")
+    print("2. TF-IDF features are inherently high-dimensional but L2-normalised,")
+    print("   and the L1 penalty in Logistic Regression (solver='liblinear')")
+    print("   provides implicit feature selection in correlated feature spaces")
+    print("3. StandardScaler applied to numeric features ensures comparable scales")
+    print("   but does not address multicollinearity -- verified above that")
+    print("   numeric correlations are negligible (max |r| < 0.3)")
