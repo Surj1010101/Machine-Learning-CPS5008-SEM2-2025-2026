@@ -46,7 +46,7 @@ print(pipeline)
 results_df, all_y_true, all_y_pred = run_cross_validation(X, y, groups, pipeline)
 print_aggregate_results(results_df, all_y_true, all_y_pred)
 
-# Feature importance
+#feature importance
 print("\n" + "="*70)
 print("TOP FEATURES (Logistic Regression Coefficients -- Last Fold)")
 print("="*70)
@@ -64,17 +64,17 @@ print(feat_imp.head(15).to_string(index=False))
 print("\nTop 15 features DECREASING escalation risk:")
 print(feat_imp.tail(15).to_string(index=False))
 
-# Sentiment feature impact
+#feature  sentmentt impact
 from stage3_preprocessing.feature_impact import run_sentiment_ablation
 diff = run_sentiment_ablation(X, y, groups, results_df)
 
-# Save results
+# Saves results
 results_df.to_csv('outputs/stage3/baseline_cv_results.csv', index=False)
 feat_imp.to_csv('outputs/stage3/baseline_feature_importance.csv', index=False)
 print("\nSaved: outputs/stage3/baseline_cv_results.csv")
 print("Saved: outputs/stage3/baseline_feature_importance.csv")
 
-# Summary
+# clearSummary
 print("\n" + "="*70)
 print("STAGE 3 SUMMARY")
 print("="*70)
