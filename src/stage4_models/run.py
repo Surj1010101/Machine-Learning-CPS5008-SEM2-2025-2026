@@ -1,4 +1,10 @@
+"""
+Stage 4: Model Development & Comparison
+this trains LR, RF, XGBoost, and SMOTE variants. Performs hyperparameter
+tuning, threshold optimisation, and statistical comparison.
 
+Run with:py src/stage4_models/run.py
+"""
 
 
 import os
