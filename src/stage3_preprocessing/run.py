@@ -1,11 +1,15 @@
 """
-Stage 3:Preprocessing Pipeline
+Stage 3: Preprocessing Pipeline
 
-Builds reproducible scikitlearn pipelines for the escalation prediction task.
+Stage 3 is where I build a reproducible scikit-learn pipeline that handles all the
+text, categorical and numeric preprocessing inside cross-validation so I do not leak
+information from validation into training. The two things I focus on here are the
+baseline Logistic Regression model with StratifiedGroupKFold grouped by customer_id,
+plus a sentiment ablation that confirms there is no leakage from the sentiment
+feature. This script lays the foundation for Stage 4, which will build on top with
+stronger models and threshold tuning.
 
-All preprocessing is inside the CV  to prevent data leakage.
-
-Run with: py src/stage3_preprocessing/run.py
+Run with: python src/stage3_preprocessing/run.py
 """
 
 import os
@@ -24,6 +28,7 @@ print("="*70)
 print("STAGE 3: PREPROCESSING PIPELINE")
 print("="*70)
 
+# Loading my data through the utils helper, this also derives the target and groups
 df, X, y, groups = load_and_prepare_data()
 print(f"Dataset: {df.shape[0]} rows")
 print(f"Target: {df['escalated'].sum()} escalated ({df['escalated'].mean()*100:.1f}%)")
@@ -32,7 +37,7 @@ print(f"  Text: email_body_text_clean")
 print(f"  Categorical: {CATEGORICAL_COLS}")
 print(f"  Numeric: {NUMERIC_COLS}")
 
-# Build and evaluate pipeline
+# Now I build my pipeline and run cross validation on it
 from stage3_preprocessing.pipelines import (build_baseline_pipeline, run_cross_validation,
                                              print_aggregate_results)
 
@@ -46,7 +51,7 @@ print(pipeline)
 results_df, all_y_true, all_y_pred = run_cross_validation(X, y, groups, pipeline)
 print_aggregate_results(results_df, all_y_true, all_y_pred)
 
-#feature importance
+# Feature importance from the last fold so I can see what my model is actually learning
 print("\n" + "="*70)
 print("TOP FEATURES (Logistic Regression Coefficients -- Last Fold)")
 print("="*70)
@@ -64,17 +69,17 @@ print(feat_imp.head(15).to_string(index=False))
 print("\nTop 15 features DECREASING escalation risk:")
 print(feat_imp.tail(15).to_string(index=False))
 
-#feature  sentmentt impact
+# Sentiment ablation, this is my leakage check on the sentiment feature
 from stage3_preprocessing.feature_impact import run_sentiment_ablation
 diff = run_sentiment_ablation(X, y, groups, results_df)
 
-# Saves results
+# Saving all my results to outputs/stage3 so the report can pick them up
 results_df.to_csv('outputs/stage3/baseline_cv_results.csv', index=False)
 feat_imp.to_csv('outputs/stage3/baseline_feature_importance.csv', index=False)
 print("\nSaved: outputs/stage3/baseline_cv_results.csv")
 print("Saved: outputs/stage3/baseline_feature_importance.csv")
 
-# clearSummary
+# Final summary block, this is what I quote in the report and what feeds into Stage 4
 print("\n" + "="*70)
 print("STAGE 3 SUMMARY")
 print("="*70)

@@ -1,10 +1,15 @@
 """
-Stage 3b:feature Engineering Impact andd Multicollinearity Analysis
+Stage 3b: Feature Engineering Impact and Multicollinearity Analysis
 
-evaluates the impact of different feature engineering choices on model performance
-and demonstrates awareness of multicollinearity in the feature space.
+For my Stage 3b I test how different feature engineering choices affect F2 and
+formally check whether any of my features are too correlated with each other. Two
+big things happen here, the ablation study which compares 7 pipeline configurations
+on the same folds, and the multicollinearity analysis which looks at numeric
+correlations, Cramer's V across categoricals, and VIF on the numeric features. The
+combined output is the evidence behind my final feature set decision before Stage 4
+modelling.
 
-Run with:py src/stage3b_feature_engineering/run.py
+Run with: python src/stage3b_feature_engineering/run.py
 """
 
 
@@ -21,10 +26,10 @@ from scipy import stats
 warnings.filterwarnings('ignore')
 sys.stdout.reconfigure(encoding='utf-8')
 
-# this make sure the path work for directory 
+# Making sure my paths work no matter where the script is launched from
 os.chdir(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-# Adds project src to path
+# Adding project src to path so my stage3b imports resolve
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from stage3b_feature_engineering.feature_impact import run_all_ablations
@@ -39,7 +44,7 @@ from stage3b_feature_engineering.visualisations import (
 np.random.seed(42)
 os.makedirs('outputs/stage3b', exist_ok=True)
 
-#1.Loads and prepare data
+# 1. Loading and preparing my data, this is similar to Stage 2 and Stage 3
 print("=" * 70)
 print("STAGE 3b: FEATURE ENGINEERING IMPACT & MULTICOLLINEARITY")
 print("=" * 70)
@@ -54,6 +59,7 @@ df['sentiment'] = df['sentiment'].fillna('Unknown')
 
 
 def clean_text(text):
+    # Lowercases, strips punctuation, collapses extra whitespace
     text = text.lower().strip()
     text = re.sub(r'[^\w\s]', ' ', text)
     text = re.sub(r'\s+', ' ', text).strip()
@@ -62,6 +68,7 @@ def clean_text(text):
 
 df['email_body_text_clean'] = df['email_body_text'].apply(clean_text)
 
+# Defining what to exclude, what is text, what is categorical and what is numeric
 exclude_cols = ['escalation_level', 'resolution_time', 'manual_annotation',
                 'customer_id', 'timestamp', 'escalated', 'email_body_text']
 text_col_clean = 'email_body_text_clean'
@@ -73,7 +80,7 @@ X = df.drop(columns=exclude_cols)
 y = df['escalated'].values
 groups = df['customer_id'].values
 
-#2feature Engineering Ablation Study 
+# 2. Feature engineering ablation study, 7 configurations compared on the same folds
 all_results = run_all_ablations(X, y, groups, text_col_clean,
                                 categorical_cols, numeric_cols)
 result_full = all_results[0]
@@ -84,7 +91,7 @@ result_big_tfidf = all_results[4]
 result_small_tfidf = all_results[5]
 result_no_time = all_results[6]
 
-#3.compile Results 
+# 3. Compiling all my ablation results into one table
 print("\n" + "=" * 70)
 print("FEATURE ENGINEERING ABLATION RESULTS")
 print("=" * 70)
@@ -101,12 +108,14 @@ ablation_df = pd.DataFrame([{
 print(ablation_df.to_string(index=False))
 ablation_df.to_csv('outputs/stage3b/feature_engineering_ablation.csv', index=False)
 
+# Showing the F2 delta vs my full pipeline so I can see which choices help and which hurt
 print("\n── Impact vs Full Pipeline ──")
 baseline_f2 = result_full['f2_mean']
 for r in all_results:
     delta = r['f2_mean'] - baseline_f2
     print(f"  {r['config']:<25s}: F2={r['f2_mean']:.4f} (delta={delta:+.4f})")
 
+# Paired t-test against the full pipeline so I can call out significant differences
 print("\n── Statistical Significance (paired t-test vs Full Pipeline) ──")
 baseline_folds = result_full['fold_f2_values']
 for r in all_results:
@@ -116,7 +125,7 @@ for r in all_results:
     sig = "significant" if p_val < 0.05 else "NOT significant"
     print(f"  {r['config']:<25s}: t={t_stat:+.3f}, p={p_val:.4f} ({sig})")
 
-# 4.multicollinearity Analysis
+# 4. Multicollinearity analysis, three different angles to be thorough
 print("\n" + "=" * 70)
 print("MULTICOLLINEARITY ANALYSIS")
 print("=" * 70)
@@ -129,7 +138,7 @@ vif_df, max_vif = run_vif_analysis(df, numeric_cols)
 vif_df.to_csv('outputs/stage3b/multicollinearity_vif.csv', index=False)
 cramers_df.to_csv('outputs/stage3b/multicollinearity_cramers_v.csv', index=False)
 
-#5.visualisations 
+# 5. Visualisations into outputs/stage3b
 print("\n" + "=" * 70)
 print("GENERATING VISUALISATIONS...")
 print("=" * 70)
@@ -140,8 +149,7 @@ plot_cramers_v_heatmap(cramers_df, categorical_cols,
                        'outputs/stage3b/cramers_v_heatmap.png')
 
 
-#summaryss
-
+# Final summary, this is what I quote in the Stage 3b report section
 print("\n" + "=" * 70)
 print("STAGE 3b SUMMARY")
 print("=" * 70)

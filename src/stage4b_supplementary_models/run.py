@@ -1,15 +1,15 @@
 """
-Stage 4b: Supplementary Model Comparisons & Unsupervised Exploration
+Stage 4b: Supplementary Model Comparisons and Unsupervised Exploration
 
-Demonstrates additional ML skills not covered in the main pipeline:
--KNearest Neighbours (KNN) classification
--Regularisation comparison (L1 vs L2 vs no regularisation)
--Bias-variance trade-off analysis (learning curves)
--Principal Component Analysis (PCA) for dimensionality reduction
--K-Means clustering for unsupervised pattern discovery
--Linear regression baseline (justify logistic regression choice)
+Stage 4b is where I demonstrate additional ML skills that are not in my main Stage 4
+pipeline. Six things happen in this file, K-Nearest Neighbours classification,
+regularisation comparison (L1 vs L2 vs none), bias-variance trade-off through
+learning curves, PCA for dimensionality reduction, K-Means clustering for unsupervised
+pattern discovery, and a Linear Regression baseline to justify why I picked Logistic
+Regression. The combined output is the breadth of techniques I evaluated before
+settling on my main Stage 4 model family.
 
-Run with: py src/stage4b_supplementary_models/run.py
+Run with: python src/stage4b_supplementary_models/run.py
 """
 
 import os
@@ -22,14 +22,14 @@ import numpy as np
 warnings.filterwarnings('ignore')
 sys.stdout.reconfigure(encoding='utf-8')
 
-# Ensure working directory is project root
+# Making sure my working directory is the project root regardless of how the script is launched
 os.chdir(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-# Add project src to path
+# Adding project src to path so my stage4b imports resolve
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from common.data_loader import load_and_prepare_data
-from stage4b_supplementary_models.classification_methods import (
+from utils.data_loader import load_and_prepare_data
+from stage4b_supplementary_models.classification_method import (
     run_knn_comparison, run_regularisation_comparison,
     run_linear_regression_baseline
 )
@@ -42,40 +42,40 @@ from stage4b_supplementary_models.visualisations import plot_supplementary_analy
 np.random.seed(42)
 os.makedirs('outputs/stage4b', exist_ok=True)
 
-#lload data 
+# Loading my data through the utils helper
 df, X, y, groups = load_and_prepare_data()
 print("=" * 70)
 print("STAGE 4b: SUPPLEMENTARY MODELS & UNSUPERVISED EXPLORATION")
 print("=" * 70)
 print(f"Dataset: {len(X)} samples, {y.sum()} positive ({y.mean()*100:.1f}%)")
 
-# 1. KNN
+# 1. KNN comparison across different k values
 knn_df, best_k = run_knn_comparison(X, y, groups)
 knn_df.to_csv('outputs/stage4b/knn_comparison.csv', index=False)
 
-# 2. Regularisation
+# 2. Regularisation comparison, L1, L2 and no regularisation at different C values
 reg_df = run_regularisation_comparison(X, y, groups)
 reg_df.to_csv('outputs/stage4b/regularisation_comparison.csv', index=False)
 
-# 3. Bias-variance
+# 3. Bias-variance trade-off through learning curves
 train_sizes_abs, train_scores, val_scores, gap, diagnosis = run_learning_curve_analysis(X, y)
 
-# Build dense feature matrix for PCA, K-Means, and linear regression
+# Building a dense feature matrix for PCA, K-Means and linear regression
 X_dense = prepare_dense_features(X)
 
-# 4. PCA
+# 4. PCA dimensionality reduction
 pca_df, cumvar, n_90, n_95 = run_pca_analysis(X_dense, y, groups)
 pca_df.to_csv('outputs/stage4b/pca_comparison.csv', index=False)
 
-# 5.K-Means
+# 5. K-Means clustering on the PCA reduced features
 cluster_df, best_k_cluster = run_kmeans_clustering(X_dense, y)
 cluster_df.to_csv('outputs/stage4b/kmeans_clustering.csv', index=False)
 
-# 6.Linear regression
+# 6. Linear regression baseline, this is mostly to show why LR is the right choice
 linreg_df = run_linear_regression_baseline(X_dense, y, groups)
 linreg_df.to_csv('outputs/stage4b/linear_regression_baseline.csv', index=False)
 
-#Visualisation 
+# Visualisations, one combined 2 by 3 figure summarising every supplementary analysis
 print("\n" + "=" * 70)
 print("GENERATING VISUALISATIONS")
 print("=" * 70)
@@ -85,7 +85,7 @@ plot_supplementary_analyses(
     'outputs/stage4b/supplementary_analyses.png'
 )
 
-#Summary JSON 
+# Final summary JSON, this captures every conclusion for the report
 summary = {
     'knn': {
         'best_k': int(best_k),

@@ -1,4 +1,13 @@
-"""KNN, regularisation comparison, and linear regression baseline."""
+"""
+Stage 4b classification method comparisons: KNN, regularisation and linear regression.
+
+Overall this module is where I run three of my supplementary analyses, the basic idea is
+to compare my main Logistic Regression against alternatives that the brief asks about.
+In my project I focused on K-Nearest Neighbours at different k values, Logistic Regression
+under L1, L2 and no regularisation, and a Linear Regression baseline that demonstrates
+why LR is the correct choice for a binary target. What this module demonstrates is my
+understanding of when each method is and is not appropriate.
+"""
 
 import numpy as np
 import pandas as pd
@@ -7,11 +16,19 @@ from sklearn.linear_model import LogisticRegression, LinearRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import fbeta_score, mean_squared_error, r2_score
 
-from common.pipeline_utils import make_preprocessor, sgkf, find_best_threshold_f2
+from utils.pipeline_utils import make_preprocessor, sgkf, find_best_threshold_f2
 
 
 def run_knn_comparison(X, y, groups):
-    """Compare KNN for k = 3, 5, 7, 11, 15."""
+    """
+    Compare KNN classification at k values of 3, 5, 7, 11 and 15.
+
+    Overall this function loops over five k values and runs StratifiedGroupKFold for
+    each one, the basic idea is to find the k that best balances over-smoothing and
+    over-fitting in my dataset. What this also shows is that KNN is not a strong
+    competitor in my high-dimensional sparse TF-IDF feature space, which justifies
+    sticking with Logistic Regression for the main Stage 4 result.
+    """
     print("\n" + "=" * 70)
     print("1. K-NEAREST NEIGHBOURS CLASSIFICATION")
     print("=" * 70)
@@ -49,7 +66,15 @@ def run_knn_comparison(X, y, groups):
 
 
 def run_regularisation_comparison(X, y, groups):
-    """Compare L1, L2, and no regularisation for Logistic Regression."""
+    """
+    Compare L1, L2 and no regularisation for Logistic Regression at multiple C values.
+
+    Overall this function tests six configurations, the basic idea is that L1 produces
+    sparse models with implicit feature selection, L2 shrinks all coefficients evenly,
+    and no regularisation is the unconstrained baseline. What this also tracks is the
+    number of non-zero features per fold which is what makes the L1 vs L2 difference
+    visible in the report.
+    """
     print("\n" + "=" * 70)
     print("2. REGULARISATION TECHNIQUES COMPARISON")
     print("=" * 70)
@@ -85,6 +110,7 @@ def run_regularisation_comparison(X, y, groups):
             y_pred = (y_prob >= thresh).astype(int)
             fold_f2s.append(fbeta_score(y_val, y_pred, beta=2))
 
+            # Counting how many coefficients survived as non-zero, this is the L1 sparsity story
             coefs = pipe.named_steps['classifier'].coef_[0]
             fold_nonzero.append(np.sum(np.abs(coefs) > 1e-6))
 
@@ -107,7 +133,15 @@ def run_regularisation_comparison(X, y, groups):
 
 
 def run_linear_regression_baseline(X_dense, y, groups):
-    """ why i think blinear regression is inappropriate for binary targets."""
+    """
+    Demonstrate why linear regression is inappropriate for my binary target.
+
+    Overall this function fits an unconstrained Linear Regression on the same features
+    and shows that its predictions go outside the [0, 1] range. The basic idea is to
+    make the case for Logistic Regression with concrete numbers, not just theory. What
+    this also reports is per-fold counts of predictions below 0 and above 1 which is
+    the most concrete evidence that linear regression is the wrong tool here.
+    """
     print("\n" + "=" * 70)
     print("6. LINEAR REGRESSION BASELINE")
     print("=" * 70)
@@ -127,6 +161,7 @@ def run_linear_regression_baseline(X_dense, y, groups):
         below_0 = (y_pred_cont < 0).sum()
         above_1 = (y_pred_cont > 1).sum()
 
+        # Forcing a 0.5 threshold to get a usable F2, this is the "if you really had to" number
         y_pred_bin = (y_pred_cont >= 0.5).astype(int)
         f2 = fbeta_score(y_val, y_pred_bin, beta=2)
         mse = mean_squared_error(y_val, y_pred_cont)

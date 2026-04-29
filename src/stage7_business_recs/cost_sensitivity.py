@@ -1,10 +1,27 @@
-"""Cost-sensitivity analysis: how the optimal strategy varies with FN cost."""
+"""
+Stage 7 cost-sensitivity analysis module.
+
+Overall this module is where I check how robust my model recommendation is to changes
+in the FN cost assumption, the basic idea is that the £500 FN cost in Stage 5 was a
+single number and the report should not rest on that. What this module also computes is
+the breakeven point, the FN cost level at which the model just starts beating the
+flag-everything strategy. In my project this is really important because it tells the
+business what assumption needs to hold for the model to be worth deploying.
+"""
 
 import pandas as pd
 
 
 def run_cost_sensitivity(df, thresh_df):
-    """Vary FN cost and report model vs flag-all vs no-model costs."""
+    """
+    Vary FN cost across a range and report model vs flag-all vs no-model costs.
+
+    Overall this function tests seven FN cost levels from £100 to £2000 and tracks
+    which strategy is cheapest at each level, the basic idea is to find the breakeven
+    where my model becomes preferable to flag-all. What this also reports is the
+    optimal threshold per FN cost level, in case the business wants to dial things up
+    or down based on regulatory pressure.
+    """
     print("\n" + "=" * 70)
     print("COST-SENSITIVITY ANALYSIS")
     print("=" * 70)
@@ -24,6 +41,7 @@ def run_cost_sensitivity(df, thresh_df):
         flag_all_cost = int(y_true.sum()) * tp_cost + (len(y_true) - int(y_true.sum())) * fp_cost
         no_model_cost = int(y_true.sum()) * fn_cost
 
+        # Finding the threshold that minimises cost at this specific FN cost level
         best_t_cost = None
         best_cost = float('inf')
         for _, row in thresh_df.iterrows():
@@ -54,6 +72,7 @@ def run_cost_sensitivity(df, thresh_df):
               f"{row['optimal_threshold']:>10.2f} £{int(row['optimal_cost']):>9,d} "
               f"{'YES' if row['model_beats_flag_all'] else 'NO':>10s}")
 
+    # Finding the lowest FN cost at which the model becomes preferable
     breakeven = None
     for _, row in cost_sens_df.iterrows():
         if row['model_beats_flag_all']:
@@ -64,6 +83,7 @@ def run_cost_sensitivity(df, thresh_df):
         print(f"\nModel becomes cost-effective vs flag-all when FN cost <= £{int(breakeven)}")
     else:
         print(f"\nModel does not beat flag-all at any tested FN cost level")
+        # Falling back to a finer-grained search if the coarse grid did not find a breakeven
         for fn_c in range(10, 500, 10):
             mc = tp_all * tp_cost + fp_all * fp_cost + fn_all * fn_c
             fac = y_true.sum() * tp_cost + (len(y_true) - y_true.sum()) * fp_cost

@@ -1,4 +1,12 @@
-"""Pipeline definition and crossvalidation for the baseline model."""
+"""
+Stage 3 pipeline definition and cross-validation module.
+
+Overall this module is where I define my baseline Logistic Regression pipeline and the
+cross-validation loop. The basic idea is to keep the model architecture and the CV logic
+in one place so Stage 4 can reuse the same scaffolding for stronger models. What this
+module demonstrates is my reproducible baseline with StratifiedGroupKFold and a customer
+overlap assertion that fails loudly if a customer ever leaks across folds.
+"""
 
 import numpy as np
 import pandas as pd
@@ -10,7 +18,13 @@ from utils.pipeline_utils import make_preprocessor, sgkf
 
 
 def build_baseline_pipeline():
-    """Create the baseline LR pipeline."""
+    """
+    Create my baseline Logistic Regression pipeline.
+
+    Overall this is the simplest model in my project, the basic idea is to wrap my
+    preprocessor and a class-weighted LR classifier into one sklearn Pipeline so the
+    whole thing can be fit and evaluated as a single unit inside cross-validation.
+    """
     return Pipeline([
         ('preprocessor', make_preprocessor()),
         ('classifier', LogisticRegression(
@@ -20,7 +34,15 @@ def build_baseline_pipeline():
 
 
 def run_cross_validation(X, y, groups, pipeline):
-    """run Stratified GroupKFold CV and return perfold results."""
+    """
+    Run StratifiedGroupKFold cross-validation and return per-fold results.
+
+    Overall this function loops through 5 folds, fits my pipeline on each training split,
+    predicts on the validation split, and records F2, PR-AUC, precision, recall and the
+    confusion matrix per fold. The basic idea is that the assertion on customer overlap
+    is what makes this trustworthy, if any customer ever appears in both train and val
+    the assertion will fail and stop the run, which is what I want.
+    """
     print("\n" + "="*70)
     print("CROSS-VALIDATION: Stratified GroupKFold (k=5)")
     print("="*70)
@@ -33,7 +55,7 @@ def run_cross_validation(X, y, groups, pipeline):
         y_train, y_val = y[train_idx], y[val_idx]
         groups_train, groups_val = groups[train_idx], groups[val_idx]
 
-        # Verify no customer overlap
+        # Verifying no customer appears in both train and val, this is the leakage guard
         overlap = set(groups_train) & set(groups_val)
         assert len(overlap) == 0, f"Fold {fold_idx}: Customer overlap detected!"
 
@@ -55,7 +77,6 @@ def run_cross_validation(X, y, groups, pipeline):
             'n_train': len(train_idx), 'n_val': len(val_idx),
             'n_pos_train': y_train.sum(), 'n_pos_val': y_val.sum(),
         })
-        
 
         all_y_true.extend(y_val)
         all_y_pred.extend(y_pred)
@@ -74,7 +95,14 @@ def run_cross_validation(X, y, groups, pipeline):
 
 
 def print_aggregate_results(results_df, all_y_true, all_y_pred):
-    """print summary statistics across all folds."""
+    """
+    Print summary statistics across all my folds.
+
+    Overall this is where I aggregate the per-fold metrics into a mean, std, min and max
+    summary. What this also adds is the dummy F2 baselines for all-zero and all-one
+    predictions, this is really important for the report because it tells me whether my
+    model is even beating a trivial classifier at the default 0.5 threshold.
+    """
     print("\n" + "="*70)
     print("AGGREGATE CROSS-VALIDATION RESULTS")
     print("="*70)
@@ -92,6 +120,7 @@ def print_aggregate_results(results_df, all_y_true, all_y_pred):
     print(f"  TN={tn_t}, FP={fp_t}, FN={fn_t}, TP={tp_t}")
     print(f"  Overall F2: {fbeta_score(all_y_true, all_y_pred, beta=2):.4f}")
 
+    # Dummy baselines, this is the diagnostic that motivates threshold tuning in Stage 4
     dummy_f2 = fbeta_score(all_y_true, np.zeros_like(all_y_true), beta=2)
     print(f"\nDummy (all-negative) F2: {dummy_f2:.4f}")
     dummy_f2_all1 = fbeta_score(all_y_true, np.ones_like(all_y_true), beta=2)

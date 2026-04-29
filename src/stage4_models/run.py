@@ -1,9 +1,16 @@
 """
-Stage 4: Model Development & Comparison
-this trains LR, RF, XGBoost, and SMOTE variants. Performs hyperparameter
-tuning, threshold optimisation, and statistical comparison.
+Stage 4: Model Development and Comparison
 
-Run with:py src/stage4_models/run.py
+This script is the entry point for my Stage 4 work. For this part of the project I
+train five different model variants and compare them all on the same folds, then run
+a manual hyperparameter tuning grid for XGBoost. The model families I picked are
+Logistic Regression as my baseline plus Random Forest, XGBoost, LR with SMOTE and
+XGB with SMOTE as the additional models the brief asks for. What I get from this
+file is the comparison evidence for which model family wins on F2 once the threshold
+is tuned, and which of the differences against the baseline are statistically
+significant.
+
+Run with: python src/stage4_models/run.py
 """
 
 
@@ -17,7 +24,9 @@ from scipy import stats
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
-from common.data_loader import load_and_prepare_data
+sys.stdout.reconfigure(encoding='utf-8')
+
+from utils.data_loader import load_and_prepare_data
 
 os.makedirs('outputs/stage4', exist_ok=True)
 
@@ -27,11 +36,11 @@ print("="*70)
 
 df, X, y, groups = load_and_prepare_data()
 
-#Imbalance ratio
+# Imbalance ratio for scale_pos_weight, this is roughly 6 to 1 for my data
 scale_pos = (y == 0).sum() / (y == 1).sum()
 print(f"Imbalance ratio for scale_pos_weight: {scale_pos:.2f}")
 
-#Define and cross validate all models
+# Defining and cross validating all my models on the same StratifiedGroupKFold splits
 from stage4_models.pipelines import define_models
 from stage4_models.cross_validation import cross_validate_all
 from stage4_models.tuning import tune_xgboost, evaluate_tuned_xgb
@@ -39,11 +48,11 @@ from stage4_models.tuning import tune_xgboost, evaluate_tuned_xgb
 models = define_models(scale_pos)
 all_results = cross_validate_all(models, X, y, groups)
 
-#hyperparameter tuning
+# Hyperparameter tuning for XGBoost, then re-running with the best params
 best_params, _ = tune_xgboost(X, y, groups, scale_pos)
 best_df = evaluate_tuned_xgb(X, y, groups, best_params, scale_pos)
 
-#Summary Comparison Table
+# Summary comparison table, this is the main artefact for the report
 print("\n" + "="*70)
 print("MODEL COMPARISON SUMMARY")
 print("="*70)
@@ -72,7 +81,7 @@ comp_df = pd.DataFrame(comparison)
 print(comp_df.to_string(index=False))
 comp_df.to_csv('outputs/stage4/model_comparison.csv', index=False)
 
-#visualisations
+# Visualisations, two plots, the bar chart comparison and the per-fold variability box plot
 print("\n" + "="*70)
 print("GENERATING VISUALISATIONS...")
 print("="*70)
@@ -97,6 +106,7 @@ plt.tight_layout()
 plt.savefig('outputs/stage4/model_comparison.png', dpi=150, bbox_inches='tight')
 print("Saved: outputs/stage4/model_comparison.png")
 
+# Box plot showing the F2 spread across folds for each model, this is the variability story
 fig2, ax2 = plt.subplots(figsize=(10, 6))
 fold_data = {name: res['metrics_df']['f2_tuned'].values for name, res in all_results.items()}
 fold_data['XGB_tuned'] = best_df['f2'].values
@@ -109,7 +119,7 @@ plt.tight_layout()
 plt.savefig('outputs/stage4/fold_variation.png', dpi=150, bbox_inches='tight')
 print("Saved: outputs/stage4/fold_variation.png")
 
-#statistical Compariso
+# Statistical comparison, paired t-test across folds against my baseline LR
 print("\n" + "="*70)
 print("STATISTICAL COMPARISON (Paired Fold Differences)")
 print("="*70)
@@ -128,7 +138,7 @@ t_stat, p_val = stats.ttest_rel(xgb_tuned_f2, baseline_f2)
 print(f"  XGB_tuned vs LR_baseline: mean diff={diff.mean():+.4f}, "
       f"t={t_stat:.3f}, p={p_val:.4f}")
 
-#model Selection
+# Final model selection, picking the highest mean F2 to carry into Stage 5
 print("\n" + "="*70)
 print("MODEL SELECTION")
 print("="*70)

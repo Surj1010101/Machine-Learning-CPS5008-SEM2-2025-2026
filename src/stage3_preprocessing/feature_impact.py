@@ -1,4 +1,14 @@
-"""Sentiment ablation experiment: test with vs without sentiment feature."""
+"""
+Stage 3 sentiment ablation experiment module.
+
+Overall this module is where I run my leakage check on the sentiment feature, the basic
+idea is to compare F2 with sentiment included against F2 with sentiment removed and see
+how big the difference is. In my project this is really important because sentiment had
+a counterintuitive Stage 2 finding (positive emails escalating more than negative ones),
+so I had to confirm that including it does not artificially boost performance through
+leakage. What this module demonstrates is the formal evidence that sentiment is safe to
+keep in my pipeline.
+"""
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -13,11 +23,20 @@ from utils.pipeline_utils import sgkf
 
 
 def run_sentiment_ablation(X, y, groups, results_df):
-    """Compare model performance with and without sentiment feature."""
+    """
+    Compare model performance with and without my sentiment feature.
+
+    Overall this function rebuilds my pipeline with a categorical column list that
+    deliberately excludes sentiment, runs the same StratifiedGroupKFold cross-validation
+    and reports the F2 difference. The basic idea is that if removing sentiment massively
+    drops F2 then sentiment was carrying too much signal and might be leaking, but if the
+    difference is tiny (under 0.02) then sentiment is safe and we keep it.
+    """
     print("\n" + "="*70)
     print("ABLATION: WITH vs WITHOUT SENTIMENT")
     print("="*70)
 
+    # Same categorical features as in the main pipeline but with sentiment dropped
     categorical_cols_no_sent = ['customer_type', 'tenure_type', 'meter_type',
                                 'region', 'issue_category']
 
@@ -40,6 +59,7 @@ def run_sentiment_ablation(X, y, groups, results_df):
             solver='liblinear', random_state=42))
     ])
 
+    # Looping over the same folds as the main pipeline to keep the comparison fair
     f2_no_sent = []
     for fold_idx, (train_idx, val_idx) in enumerate(sgkf.split(X, y, groups)):
         X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
@@ -58,6 +78,7 @@ def run_sentiment_ablation(X, y, groups, results_df):
           f"(+/- {np.std(f2_no_sent):.4f})")
     print(f"Difference: {diff:+.4f}")
 
+    # Decision logic, the 0.02 threshold is what I am calling negligible for the report
     if abs(diff) < 0.02:
         print("CONCLUSION: Sentiment has NEGLIGIBLE impact on F2. No evidence of leakage.")
     elif diff > 0.05:

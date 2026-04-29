@@ -1,14 +1,30 @@
+"""
+Stage 4b bias-variance trade-off analysis through learning curves.
 
-"""Biasvariance trade off analysis by learning curves."""
+Overall this module is where I diagnose whether my main Logistic Regression model is
+suffering from high bias or high variance. The basic idea is to plot training and
+validation F1 across increasing training set sizes, then look at the gap between them.
+What this module demonstrates is the formal evidence for whether more data, more
+features or stronger regularisation would help my model.
+"""
+
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import learning_curve
 
-from common.pipeline_utils import make_preprocessor
+from utils.pipeline_utils import make_preprocessor
 
 
 def run_learning_curve_analysis(X, y):
-    """Fit learning curves and diagnose bias vs variance."""
+    """
+    Fit learning curves and diagnose bias vs variance for my LR baseline.
+
+    Overall this function uses sklearn's learning_curve helper at five training fractions
+    from 20% to 100%, the basic idea is that if the train and validation curves converge
+    high then my model is good, if they converge low then it is high-bias, and if there
+    is a big persistent gap then it is high-variance. What this also returns is a textual
+    diagnosis I can quote in the report directly.
+    """
     print("\n" + "=" * 70)
     print("3. BIAS-VARIANCE TRADE-OFF (Learning Curves)")
     print("=" * 70)
@@ -32,6 +48,7 @@ def run_learning_curve_analysis(X, y):
     print(f"  Train F1 (mean):  {train_scores.mean(axis=1)}")
     print(f"  Val F1 (mean):    {val_scores.mean(axis=1)}")
 
+    # Final-point train minus val gap, this is the headline number for the diagnosis
     gap = train_scores.mean(axis=1)[-1] - val_scores.mean(axis=1)[-1]
     print(f"\n  Train-validation gap at full data: {gap:.4f}")
     if gap < 0.05:

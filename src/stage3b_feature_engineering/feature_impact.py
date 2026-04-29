@@ -1,4 +1,14 @@
-"""feature engineering ablation: 7 pipeline configs compared on F2."""
+"""
+Stage 3b feature engineering ablation module, 7 pipeline configs compared on F2.
+
+Overall this module is where I run my ablation study, the basic idea is to swap one piece
+of my preprocessor at a time (bigrams vs unigrams, text vs structured, big vs small TF-IDF
+vocabulary, with vs without temporal features) and see how F2 changes on the same folds.
+In my project this is really important because the brief asks me to evaluate the impact
+of each transformation, so I can defend why my full pipeline configuration is the one I
+went with. What this module demonstrates is the formal comparison evidence behind that
+decision.
+"""
 
 import numpy as np
 from sklearn.model_selection import StratifiedGroupKFold
@@ -11,7 +21,14 @@ from sklearn.metrics import fbeta_score, precision_recall_curve, auc
 
 
 def find_best_threshold_f2(y_true, y_prob):
-    """Find threshold that maximises F2 on the given data."""
+    """
+    Find the threshold that maximises F2 on the given data.
+
+    Overall this is my threshold-tuning helper, the basic idea is to walk along the
+    precision-recall curve and pick the point where F2 is highest. What this matters for
+    is that the default 0.5 threshold is wrong for an imbalanced problem like mine, so
+    every ablation evaluates at the F2-optimal threshold rather than the default.
+    """
     precisions, recalls, thresholds = precision_recall_curve(y_true, y_prob)
     f2_scores = []
     for p, r in zip(precisions, recalls):
@@ -27,7 +44,15 @@ def find_best_threshold_f2(y_true, y_prob):
 
 
 def evaluate_config(X_data, y_data, groups_data, preprocessor, config_name, sgkf):
-    """Run 5-fold CV with tuned threshold for a given preprocessor config."""
+    """
+    Run 5-fold StratifiedGroupKFold CV with a tuned threshold for one preprocessor config.
+
+    Overall this is the workhorse of the ablation, the basic idea is to take whatever
+    preprocessor I pass in, fit a Logistic Regression on top, and report F2, PR-AUC,
+    recall and precision averaged across folds. What this also does is tune the F2
+    threshold per fold using the training set probabilities, which is how I keep the
+    comparison fair across configurations.
+    """
     pipeline = Pipeline([
         ('preprocessor', preprocessor),
         ('classifier', LogisticRegression(
@@ -47,55 +72,7 @@ def evaluate_config(X_data, y_data, groups_data, preprocessor, config_name, sgkf
         pipeline.fit(X_train, y_train)
         y_prob = pipeline.predict_proba(X_val)[:, 1]
 
-        y_prob_train = pipeline.predict_proba(X_train)[:, 1]
-        thresh = find_best_threshold_f2(y_train, y_prob_train)
-        y_pred = (y_prob >= thresh).astype(int)
-
-        f2 = fbeta_score(y_val, y_pred, beta=2)
-        prec_arr, rec_arr, _ = precision_recall_curve(y_val, y_prob)
-        pr_auc_val = auc(rec_arr, prec_arr)
-        tp = ((y_val == 1) & (y_pred == 1)).sum()
-        fp = ((y_val == 0) & (y_pred == 1)).sum()
-        fn = ((y_val == 1) & (y_pred == 0)).sum()
-
-        fold_f2.append(f2)
-        fold_prauc.append(pr_auc_val)
-        fold_recall.append(tp / (tp + fn) if (tp + fn) > 0 else 0)
-        fold_precision.append(tp / (tp + fp) if (tp + fp) > 0 else 0)
-
-    return {
-        'config': config_name,
-        'f2_mean': np.mean(fold_f2),
-        'f2_std': np.std(fold_f2),
-        'prauc_mean': np.mean(fold_prauc),
-        'prauc_std': np.std(fold_prauc),
-        'recall_mean': np.mean(fold_recall),
-        'precision_mean': np.mean(fold_precision),
-        'fold_f2_values': fold_f2,
-    }
-
-
-def evaluate_config(X_data, y_data, groups_data, preprocessor, config_name, sgkf):
-    """Run 5-fold CV with tuned threshold for a given preprocessor config."""
-    pipeline = Pipeline([
-        ('preprocessor', preprocessor),
-        ('classifier', LogisticRegression(
-            class_weight='balanced', max_iter=1000,
-            solver='liblinear', random_state=42))
-    ])
-
-    fold_f2 = []
-    fold_prauc = []
-    fold_recall = []
-    fold_precision = []
-
-    for train_idx, val_idx in sgkf.split(X_data, y_data, groups_data):
-        X_train, X_val = X_data.iloc[train_idx], X_data.iloc[val_idx]
-        y_train, y_val = y_data[train_idx], y_data[val_idx]
-
-        pipeline.fit(X_train, y_train)
-        y_prob = pipeline.predict_proba(X_val)[:, 1]
-
+        # Tuning the threshold on training probabilities, never on validation, to avoid leakage
         y_prob_train = pipeline.predict_proba(X_train)[:, 1]
         thresh = find_best_threshold_f2(y_train, y_prob_train)
         y_pred = (y_prob >= thresh).astype(int)
@@ -125,14 +102,21 @@ def evaluate_config(X_data, y_data, groups_data, preprocessor, config_name, sgkf
 
 
 def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
-    """Run all 7 ablation configurations and returnss results as a list of dicts."""
+    """
+    Run all 7 of my ablation configurations and return the results as a list of dicts.
+
+    Overall this is where I orchestrate the full ablation, the basic idea is to define
+    one preprocessor per configuration and call evaluate_config on each. What I am
+    showcasing here is bigrams vs unigrams, text vs structured, three TF-IDF vocabulary
+    sizes, and what happens if I drop the temporal features.
+    """
     sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
 
     print("\n" + "=" * 70)
     print("FEATURE ENGINEERING ABLATION STUDY")
     print("=" * 70)
 
-    # 1.full pipeline
+    # 1. Full pipeline, this is my reference configuration
     print("\n[1/7] Full pipeline (TF-IDF bigrams + categorical + numeric)...")
     full_preprocessor = ColumnTransformer(
         transformers=[
@@ -146,7 +130,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_full = evaluate_config(X, y, groups, full_preprocessor, 'Full pipeline', sgkf)
     print(f"   F2={result_full['f2_mean']:.4f} (+/-{result_full['f2_std']:.4f})")
 
-    # 2.TF-IDF unigrams only
+    # 2. TF-IDF unigrams only, this tests whether bigrams add anything
     print("\n[2/7] TF-IDF unigrams only (no bigrams)...")
     unigram_preprocessor = ColumnTransformer(
         transformers=[
@@ -160,8 +144,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_unigram = evaluate_config(X, y, groups, unigram_preprocessor, 'Unigrams only', sgkf)
     print(f"   F2={result_unigram['f2_mean']:.4f} (+/-{result_unigram['f2_std']:.4f})")
 
-
-   # 3. Text only
+    # 3. Text only, this isolates how much signal lives in the email body alone
     print("\n[3/7] Text only (TF-IDF bigrams, no metadata)...")
     text_only_preprocessor = ColumnTransformer(
         transformers=[
@@ -172,7 +155,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_text_only = evaluate_config(X, y, groups, text_only_preprocessor, 'Text only', sgkf)
     print(f"   F2={result_text_only['f2_mean']:.4f} (+/-{result_text_only['f2_std']:.4f})")
 
-    # 4. Structured only
+    # 4. Structured only, the opposite of text-only, useful as a sanity floor
     print("\n[4/7] Structured features only (no text)...")
     struct_only_preprocessor = ColumnTransformer(
         transformers=[
@@ -183,7 +166,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_struct_only = evaluate_config(X, y, groups, struct_only_preprocessor, 'Structured only', sgkf)
     print(f"   F2={result_struct_only['f2_mean']:.4f} (+/-{result_struct_only['f2_std']:.4f})")
 
-    # 5. TF-IDF 1000
+    # 5. Larger TF-IDF vocabulary, testing if 1000 features helps over 500
     print("\n[5/7] TF-IDF max_features=1000...")
     big_tfidf_preprocessor = ColumnTransformer(
         transformers=[
@@ -197,7 +180,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_big_tfidf = evaluate_config(X, y, groups, big_tfidf_preprocessor, 'TF-IDF 1000', sgkf)
     print(f"   F2={result_big_tfidf['f2_mean']:.4f} (+/-{result_big_tfidf['f2_std']:.4f})")
 
-    # 6. TF-IDF 200
+    # 6. Smaller TF-IDF vocabulary, testing if 200 is too few
     print("\n[6/7] TF-IDF max_features=200...")
     small_tfidf_preprocessor = ColumnTransformer(
         transformers=[
@@ -211,7 +194,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     result_small_tfidf = evaluate_config(X, y, groups, small_tfidf_preprocessor, 'TF-IDF 200', sgkf)
     print(f"   F2={result_small_tfidf['f2_mean']:.4f} (+/-{result_small_tfidf['f2_std']:.4f})")
 
-    # 7.No temporal features
+    # 7. No temporal features, dropping hour/day_of_week/month from numerics
     print("\n[7/7] No temporal features...")
     no_time_cols = ['emotion_intensity']
     no_time_preprocessor = ColumnTransformer(
@@ -228,4 +211,3 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
 
     return [result_full, result_unigram, result_text_only, result_struct_only,
             result_big_tfidf, result_small_tfidf, result_no_time]
-

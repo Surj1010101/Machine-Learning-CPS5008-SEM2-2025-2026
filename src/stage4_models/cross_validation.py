@@ -1,15 +1,31 @@
-"""Cross validation loop with threshold tuning for all models."""
+"""
+Stage 4 cross-validation loop module with threshold tuning for every model.
+
+The cross-validation logic for all five Stage 4 models lives here. Every model gets
+evaluated at both the default 0.5 threshold AND the F2-tuned threshold so the
+report can show how much threshold tuning matters once the class imbalance kicks
+in. The output of this file is the per-fold metrics dataframe that powers the model
+comparison table in run.py.
+"""
 
 import numpy as np
 import pandas as pd
 from sklearn.metrics import (fbeta_score, precision_recall_curve, auc,
                              confusion_matrix)
 
-from common.pipeline_utils import sgkf, find_best_threshold_f2
+from utils.pipeline_utils import sgkf, find_best_threshold_f2
 
 
 def cross_validate_all(models, X, y, groups):
-    """Running CV with threshold tuning for each model. and Returns results dict."""
+    """
+    Run cross-validation with threshold tuning for each of my models.
+
+    The main loop takes a dict of models, runs StratifiedGroupKFold on each one,
+    fits per fold, predicts on validation, and records F2 at both the default and
+    tuned threshold plus PR-AUC and the confusion matrix. Holding onto the per-fold
+    dataframes is what lets me run paired t-tests later in run.py without redoing the
+    fitting work.
+    """
     print("\n" + "="*70)
     print("CROSS-VALIDATION: All Models")
     print("="*70)
@@ -29,7 +45,7 @@ def cross_validate_all(models, X, y, groups):
             y_prob = pipeline.predict_proba(X_val)[:, 1]
             y_pred_default = pipeline.predict(X_val)
 
-            # Tuned threshold from training set
+            # Tuned threshold from training set probabilities, never from validation
             y_prob_train = pipeline.predict_proba(X_train)[:, 1]
             best_thresh = find_best_threshold_f2(y_train, y_prob_train)
             y_pred_tuned = (y_prob >= best_thresh).astype(int)
@@ -57,7 +73,8 @@ def cross_validate_all(models, X, y, groups):
             print(f"  Fold {fold_idx+1}: F2_default={f2_default:.4f} | "
                   f"F2_tuned={f2_tuned:.4f} | PR-AUC={pr_auc_val:.4f} | "
                   f"thresh={best_thresh:.3f}")
-            
+
+        # Aggregating per-fold metrics into mean and std summary for this model
         metrics_df = pd.DataFrame(fold_metrics)
         all_results[model_name] = {
             'metrics_df': metrics_df,

@@ -1,4 +1,14 @@
-"""hyperparameter tuning for XGBoost by manual grid search."""
+"""
+Stage 4 hyperparameter tuning module for XGBoost via manual grid search.
+
+XGBoost hyperparameter tuning happens here. I loop over a small grid of n_estimators,
+max_depth and learning_rate, and re-run my StratifiedGroupKFold cross-validation for
+each combination. I picked manual grid search rather than RandomizedSearchCV because
+the grid is small enough that exhaustive search is cheap, and it gives me a clean
+ranking of every configuration that I can put straight into the report. The brief
+asks for formal hyperparameter tuning and this file is where that requirement gets
+satisfied, with a re-run on the best configuration so the final results are clean.
+"""
 
 import numpy as np
 import pandas as pd
@@ -7,11 +17,18 @@ from sklearn.metrics import (fbeta_score, precision_recall_curve, auc,
                              confusion_matrix)
 from xgboost import XGBClassifier
 
-from common.pipeline_utils import sgkf, make_preprocessor, find_best_threshold_f2
+from utils.pipeline_utils import sgkf, make_preprocessor, find_best_threshold_f2
 
 
 def tune_xgboost(X, y, groups, scale_pos_weight):
-    """Grid search over XGBoost hyperparameters using and StratifiedGroupKFold."""
+    """
+    Grid search over XGBoost hyperparameters using StratifiedGroupKFold.
+
+    Three nested for-loops cover n_estimators, max_depth and learning_rate, and every
+    combination gets evaluated on the same folds with a tuned F2 threshold per fold.
+    Saving the full tuning results to CSV means I can show the search landscape in
+    the report without having to re-run the grid.
+    """
     print("\n" + "="*70)
     print("HYPERPARAMETER TUNING")
     print("="*70)
@@ -47,6 +64,7 @@ def tune_xgboost(X, y, groups, scale_pos_weight):
                     pipe.fit(X_train, y_train)
                     y_prob = pipe.predict_proba(X_val)[:, 1]
 
+                    # Tuning threshold on training probabilities to avoid leakage
                     y_prob_train = pipe.predict_proba(X_train)[:, 1]
                     thresh = find_best_threshold_f2(y_train, y_prob_train)
                     y_pred = (y_prob >= thresh).astype(int)
@@ -74,8 +92,17 @@ def tune_xgboost(X, y, groups, scale_pos_weight):
 
     return best_params, best_f2
 
+
 def evaluate_tuned_xgb(X, y, groups, best_params, scale_pos_weight):
-    """Rerun thebest XGBoost with tuned params across all folds."""
+    """
+    Re-run my best XGBoost with the tuned hyperparameters across all folds.
+
+    This function takes the winning param combination and runs it through
+    StratifiedGroupKFold one more time to get clean per-fold metrics. Separating
+    "what configuration won" from "how does the winning configuration actually
+    perform per fold" matters because it gives me a clean per-fold dataframe that
+    the run.py paired t-test can compare against LR_baseline.
+    """
     print("\n" + "="*70)
     print("RE-RUNNING BEST XGB WITH TUNED HYPERPARAMETERS")
     print("="*70)
