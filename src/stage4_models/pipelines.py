@@ -1,3 +1,5 @@
+"""Model pipeline definitions: LR, RF, XGBoost, SMOTE variants."""
+
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
