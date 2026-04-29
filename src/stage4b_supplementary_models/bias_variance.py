@@ -1,3 +1,5 @@
+
+"""Biasvariance trade off analysis by learning curves."""
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import learning_curve
