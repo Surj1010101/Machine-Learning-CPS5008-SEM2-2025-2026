@@ -73,3 +73,54 @@ def tune_xgboost(X, y, groups, scale_pos_weight):
     tuning_df.to_csv('outputs/stage4/xgb_tuning_results.csv', index=False)
 
     return best_params, best_f2
+
+def evaluate_tuned_xgb(X, y, groups, best_params, scale_pos_weight):
+    """Rerun thebest XGBoost with tuned params across all folds."""
+    print("\n" + "="*70)
+    print("RE-RUNNING BEST XGB WITH TUNED HYPERPARAMETERS")
+    print("="*70)
+
+    best_pipeline = Pipeline([
+        ('preprocessor', make_preprocessor()),
+        ('classifier', XGBClassifier(
+            **best_params, scale_pos_weight=scale_pos_weight,
+            eval_metric='aucpr', random_state=42, n_jobs=-1, verbosity=0))
+    ])
+
+    fold_metrics = []
+
+    for fold_idx, (train_idx, val_idx) in enumerate(sgkf.split(X, y, groups)):
+        X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
+        y_train, y_val = y[train_idx], y[val_idx]
+
+        best_pipeline.fit(X_train, y_train)
+        y_prob = best_pipeline.predict_proba(X_val)[:, 1]
+        y_prob_train = best_pipeline.predict_proba(X_train)[:, 1]
+        thresh = find_best_threshold_f2(y_train, y_prob_train)
+        y_pred = (y_prob >= thresh).astype(int)
+
+        f2 = fbeta_score(y_val, y_pred, beta=2)
+        prec_arr, rec_arr, _ = precision_recall_curve(y_val, y_prob)
+        pr_auc_val = auc(rec_arr, prec_arr)
+        cm = confusion_matrix(y_val, y_pred)
+        tn, fp, fn, tp = cm.ravel()
+
+        fold_metrics.append({
+            'fold': fold_idx + 1, 'f2': f2, 'pr_auc': pr_auc_val,
+            'threshold': thresh,
+            'precision': tp/(tp+fp) if (tp+fp) > 0 else 0,
+            'recall': tp/(tp+fn) if (tp+fn) > 0 else 0,
+            'tn': tn, 'fp': fp, 'fn': fn, 'tp': tp
+        })
+
+        print(f"Fold {fold_idx+1}: F2={f2:.4f} | PR-AUC={pr_auc_val:.4f} | "
+              f"thresh={thresh:.3f} | P={fold_metrics[-1]['precision']:.3f} "
+              f"R={fold_metrics[-1]['recall']:.3f}")
+
+    best_df = pd.DataFrame(fold_metrics)
+    print(f"\nBest XGB (tuned): F2={best_df['f2'].mean():.4f} "
+          f"(+/-{best_df['f2'].std():.4f}) | "
+          f"PR-AUC={best_df['pr_auc'].mean():.4f} "
+          f"(+/-{best_df['pr_auc'].std():.4f})")
+
+    return best_df
