@@ -1,0 +1,49 @@
+{
+  "model": "Logistic Regression (class_weight=balanced, liblinear)",
+  "features": "500 TF-IDF + 14 OHE categorical + 4 numeric = 518 total",
+  "validation": "StratifiedGroupKFold k=5 (grouped by customer_id)",
+  "threshold": 0.42888930186904056,
+  "performance": {
+    "f2": 0.36129714487134296,
+    "recall": 0.5601092896174863,
+    "precision": 0.14930808448652585
+  },
+  "tiered_deployment": {
+    "high_threshold": 0.65,
+    "medium_threshold": 0.42888930186904056,
+    "high_pct": "9.5%",
+    "medium_pct": "45.4%",
+    "low_pct": "45.1%",
+    "combined_catch_rate": "56.0%"
+  },
+  "cost_analysis": {
+    "fn_cost": 500,
+    "fp_cost": 20,
+    "tp_cost": 50,
+    "model_cost": 114110,
+    "breakeven_fn_cost": 100
+  },
+  "temporal_stability": {
+    "f2_std_across_quarters": 0.09485841543673366,
+    "stable": false
+  },
+  "fairness": {
+    "region_tpr_gap": 0.032,
+    "customer_type_tpr_gap": 0.087,
+    "all_pass_80pct_rule": true
+  },
+  "limitations": [
+    "Dataset likely synthetic -- all findings may not generalise",
+    "Very short emails (7-8 words) limit discriminative power",
+    "Model flags 54% of emails -- high workload in practice",
+    "Poor calibration -- probabilities are not meaningful as confidence scores",
+    "No customer history features (prior complaints, account age)"
+  ],
+  "future_work": [
+    "Incorporate customer complaint history as features",
+    "Use sentence transformers if longer emails available",
+    "A/B test tiered deployment vs current process",
+    "Investigate Commercial customer recall gap",
+    "Explore temporal features (time since last email, complaint velocity)"
+  ]
+}

@@ -1,0 +1,257 @@
+[
+  {
+    "example": 1,
+    "type": "TP",
+    "email": "Curious about technology New integrations for meters.",
+    "actual": 1,
+    "escalation_level": 2,
+    "predicted_prob": 0.7785971853629415,
+    "predicted": 1,
+    "top_features": [
+      [
+        "text__details <= 0.00",
+        -0.15423449204290113
+      ],
+      [
+        "text__switching <= 0.00",
+        -0.1529323102533106
+      ],
+      [
+        "text__curious > 0.00",
+        0.13828231596890353
+      ],
+      [
+        "text__is <= 0.00",
+        -0.1353147350688376
+      ],
+      [
+        "text__waiting <= 0.00",
+        0.12791536010223975
+      ],
+      [
+        "text__asap <= 0.00",
+        0.12133289175945593
+      ],
+      [
+        "text__paperless <= 0.00",
+        0.12113709764758676
+      ],
+      [
+        "text__use <= 0.00",
+        0.10283237896197314
+      ],
+      [
+        "text__accuracy <= 0.00",
+        0.09986994915076776
+      ],
+      [
+        "text__clear <= 0.00",
+        0.07921391569724849
+      ]
+    ]
+  },
+  {
+    "example": 2,
+    "type": "TP",
+    "email": "How to check if my area IS affected by planned outages?",
+    "actual": 1,
+    "escalation_level": 2,
+    "predicted_prob": 0.577651456086286,
+    "predicted": 1,
+    "top_features": [
+      [
+        "text__switching <= 0.00",
+        -0.14770141221370423
+      ],
+      [
+        "text__details <= 0.00",
+        -0.14211963708726977
+      ],
+      [
+        "text__emails <= 0.00",
+        0.1341467120205
+      ],
+      [
+        "text__is > 0.00",
+        0.13346263798277067
+      ],
+      [
+        "text__waiting <= 0.00",
+        0.1301367772311153
+      ],
+      [
+        "text__curious <= 0.00",
+        -0.11777405748106962
+      ],
+      [
+        "text__use <= 0.00",
+        0.10908827991083274
+      ],
+      [
+        "text__moving <= 0.00",
+        0.10422708281861731
+      ],
+      [
+        "text__asap <= 0.00",
+        0.10051083392920969
+      ],
+      [
+        "text__paperless <= 0.00",
+        0.09990595498815331
+      ]
+    ]
+  },
+  {
+    "example": 3,
+    "type": "FN",
+    "email": "Looking for details about energy efficiency Programs.",
+    "actual": 1,
+    "escalation_level": 2,
+    "predicted_prob": 0.39642824411328187,
+    "predicted": 0,
+    "top_features": [
+      [
+        "text__details > 0.00",
+        0.1716011163757278
+      ],
+      [
+        "text__asap <= 0.00",
+        0.1386105020629911
+      ],
+      [
+        "text__clear <= 0.00",
+        0.13429942516025664
+      ],
+      [
+        "text__switching <= 0.00",
+        -0.127047370828632
+      ],
+      [
+        "text__use <= 0.00",
+        0.12575952394402665
+      ],
+      [
+        "text__waiting <= 0.00",
+        0.11480159572432042
+      ],
+      [
+        "text__curious <= 0.00",
+        -0.11092903437013876
+      ],
+      [
+        "text__is <= 0.00",
+        -0.10674180357665479
+      ],
+      [
+        "text__paperless <= 0.00",
+        0.10314297097273245
+      ],
+      [
+        "text__emails <= 0.00",
+        0.09140939315595602
+      ]
+    ]
+  },
+  {
+    "example": 4,
+    "type": "FN",
+    "email": "Outage repair completed but service still Ok unstable.",
+    "actual": 1,
+    "escalation_level": 2,
+    "predicted_prob": 0.13092844378385055,
+    "predicted": 0,
+    "top_features": [
+      [
+        "text__details <= 0.00",
+        -0.16148027480926463
+      ],
+      [
+        "text__switching <= 0.00",
+        -0.14908144600890547
+      ],
+      [
+        "text__clear <= 0.00",
+        0.14017926455621707
+      ],
+      [
+        "text__waiting <= 0.00",
+        0.13074541864259548
+      ],
+      [
+        "text__use <= 0.00",
+        0.1250648974642471
+      ],
+      [
+        "text__is <= 0.00",
+        -0.12424966216448437
+      ],
+      [
+        "text__asap <= 0.00",
+        0.12283496608607977
+      ],
+      [
+        "text__paperless <= 0.00",
+        0.11225808999339681
+      ],
+      [
+        "text__curious <= 0.00",
+        -0.11046074636185146
+      ],
+      [
+        "text__response <= 0.00",
+        -0.09428120624006998
+      ]
+    ]
+  },
+  {
+    "example": 5,
+    "type": "FP",
+    "email": "What is the procedure For reporting a, faulty METER?",
+    "actual": 0,
+    "escalation_level": 0,
+    "predicted_prob": 0.9020925563365146,
+    "predicted": 1,
+    "top_features": [
+      [
+        "text__details <= 0.00",
+        -0.162979276665804
+      ],
+      [
+        "text__is > 0.00",
+        0.1461107305409709
+      ],
+      [
+        "text__asap <= 0.00",
+        0.14349388800453564
+      ],
+      [
+        "text__paperless <= 0.00",
+        0.1380319594980857
+      ],
+      [
+        "text__moving <= 0.00",
+        0.1378817641276619
+      ],
+      [
+        "text__switching <= 0.00",
+        -0.13256956223212413
+      ],
+      [
+        "text__clear <= 0.00",
+        0.12591237965283625
+      ],
+      [
+        "text__waiting <= 0.00",
+        0.1223668447804418
+      ],
+      [
+        "text__use <= 0.00",
+        0.11572845082405449
+      ],
+      [
+        "text__curious <= 0.00",
+        -0.10848108895790665
+      ]
+    ]
+  }
+]
