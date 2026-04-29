@@ -1,14 +1,4 @@
-"""
-Stage 6 LIME local explanations module for representative TP, FN and FP predictions.
-
-Overall this module is where I generate per-instance explanations using LIME, the basic
-idea is that global importance tells me what the model uses on average but I also need
-to defend specific predictions, which is what local explanations give me. In my project
-I focused on five examples here, two true positives (showing the model working), two
-false negatives (showing why missed escalations were missed) and one false positive
-(showing why a non-escalation got flagged). What this module demonstrates is the local
-interpretability evidence the brief expects.
-"""
+"""Local Explanations module."""
 
 import numpy as np
 from scipy.sparse import issparse
@@ -20,9 +10,9 @@ def run_lime_explanations(pipeline, X_train, X_val, val_idx, df, y_prob_val,
     """
     Generate LIME explanations for representative TP, FN and FP examples.
 
-    Overall this function builds a LIME tabular explainer on my training matrix and
-    then explains five carefully picked validation examples, the basic idea is to show
-    the marker which words drove specific predictions for each error type. What this
+    This function builds a LIME tabular explainer on my training matrix and
+    then explains five carefully picked validation examples, the aim is to show
+    the marker which words drove specific predictions for each error type. This
     also handles is the sparse-to-dense conversion that LIME needs to work correctly.
     """
     print("\n" + "=" * 70)
@@ -126,3 +116,5 @@ def run_lime_explanations(pipeline, X_train, X_val, val_idx, df, y_prob_val,
             })
 
     return lime_results
+
+

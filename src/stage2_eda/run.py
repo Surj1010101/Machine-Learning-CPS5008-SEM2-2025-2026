@@ -1,15 +1,4 @@
-"""
-Stage 2: Exploratory Data Analysis and Risk Identification
-
-This script is the entry point for my Stage 2 work. Here I load the customer support
-emails dataset and run all my analysis modules in order. The four things I focused
-on are profiling the features, testing for leakage, checking missing data, and
-showcasing the customer overlap so I know my GroupKFold will work in Stage 3. The
-output is the full picture of data quality risks I identified before any modelling
-started.
-
-Run with: python src/stage2_eda/run.py
-"""
+"""Run module."""
 
 import os
 import sys
@@ -34,7 +23,7 @@ df['escalated'] = (df['escalation_level'] >= 2).astype(int)
 print(f"\nDataset shape: {df.shape}")
 print(f"\nColumn dtypes:\n{df.dtypes}")
 print(f"\nFirst 3 rows:\n{df.head(3).to_string()}")
-print(f"\n── Binary Target Distribution ──")
+print(f"\n-- Binary Target Distribution --")
 print(f"Escalated (1): {df['escalated'].sum()} ({df['escalated'].mean()*100:.1f}%)")
 print(f"Not escalated (0): {(df['escalated']==0).sum()} ({(df['escalated']==0).mean()*100:.1f}%)")
 
@@ -67,3 +56,5 @@ generate_visualisations(df, corr)
 print("\n" + "="*70)
 print("STAGE 2 EDA COMPLETE")
 print("="*70)
+
+

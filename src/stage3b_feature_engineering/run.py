@@ -1,16 +1,4 @@
-"""
-Stage 3b: Feature Engineering Impact and Multicollinearity Analysis
-
-For my Stage 3b I test how different feature engineering choices affect F2 and
-formally check whether any of my features are too correlated with each other. Two
-big things happen here, the ablation study which compares 7 pipeline configurations
-on the same folds, and the multicollinearity analysis which looks at numeric
-correlations, Cramer's V across categoricals, and VIF on the numeric features. The
-combined output is the evidence behind my final feature set decision before Stage 4
-modelling.
-
-Run with: python src/stage3b_feature_engineering/run.py
-"""
+"""Run module."""
 
 
 import os
@@ -109,14 +97,14 @@ print(ablation_df.to_string(index=False))
 ablation_df.to_csv('outputs/stage3b/feature_engineering_ablation.csv', index=False)
 
 # Showing the F2 delta vs my full pipeline so I can see which choices help and which hurt
-print("\n── Impact vs Full Pipeline ──")
+print("\n-- Impact vs Full Pipeline --")
 baseline_f2 = result_full['f2_mean']
 for r in all_results:
     delta = r['f2_mean'] - baseline_f2
     print(f"  {r['config']:<25s}: F2={r['f2_mean']:.4f} (delta={delta:+.4f})")
 
 # Paired t-test against the full pipeline so I can call out significant differences
-print("\n── Statistical Significance (paired t-test vs Full Pipeline) ──")
+print("\n-- Statistical Significance (paired t-test vs Full Pipeline) --")
 baseline_folds = result_full['fold_f2_values']
 for r in all_results:
     if r['config'] == 'Full pipeline':
@@ -198,3 +186,5 @@ Multicollinearity:
 """)
 
 print("STAGE 3b COMPLETE")
+
+

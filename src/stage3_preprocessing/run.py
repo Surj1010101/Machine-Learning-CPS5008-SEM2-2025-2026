@@ -1,16 +1,4 @@
-"""
-Stage 3: Preprocessing Pipeline
-
-Stage 3 is where I build a reproducible scikit-learn pipeline that handles all the
-text, categorical and numeric preprocessing inside cross-validation so I do not leak
-information from validation into training. The two things I focus on here are the
-baseline Logistic Regression model with StratifiedGroupKFold grouped by customer_id,
-plus a sentiment ablation that confirms there is no leakage from the sentiment
-feature. This script lays the foundation for Stage 4, which will build on top with
-stronger models and threshold tuning.
-
-Run with: python src/stage3_preprocessing/run.py
-"""
+"""Run module."""
 
 import os
 import sys
@@ -103,3 +91,4 @@ Ablation:
 Ready for Stage 4: Model Development & Comparison.
 """)
 print("STAGE 3 COMPLETE")
+

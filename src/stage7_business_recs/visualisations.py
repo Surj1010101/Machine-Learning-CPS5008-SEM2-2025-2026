@@ -1,13 +1,4 @@
-"""
-Stage 7 visualisations module: threshold trade-offs, tiered deployment, stability and costs.
-
-Overall this module is where I generate the three figures for my Stage 7 report
-section, the basic idea is to turn each deployment analysis into a picture the
-business stakeholder can read at a glance. In my project I focused on three plots
-here, the threshold trade-off panel (metrics + workload + cost), the tiered
-deployment distribution and catch breakdown, and the stability plus cost-sensitivity
-combined figure.
-"""
+"""Visualisations module."""
 
 import numpy as np
 import matplotlib
@@ -19,9 +10,9 @@ def plot_threshold_tradeoffs(thresh_df, mean_thresh, best_cost_row, output_path)
     """
     Three-panel figure: metrics vs threshold, workload vs threshold, cost vs threshold.
 
-    Overall this is the headline trade-off picture, the basic idea is to put F2/recall
+    This is the headline trade-off picture, the aim is to put F2/recall
     /precision in panel one, workload percentage in panel two, and total business cost
-    in panel three. What this also marks on each panel is the current threshold and
+    in panel three. This also marks on each panel the current threshold and
     where applicable the cost-optimal threshold, so the stakeholder can see the gap.
     """
     fig, axes = plt.subplots(1, 3, figsize=(18, 5.5))
@@ -63,7 +54,7 @@ def plot_threshold_tradeoffs(thresh_df, mean_thresh, best_cost_row, output_path)
     axes[2].axvline(x=best_cost_row['threshold'], color='red', linestyle='--',
                     alpha=0.7, label=f"Cost-optimal ({best_cost_row['threshold']:.2f})")
     axes[2].set_xlabel('Classification Threshold')
-    axes[2].set_ylabel('Total Cost (£ thousands)')
+    axes[2].set_ylabel('Total Cost (GBP  thousands)')
     axes[2].set_title('Business Cost vs Threshold', fontweight='bold')
     axes[2].legend(fontsize=8)
     axes[2].set_xlim(0.1, 0.85)
@@ -80,9 +71,9 @@ def plot_tiered_deployment(high_mask, medium_mask, low_mask,
     """
     Stacked bar chart of tier email distribution next to a pie chart of catch by tier.
 
-    Overall this is the deployment picture, the basic idea is that the bar chart shows
+    This is the deployment picture, the aim is that the bar chart shows
     how my emails get distributed across tiers and the pie chart shows where my actual
-    escalations end up being caught. What this also annotates is the prevalence inside
+    escalations end up being caught. This also annotates the prevalence inside
     each tier so the stakeholder can see how concentrated the HIGH tier really is.
     """
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
@@ -135,10 +126,10 @@ def plot_stability_and_costs(temp_df, f2_std, cost_sens_df, breakeven, output_pa
     """
     Two-panel figure with temporal stability on the left and cost sensitivity on the right.
 
-    Overall this is the stability picture, the basic idea is that the left panel shows
+    This is the stability picture, the aim is that the left panel shows
     F2 over time with prevalence overlaid, and the right panel shows how my model cost
     compares against flag-all and no-model under different FN cost assumptions. What
-    this also marks is the breakeven FN cost where my model becomes preferable.
+    this also marks the breakeven FN cost where my model becomes preferable.
     """
     fig, axes = plt.subplots(1, 2, figsize=(14, 5.5))
 
@@ -166,15 +157,19 @@ def plot_stability_and_costs(temp_df, f2_std, cost_sens_df, breakeven, output_pa
                  'r--s', label='Flag Everything', linewidth=1.5)
     axes[1].plot(cost_sens_df['fn_cost'], cost_sens_df['no_model_cost'] / 1000,
                  'g--^', label='No Model', linewidth=1.5)
-    axes[1].set_xlabel('False Negative Cost (£)')
-    axes[1].set_ylabel('Total Cost (£ thousands)')
+    axes[1].set_xlabel('False Negative Cost (GBP )')
+    axes[1].set_ylabel('Total Cost (GBP  thousands)')
     axes[1].set_title('Cost Sensitivity to FN Cost', fontweight='bold')
     axes[1].legend(fontsize=8)
     axes[1].grid(alpha=0.3)
     if breakeven:
         axes[1].axvline(x=breakeven, color='purple', linestyle=':',
-                        alpha=0.7, label=f'Breakeven ~£{breakeven}')
+                        alpha=0.7, label=f'Breakeven ~GBP {breakeven}')
 
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     print(f"Saved: {output_path}")
+
+
+
+

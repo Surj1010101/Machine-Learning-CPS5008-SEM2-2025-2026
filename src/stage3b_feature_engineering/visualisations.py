@@ -1,12 +1,4 @@
-"""
-Stage 3b visualisations module, ablation bar chart and multicollinearity heatmaps.
-
-Overall this module is where I generate the figures for my Stage 3b section, the basic
-idea is to turn the ablation table and the multicollinearity matrices into plots that go
-straight into the report. In my project I focused on two figures here, the combined
-ablation impact and numeric correlation heatmap, and the Cramer's V heatmap on the
-categorical features.
-"""
+"""Visualisations module."""
 
 import numpy as np
 import pandas as pd
@@ -21,9 +13,9 @@ def plot_ablation_and_correlation(all_results, result_full, corr_matrix, output_
     Combined 1 by 2 figure with my feature impact bar chart on the left and the numeric
     correlation heatmap on the right.
 
-    Overall this is the headline Stage 3b figure, the basic idea is to put the F2 impact
+    This is the headline Stage 3b figure, the aim is to put the F2 impact
     of each ablation configuration next to the correlation matrix so the report can
-    discuss feature engineering and multicollinearity in one go. What this also does is
+    discuss feature engineering and multicollinearity in one go. This also
     highlight the Full pipeline configuration in a different colour as the reference.
     """
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
@@ -61,8 +53,8 @@ def plot_cramers_v_heatmap(cramers_df, cat_features, output_path):
     """
     Heatmap of Cramer's V values between my categorical features.
 
-    Overall this is the visual version of the categorical multicollinearity table, the
-    basic idea is that the eye picks up high values quickly. What this also does is
+    This is the visual version of the categorical multicollinearity table, the
+    main aim is that the eye picks up high values quickly. This also
     fill the diagonal with 1.0 so the heatmap reads naturally as a similarity matrix.
     """
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -80,3 +72,6 @@ def plot_cramers_v_heatmap(cramers_df, cat_features, output_path):
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     print(f"Saved: {output_path}")
+
+
+

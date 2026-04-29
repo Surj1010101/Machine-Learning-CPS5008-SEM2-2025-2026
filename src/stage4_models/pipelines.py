@@ -1,15 +1,4 @@
-"""
-Stage 4 model pipeline definitions: LR baseline, RF, XGBoost and the SMOTE variants.
-
-In this module I define every model variant for my Stage 4 comparison. Keeping the
-pipeline construction in one place means the cross-validation loop can iterate over
-them cleanly without repeating the same setup code. The reason this is the file that
-matters most for the brief is that the brief requires a baseline plus at least two
-additional models, and the SMOTE variants in particular need the imblearn Pipeline
-so oversampling only ever runs INSIDE the CV fold rather than on the full dataset,
-which is how I avoid leakage. The model diversity here is the foundation of every
-comparison number that follows.
-"""
+"""Pipelines module."""
 
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
@@ -65,3 +54,4 @@ def define_models(scale_pos_weight):
                 eval_metric='aucpr', random_state=42, n_jobs=-1, verbosity=0))
         ]),
     }
+

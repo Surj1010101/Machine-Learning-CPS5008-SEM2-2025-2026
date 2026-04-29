@@ -1,17 +1,4 @@
-"""
-Stage 7: Business Recommendations and Deployment Strategy
-
-For my final stage I turn the model from Stages 4 to 6 into a deployment plan that
-a real energy provider could adopt. Six pieces of work happen here, the threshold
-sweep and trade-off analysis, the three-tier deployment design (HIGH/MEDIUM/LOW),
-the temporal stability check across quarters, the cost-sensitivity analysis under
-different FN cost assumptions, the production monitoring plan with retraining
-triggers, and a final summary JSON capturing every Stage 7 number. The whole file
-delivers the business framing the brief asks for with concrete numbers behind every
-recommendation.
-
-Run with: python src/stage7_business_recs/run.py
-"""
+"""Run module."""
 
 import os
 import sys
@@ -192,9 +179,9 @@ Deployment Recommendation:
   Combined HIGH+MEDIUM catch rate: {(high_catch+med_catch)/total_pos*100:.1f}%
 
 Cost Analysis:
-  Under current assumptions (FN=£500, FP=£20):
-    Model saves £{int(y_true.sum()) * 500 - (tp_all*50 + fp_all*20 + fn_all*500):,} vs no-model
-    Model breakeven vs flag-all at FN cost ~£{breakeven if breakeven else 'N/A'}
+  Under current assumptions (FN=GBP 500, FP=GBP 20):
+    Model saves GBP {int(y_true.sum()) * 500 - (tp_all*50 + fp_all*20 + fn_all*500):,} vs no-model
+    Model breakeven vs flag-all at FN cost ~GBP {breakeven if breakeven else 'N/A'}
 
 Temporal Stability:
   F2 std across quarters: {f2_std:.3f} -- {'STABLE' if f2_std < 0.05 else 'VARIABLE'}
@@ -219,3 +206,5 @@ print("\n" + "=" * 70)
 print("ALL ANALYSIS STAGES COMPLETE (Stages 0-7)")
 print("Stage 8 (Report Support) available on request.")
 print("=" * 70)
+
+

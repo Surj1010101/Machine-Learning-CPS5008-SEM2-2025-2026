@@ -1,12 +1,4 @@
-"""
-Stage 5 pipeline setup and per-sample prediction collection module.
-
-Overall this module is where I rebuild my selected Logistic Regression pipeline and
-re-run StratifiedGroupKFold to capture every prediction at the per-row level. The basic
-idea is that for error analysis I do not just need aggregate metrics, I need to know
-exactly which emails my model got right and which ones it missed. What this module
-demonstrates is the prediction collection that everything else in Stage 5 depends on.
-"""
+"""Predictions module."""
 
 import numpy as np
 from sklearn.model_selection import StratifiedGroupKFold
@@ -22,7 +14,7 @@ def make_preprocessor(text_col, categorical_cols, numeric_cols):
     """
     Standard ColumnTransformer used by my LR baseline.
 
-    Overall this is the same preprocessor I used in Stage 3, the basic idea is to keep
+    This is the same preprocessor I used in Stage 3, the aim is to keep
     the preprocessing identical between stages so the predictions I analyse here come
     from the same model the brief sees.
     """
@@ -43,7 +35,7 @@ def find_best_threshold_f2(y_true, y_prob):
     """
     Find the threshold that maximises F2 on the given data.
 
-    Overall this is my threshold-tuning helper, the basic idea is to walk along the
+    This is my threshold-tuning helper, the aim is to walk along the
     precision-recall curve and pick the point where F2 peaks, since the default 0.5
     cutoff is wrong for an imbalanced problem like mine.
     """
@@ -66,9 +58,9 @@ def collect_fold_predictions(df, X, y, groups, text_col, categorical_cols, numer
     """
     Fit my LR pipeline across 5 folds with tuned thresholds, and write predictions onto df.
 
-    Overall this is the workhorse of Stage 5, the basic idea is to attach y_prob, y_pred
+    This is the workhorse of Stage 5, the aim is to attach y_prob, y_pred
     and prediction_type (TP/FP/FN/TN) directly onto the dataframe so every other module
-    can filter rows by error type. What this also returns is the per-fold metrics list
+    can filter rows by error type. This also returns the per-fold metrics list
     so run.py can quote the threshold per fold.
     """
     print("\nCollecting per-sample predictions from LR (tuned threshold)...")
@@ -122,3 +114,6 @@ def collect_fold_predictions(df, X, y, groups, text_col, categorical_cols, numer
     df.loc[(df['escalated'] == 1) & (df['y_pred'] == 0), 'prediction_type'] = 'FN'
 
     return fold_metrics
+
+
+

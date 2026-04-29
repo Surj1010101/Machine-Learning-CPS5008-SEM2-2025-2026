@@ -1,14 +1,4 @@
-"""
-Stage 3b feature engineering ablation module, 7 pipeline configs compared on F2.
-
-Overall this module is where I run my ablation study, the basic idea is to swap one piece
-of my preprocessor at a time (bigrams vs unigrams, text vs structured, big vs small TF-IDF
-vocabulary, with vs without temporal features) and see how F2 changes on the same folds.
-In my project this is really important because the brief asks me to evaluate the impact
-of each transformation, so I can defend why my full pipeline configuration is the one I
-went with. What this module demonstrates is the formal comparison evidence behind that
-decision.
-"""
+"""Feature Impact module."""
 
 import numpy as np
 from sklearn.model_selection import StratifiedGroupKFold
@@ -24,8 +14,8 @@ def find_best_threshold_f2(y_true, y_prob):
     """
     Find the threshold that maximises F2 on the given data.
 
-    Overall this is my threshold-tuning helper, the basic idea is to walk along the
-    precision-recall curve and pick the point where F2 is highest. What this matters for
+    This is my threshold-tuning helper, the aim is to walk along the
+    precision-recall curve and pick the point where F2 is highest. This matters for
     is that the default 0.5 threshold is wrong for an imbalanced problem like mine, so
     every ablation evaluates at the F2-optimal threshold rather than the default.
     """
@@ -47,9 +37,9 @@ def evaluate_config(X_data, y_data, groups_data, preprocessor, config_name, sgkf
     """
     Run 5-fold StratifiedGroupKFold CV with a tuned threshold for one preprocessor config.
 
-    Overall this is the workhorse of the ablation, the basic idea is to take whatever
+    This is the workhorse of the ablation, the aim is to take whatever
     preprocessor I pass in, fit a Logistic Regression on top, and report F2, PR-AUC,
-    recall and precision averaged across folds. What this also does is tune the F2
+    recall and precision averaged across folds. This also tunes the F2
     threshold per fold using the training set probabilities, which is how I keep the
     comparison fair across configurations.
     """
@@ -105,7 +95,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
     """
     Run all 7 of my ablation configurations and return the results as a list of dicts.
 
-    Overall this is where I orchestrate the full ablation, the basic idea is to define
+    This is where I orchestrate the full ablation, the aim is to define
     one preprocessor per configuration and call evaluate_config on each. What I am
     showcasing here is bigrams vs unigrams, text vs structured, three TF-IDF vocabulary
     sizes, and what happens if I drop the temporal features.
@@ -211,3 +201,7 @@ def run_all_ablations(X, y, groups, text_col, categorical_cols, numeric_cols):
 
     return [result_full, result_unigram, result_text_only, result_struct_only,
             result_big_tfidf, result_small_tfidf, result_no_time]
+
+
+
+

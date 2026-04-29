@@ -1,17 +1,4 @@
-"""
-Stage 4: Model Development and Comparison
-
-This script is the entry point for my Stage 4 work. For this part of the project I
-train five different model variants and compare them all on the same folds, then run
-a manual hyperparameter tuning grid for XGBoost. The model families I picked are
-Logistic Regression as my baseline plus Random Forest, XGBoost, LR with SMOTE and
-XGB with SMOTE as the additional models the brief asks for. What I get from this
-file is the comparison evidence for which model family wins on F2 once the threshold
-is tuned, and which of the differences against the baseline are statistically
-significant.
-
-Run with: python src/stage4_models/run.py
-"""
+"""Run module."""
 
 
 import os
@@ -166,3 +153,4 @@ print("\nSaved: outputs/stage4/model_selection.json")
 print("\n" + "="*70)
 print("STAGE 4 COMPLETE")
 print("="*70)
+

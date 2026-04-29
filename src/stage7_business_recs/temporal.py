@@ -1,13 +1,4 @@
-"""
-Stage 7 temporal stability check module.
-
-Overall this module is where I check whether my model performance is stable over time
-or whether it drifts, the basic idea is to group predictions by quarter and report F2,
-recall and prevalence per quarter. In my project this is really important because if
-the model is unstable across quarters then any deployment recommendation needs to
-account for retraining frequency. What this module demonstrates is the temporal
-stability evidence the brief expects.
-"""
+"""Temporal module."""
 
 import pandas as pd
 from sklearn.metrics import fbeta_score, confusion_matrix
@@ -17,10 +8,10 @@ def run_temporal_stability(df):
     """
     Check whether my model performance varies meaningfully across quarters.
 
-    Overall this groups my predictions by year-quarter and computes F2, recall and the
-    underlying prevalence per period. The basic idea is that if F2 std across quarters
+    This groups my predictions by year-quarter and computes F2, recall and the
+    underlying prevalence per period. the aim is that if F2 std across quarters
     is below 0.05 the model is stable, otherwise there is real temporal drift to discuss.
-    What this also handles is small quarters with under 5 positives, those get skipped
+    This also handles small quarters with under 5 positives, those get skipped
     because the F2 estimate would be too noisy.
     """
     print("\n" + "=" * 70)
@@ -75,3 +66,6 @@ def run_temporal_stability(df):
         print("  --> Notable temporal variation detected -- investigate drift")
 
     return temp_df, f2_std
+
+
+

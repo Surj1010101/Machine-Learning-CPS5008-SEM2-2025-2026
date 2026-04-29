@@ -1,13 +1,4 @@
-"""
-Stage 5 visualisations module: error overview, calibration/cost and FN deep dive.
-
-Overall this module is where I generate the three figures for my Stage 5 report
-section, the basic idea is to turn the error analysis numbers into pictures the
-marker can read at a glance. In my project I focused on three plots here, the
-overall error overview (confusion matrix + probability distributions + segment
-recall + per-issue F2), the calibration plot next to the business cost comparison,
-and the false negative deep dive showing miss rate per escalation level.
-"""
+"""Visualisations module."""
 
 import numpy as np
 import pandas as pd
@@ -22,9 +13,9 @@ def plot_error_overview(df, seg_df, fn_all, fp_all, tn_all, tp_all,
     Overall 2 by 2 figure with confusion matrix, probability distribution by outcome,
     recall by region and customer type, and F2 by issue category.
 
-    Overall this is the headline Stage 5 figure, the basic idea is to put four
+    This is the headline Stage 5 figure, the aim is to put four
     different angles on my error analysis into one image so the report can reference
-    everything in one place. What this also annotates is the threshold line on the
+    everything in one place. This also annotates the threshold line on the
     probability distribution panel, so the gap between FN and TP is visually obvious.
     """
     fig, axes = plt.subplots(2, 2, figsize=(14, 11))
@@ -104,7 +95,7 @@ def plot_calibration_and_cost(cal_table, cost_data, output_path):
     """
     Side by side calibration plot and business cost bar chart.
 
-    Overall this is the second Stage 5 figure, the basic idea is to put my reliability
+    This is the second Stage 5 figure, the aim is to put my reliability
     diagram next to the four-scenario cost comparison so the report can show probability
     quality and business value in one shot.
     """
@@ -132,11 +123,11 @@ def plot_calibration_and_cost(cal_table, cost_data, output_path):
              cost_data['model_cost'], cost_data['perfect_cost']]
     colors_cost = ['#F44336', '#FF9800', '#4CAF50', '#2196F3']
     bars = axes[1].bar(scenarios, costs, color=colors_cost, alpha=0.85)
-    axes[1].set_ylabel('Total Cost (£)')
+    axes[1].set_ylabel('Total Cost (GBP )')
     axes[1].set_title('Business Cost Comparison', fontweight='bold')
     for bar, cost in zip(bars, costs):
         axes[1].text(bar.get_x() + bar.get_width()/2, bar.get_height() + 500,
-                     f'£{cost:,.0f}', ha='center', va='bottom', fontsize=10,
+                     f'GBP {cost:,.0f}', ha='center', va='bottom', fontsize=10,
                      fontweight='bold')
 
     plt.tight_layout()
@@ -148,9 +139,9 @@ def plot_fn_deep_dive(df, fn_df, tp_df, mean_thresh, output_path):
     """
     FN probability histogram next to miss rate by escalation level.
 
-    Overall this is the final Stage 5 figure, the basic idea is to zoom into just the
-    false negatives, the basic idea is that this is where my model loses the most
-    business value, so the report needs a dedicated picture of it. What this also
+    This is the final Stage 5 figure, the aim is to zoom into just the
+    false negatives, the aim is that this is where my model loses the most
+    business value, so the report needs a dedicated picture of it. This also
     breaks down is whether my misses are concentrated at borderline level 2 cases or
     whether even level 3 cases are slipping through.
     """
@@ -201,3 +192,6 @@ def plot_fn_deep_dive(df, fn_df, tp_df, mean_thresh, output_path):
     print(f"Saved: {output_path}")
 
     return miss_df
+
+
+

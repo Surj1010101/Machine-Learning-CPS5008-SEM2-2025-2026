@@ -1,16 +1,4 @@
-"""
-Stage 4b: Supplementary Model Comparisons and Unsupervised Exploration
-
-Stage 4b is where I demonstrate additional ML skills that are not in my main Stage 4
-pipeline. Six things happen in this file, K-Nearest Neighbours classification,
-regularisation comparison (L1 vs L2 vs none), bias-variance trade-off through
-learning curves, PCA for dimensionality reduction, K-Means clustering for unsupervised
-pattern discovery, and a Linear Regression baseline to justify why I picked Logistic
-Regression. The combined output is the breadth of techniques I evaluated before
-settling on my main Stage 4 model family.
-
-Run with: python src/stage4b_supplementary_models/run.py
-"""
+"""Run module."""
 
 import os
 import sys
@@ -147,3 +135,4 @@ print("  - kmeans_clustering.csv")
 print("  - linear_regression_baseline.csv")
 print("  - supplementary_analyses.png")
 print("  - supplementary_summary.json")
+

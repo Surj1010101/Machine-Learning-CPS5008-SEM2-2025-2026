@@ -1,14 +1,4 @@
-"""
-Stage 4 hyperparameter tuning module for XGBoost via manual grid search.
-
-XGBoost hyperparameter tuning happens here. I loop over a small grid of n_estimators,
-max_depth and learning_rate, and re-run my StratifiedGroupKFold cross-validation for
-each combination. I picked manual grid search rather than RandomizedSearchCV because
-the grid is small enough that exhaustive search is cheap, and it gives me a clean
-ranking of every configuration that I can put straight into the report. The brief
-asks for formal hyperparameter tuning and this file is where that requirement gets
-satisfied, with a re-run on the best configuration so the final results are clean.
-"""
+"""Tuning module."""
 
 import numpy as np
 import pandas as pd
@@ -151,3 +141,4 @@ def evaluate_tuned_xgb(X, y, groups, best_params, scale_pos_weight):
           f"(+/-{best_df['pr_auc'].std():.4f})")
 
     return best_df
+

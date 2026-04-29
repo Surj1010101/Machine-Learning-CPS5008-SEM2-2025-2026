@@ -1,12 +1,4 @@
-"""
-Stage 3 pipeline definition and cross-validation module.
-
-Overall this module is where I define my baseline Logistic Regression pipeline and the
-cross-validation loop. The basic idea is to keep the model architecture and the CV logic
-in one place so Stage 4 can reuse the same scaffolding for stronger models. What this
-module demonstrates is my reproducible baseline with StratifiedGroupKFold and a customer
-overlap assertion that fails loudly if a customer ever leaks across folds.
-"""
+"""Pipelines module."""
 
 import numpy as np
 import pandas as pd
@@ -21,7 +13,7 @@ def build_baseline_pipeline():
     """
     Create my baseline Logistic Regression pipeline.
 
-    Overall this is the simplest model in my project, the basic idea is to wrap my
+    This is the simplest model In this work, the aim is to wrap my
     preprocessor and a class-weighted LR classifier into one sklearn Pipeline so the
     whole thing can be fit and evaluated as a single unit inside cross-validation.
     """
@@ -37,9 +29,9 @@ def run_cross_validation(X, y, groups, pipeline):
     """
     Run StratifiedGroupKFold cross-validation and return per-fold results.
 
-    Overall this function loops through 5 folds, fits my pipeline on each training split,
+    This function loops through 5 folds, fits my pipeline on each training split,
     predicts on the validation split, and records F2, PR-AUC, precision, recall and the
-    confusion matrix per fold. The basic idea is that the assertion on customer overlap
+    confusion matrix per fold. the aim is that the assertion on customer overlap
     is what makes this trustworthy, if any customer ever appears in both train and val
     the assertion will fail and stop the run, which is what I want.
     """
@@ -98,8 +90,8 @@ def print_aggregate_results(results_df, all_y_true, all_y_pred):
     """
     Print summary statistics across all my folds.
 
-    Overall this is where I aggregate the per-fold metrics into a mean, std, min and max
-    summary. What this also adds is the dummy F2 baselines for all-zero and all-one
+    This is where I aggregate the per-fold metrics into a mean, std, min and max
+    summary. This also adds the dummy F2 baselines for all-zero and all-one
     predictions, this is really important for the report because it tells me whether my
     model is even beating a trivial classifier at the default 0.5 threshold.
     """
@@ -125,3 +117,6 @@ def print_aggregate_results(results_df, all_y_true, all_y_pred):
     print(f"\nDummy (all-negative) F2: {dummy_f2:.4f}")
     dummy_f2_all1 = fbeta_score(all_y_true, np.ones_like(all_y_true), beta=2)
     print(f"Dummy (all-positive) F2: {dummy_f2_all1:.4f}")
+
+
+

@@ -1,14 +1,4 @@
-"""
-Stage 3 sentiment ablation experiment module.
-
-Overall this module is where I run my leakage check on the sentiment feature, the basic
-idea is to compare F2 with sentiment included against F2 with sentiment removed and see
-how big the difference is. In my project this is really important because sentiment had
-a counterintuitive Stage 2 finding (positive emails escalating more than negative ones),
-so I had to confirm that including it does not artificially boost performance through
-leakage. What this module demonstrates is the formal evidence that sentiment is safe to
-keep in my pipeline.
-"""
+"""Feature Impact module."""
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -26,9 +16,9 @@ def run_sentiment_ablation(X, y, groups, results_df):
     """
     Compare model performance with and without my sentiment feature.
 
-    Overall this function rebuilds my pipeline with a categorical column list that
+    This function rebuilds my pipeline with a categorical column list that
     deliberately excludes sentiment, runs the same StratifiedGroupKFold cross-validation
-    and reports the F2 difference. The basic idea is that if removing sentiment massively
+    and reports the F2 difference. the aim is that if removing sentiment massively
     drops F2 then sentiment was carrying too much signal and might be leaking, but if the
     difference is tiny (under 0.02) then sentiment is safe and we keep it.
     """
@@ -87,3 +77,4 @@ def run_sentiment_ablation(X, y, groups, results_df):
         print("CONCLUSION: Sentiment has a small effect. Leakage risk remains LOW-MEDIUM.")
 
     return diff
+

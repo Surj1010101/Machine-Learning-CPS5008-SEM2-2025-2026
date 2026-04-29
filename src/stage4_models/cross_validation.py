@@ -1,12 +1,4 @@
-"""
-Stage 4 cross-validation loop module with threshold tuning for every model.
-
-The cross-validation logic for all five Stage 4 models lives here. Every model gets
-evaluated at both the default 0.5 threshold AND the F2-tuned threshold so the
-report can show how much threshold tuning matters once the class imbalance kicks
-in. The output of this file is the per-fold metrics dataframe that powers the model
-comparison table in run.py.
-"""
+"""Cross Validation module."""
 
 import numpy as np
 import pandas as pd
@@ -98,3 +90,4 @@ def cross_validate_all(models, X, y, groups):
               f"PR-AUC={all_results[model_name]['mean_pr_auc']:.4f}")
 
     return all_results
+

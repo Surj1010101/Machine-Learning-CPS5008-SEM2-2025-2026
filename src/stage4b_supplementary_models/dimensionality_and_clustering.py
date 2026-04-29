@@ -1,13 +1,4 @@
-"""
-Stage 4b dimensionality reduction (PCA) and unsupervised clustering (K-Means) module.
-
-Overall this module is where I run my unsupervised analyses, the basic idea is to first
-reduce my high-dimensional TF-IDF feature space with PCA and then cluster the reduced
-space with K-Means to see if any natural groupings line up with escalation. In my project
-this is really important because it tests whether escalation is a learnable pattern in
-the unsupervised structure of the data, or whether it only emerges with supervision.
-What this module demonstrates is the unsupervised side of the brief's ML breadth ask.
-"""
+"""Dimensionality And Clustering module."""
 
 import numpy as np
 import pandas as pd
@@ -23,8 +14,8 @@ def prepare_dense_features(X):
     """
     Transform my features through the standard preprocessor and return a dense matrix.
 
-    Overall this is a small helper that runs my Stage 3 preprocessor and converts the
-    output to a dense numpy array, the basic idea is that PCA and K-Means need dense
+    This is a small helper that runs my Stage 3 preprocessor and converts the
+    output to a dense numpy array, the aim is that PCA and K-Means need dense
     matrices not sparse ones, so I materialise the TF-IDF outputs here once.
     """
     preprocessor = make_preprocessor()
@@ -40,10 +31,10 @@ def run_pca_analysis(X_dense, y, groups):
     """
     Run PCA on my full TF-IDF feature matrix and evaluate F2 at different component counts.
 
-    Overall this function fits PCA once to compute cumulative explained variance, then
+    This function fits PCA once to compute cumulative explained variance, then
     re-fits at five different component counts and evaluates F2 with my StratifiedGroupKFold
-    Logistic Regression on each one. The basic idea is to find out how few components
-    can preserve enough discriminative signal for my classifier. What this also reports
+    Logistic Regression on each one. the aim is to find out how few components
+    can preserve enough discriminative signal for my classifier. This also reports
     is the number of components needed to reach 90% and 95% variance.
     """
     print("\n" + "=" * 70)
@@ -105,10 +96,10 @@ def run_kmeans_clustering(X_dense, y):
     """
     Run K-Means clustering on PCA-50 reduced features at multiple k values.
 
-    Overall this function clusters my PCA-50 features at six different k values, the
-    basic idea is to use silhouette score to pick the best clustering and then look at
+    This function clusters my PCA-50 features at six different k values, the
+    main aim is to use silhouette score to pick the best clustering and then look at
     the escalation rate inside each cluster to see if unsupervised structure aligns with
-    the target. What this also reports is the spread of escalation rates across clusters,
+    the target. This also reports the spread of escalation rates across clusters,
     which tells me whether the clustering captures any of the supervised signal.
     """
     print("\n" + "=" * 70)
@@ -164,3 +155,6 @@ def run_kmeans_clustering(X_dense, y):
     print("  structure correlates with the supervised target.")
 
     return cluster_df, int(best_k_cluster)
+
+
+

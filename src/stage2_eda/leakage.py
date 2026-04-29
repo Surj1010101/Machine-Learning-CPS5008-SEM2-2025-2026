@@ -1,13 +1,4 @@
-"""
-Stage 2 missing data analysis, leakage testing, class imbalance and customer overlap module.
-
-Overall this module is where I do the risk identification side of my Stage 2, the basic
-idea is to check the data for anything that would silently break my modelling later.
-In my project I focused on four things in here, missing data and whether it relates to
-the target, leakage testing on suspicious features, class imbalance across segments,
-and customer overlap so I know my GroupKFold will work. What this whole module
-demonstrates is the data quality and leakage risks I had to handle before Stage 3.
-"""
+"""Leakage module."""
 
 import pandas as pd
 from scipy import stats
@@ -17,9 +8,9 @@ def run_missing_data_analysis(df):
     """
     Check the overall hidden missingness and sentiment vs escalation.
 
-    Overall this function counts missing values per column, checks for empty strings as
+    This function counts missing values per column, checks for empty strings as
     hidden missingness, and tests whether sentiment missingness is related to escalation
-    using a chi-square. The basic idea is to confirm that any imputation I do later is
+    using a chi-square. the aim is to confirm that any imputation I do later is
     safe, because if missingness is related to the target then imputation could leak.
     """
     print("\n" + "="*70)
@@ -32,13 +23,13 @@ def run_missing_data_analysis(df):
     # I only print rows where the column actually has missing values, to keep the output tidy
     print(missing_df[missing_df['missing_count'] > 0])
 
-    print(f"\n── Hidden missingness (empty strings) ──")
+    print(f"\n-- Hidden missingness (empty strings) --")
     for col in df.select_dtypes(include='object').columns:
         empty = (df[col].str.strip() == '').sum()
         if empty > 0:
             print(f"  {col}: {empty} empty strings")
 
-    print(f"\n── Sentiment Missingness vs Escalation ──")
+    print(f"\n-- Sentiment Missingness vs Escalation --")
     df['sentiment_missing'] = df['sentiment'].isnull().astype(int)
     cross_sent = pd.crosstab(df['escalated'], df['sentiment_missing'], margins=True)
     cross_sent.columns = ['sentiment_present', 'sentiment_missing', 'total']
@@ -68,8 +59,8 @@ def run_leakage_testing(df):
     """
     Test potential leakage variables against the target.
 
-    Overall this is where I confirm which features are safe to use and which ones have
-    to be excluded because they would leak the answer. The basic idea is to run univariate
+    This is where I confirm which features are safe to use and which ones have
+    to be excluded because they would leak the answer. the aim is to run univariate
     tests against the target for emotion_intensity, sentiment, the categorical features,
     and then verify resolution_time and manual_annotation are correctly excluded. What
     this demonstrates is the formal evidence behind my leakage decisions.
@@ -79,7 +70,7 @@ def run_leakage_testing(df):
     print("="*70)
 
     # emotion_intensity, I use Mann-Whitney U because the distribution is not normal
-    print(f"\n── emotion_intensity by escalation ──")
+    print(f"\n-- emotion_intensity by escalation --")
     for esc_val in [0, 1]:
         subset = df[df['escalated'] == esc_val]['emotion_intensity']
         print(f"  Escalated={esc_val}: mean={subset.mean():.4f}, std={subset.std():.4f}")
@@ -90,7 +81,7 @@ def run_leakage_testing(df):
     print(f"  Mann-Whitney U: U={u_stat:.0f}, p={u_p:.4f}")
 
     # Sentiment, I use chi-square here because both variables are categorical
-    print(f"\n── Sentiment vs Escalation ──")
+    print(f"\n-- Sentiment vs Escalation --")
     sent_cross = pd.crosstab(df['sentiment'].dropna(),
                              df.loc[df['sentiment'].notna(), 'escalated'])
     print(sent_cross)
@@ -104,7 +95,7 @@ def run_leakage_testing(df):
 
     # Categorical features, I run chi-square on each one to see if any of them are
     # significantly related to escalation, the brief asked me to test for leakage
-    print(f"\n── Chi-square Tests: Categorical Features vs Escalation ──")
+    print(f"\n-- Chi-square Tests: Categorical Features vs Escalation --")
     cat_features = ['customer_type', 'tenure_type', 'meter_type', 'region', 'issue_category']
     for col in cat_features:
         ct = pd.crosstab(df[col], df['escalated'])
@@ -112,13 +103,13 @@ def run_leakage_testing(df):
         print(f"  {col}: chi2={chi2_c:.3f}, p={p_c:.4f}, dof={dof_c}")
 
     # resolution_time is excluded but I still verify the relationship for the report
-    print(f"\n── resolution_time vs escalation (VERIFY EXCLUSION) ──")
+    print(f"\n-- resolution_time vs escalation (VERIFY EXCLUSION) --")
     for esc_val in [0, 1]:
         subset = df[df['escalated'] == esc_val]['resolution_time']
         print(f"  Escalated={esc_val}: mean={subset.mean():.2f}h, std={subset.std():.2f}")
 
     # manual_annotation is also excluded as a leakage feature, same idea, just verifying
-    print(f"\n── manual_annotation vs escalation (VERIFY EXCLUSION) ──")
+    print(f"\n-- manual_annotation vs escalation (VERIFY EXCLUSION) --")
     ma_cross = pd.crosstab(df['manual_annotation'].dropna(),
                            df.loc[df['manual_annotation'].notna(), 'escalated'])
     print(ma_cross)
@@ -130,9 +121,9 @@ def run_imbalance_analysis(df):
     """
     Analyse my class imbalance across segments.
 
-    Overall this function breaks the escalation rate down by every categorical segment so
+    This function breaks the escalation rate down by every categorical segment so
     I can see if the imbalance is uniform or if some segments are way more imbalanced. The
-    basic idea is to inform my StratifiedGroupKFold decision and check whether any segment
+    main aim is to inform my StratifiedGroupKFold decision and check whether any segment
     needs special handling.
     """
     print("\n" + "="*70)
@@ -140,7 +131,7 @@ def run_imbalance_analysis(df):
     print("="*70)
 
     cat_features = ['customer_type', 'tenure_type', 'meter_type', 'region', 'issue_category']
-    print(f"\n── Escalation Rate by Segment ──")
+    print(f"\n-- Escalation Rate by Segment --")
     for col in cat_features:
         print(f"\n  {col}:")
         seg = df.groupby(col)['escalated'].agg(['mean', 'sum', 'count'])
@@ -152,9 +143,9 @@ def run_customer_overlap_analysis(df):
     """
     Check customer overlap for GroupKFold readiness.
 
-    Overall this is really important because if the same customer appears in both training
+    this matters because if the same customer appears in both training
     and validation folds my model could memorise customer-level patterns and inflate F2. The
-    basic idea is to count how many customers appear multiple times and how many of those have
+    main aim is to count how many customers appear multiple times and how many of those have
     mixed outcomes, this then justifies why I am using GroupKFold grouped by customer_id in
     Stage 3 onwards.
     """
@@ -179,3 +170,6 @@ def run_customer_overlap_analysis(df):
     all_same = (mixed == 1).sum()
     first_esc = df[df['customer_id'].isin(mixed[mixed == 1].index)].groupby('customer_id')['escalated'].first().sum()
     print(f"  All non-escalated: {all_same - first_esc}")
+
+
+

@@ -1,17 +1,4 @@
-"""
-Stage 5: Error Analysis and Segment Breakdown
-
-For my Stage 5 I take the selected model from Stage 4 (Logistic Regression with
-tuned threshold) and dig into where it succeeds and where it fails, broken down by
-segment, by error type and by business cost. Five things happen in this script,
-collecting per-sample predictions across all folds, doing deep dives on false
-negatives and false positives, breaking performance down by segment, running a
-fairness check using the 80% rule on recall, and framing the results as a business
-cost comparison. The whole point of this file is to satisfy the error analysis
-requirement in the brief with concrete numbers behind every claim.
-
-Run with: python src/stage5_error_analysis/run.py
-"""
+"""Run module."""
 
 import os
 import sys
@@ -184,7 +171,7 @@ Key Findings:
   - {fn_all} escalations missed ({fn_all/(tp_all+fn_all)*100:.1f}% miss rate)
   - {fp_all} false alarms ({fp_all/(fp_all+tn_all)*100:.1f}% false alarm rate)
   - {len(close_fn)} FNs were close to the threshold (within 0.05)
-  - Model saves £{cost_data['no_model_cost'] - cost_data['model_cost']:,.0f} vs no-model scenario
+  - Model saves GBP {cost_data['no_model_cost'] - cost_data['model_cost']:,.0f} vs no-model scenario
 
 Outputs:
   - outputs/stage5/error_analysis_overview.png
@@ -197,3 +184,5 @@ Outputs:
 """)
 
 print("STAGE 5 COMPLETE")
+
+

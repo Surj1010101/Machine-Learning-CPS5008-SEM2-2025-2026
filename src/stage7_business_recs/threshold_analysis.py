@@ -1,13 +1,4 @@
-"""
-Stage 7 threshold sweep and three-tier deployment analysis module.
-
-Overall this module is where I sweep through every plausible operating threshold and
-then design the recommended tiered deployment, the basic idea is to give the business
-options rather than one fixed number. In my project I focused on two things here, the
-threshold sweep across F2, recall, precision, workload and cost, and the HIGH/MEDIUM/LOW
-tier design with catch rates per tier. What this module demonstrates is the trade-off
-analysis the brief expects in the deployment recommendations.
-"""
+"""Threshold Analysis module."""
 
 import numpy as np
 import pandas as pd
@@ -18,9 +9,9 @@ def run_threshold_analysis(df, mean_thresh):
     """
     Sweep thresholds from 0.10 to 0.85 and evaluate F2, recall, precision, cost and workload.
 
-    Overall this is the trade-off picture, the basic idea is to test 16 different
+    This is the trade-off picture, the aim is to test 16 different
     thresholds in 0.05 increments and report what each one does to my key metrics. What
-    this also picks out is the F2-best threshold, the cost-best threshold, and the
+    this also picks out the F2-best threshold, the cost-best threshold, and the
     threshold that hits roughly 30 percent workload.
     """
     print("\n" + "=" * 70)
@@ -61,7 +52,7 @@ def run_threshold_analysis(df, mean_thresh):
         print(f"{row['threshold']:>6.2f} {row['f2']:>6.3f} {row['recall']:>7.3f} "
               f"{row['precision']:>6.3f} {row['flagged_pct']:>7.1f}% "
               f"{int(row['tp']):>5d} {int(row['fp']):>5d} {int(row['fn']):>5d} "
-              f"£{int(row['cost']):>7,d}")
+              f"GBP {int(row['cost']):>7,d}")
 
     best_f2_row = thresh_df.loc[thresh_df['f2'].idxmax()]
     best_cost_row = thresh_df.loc[thresh_df['cost'].idxmin()]
@@ -70,7 +61,7 @@ def run_threshold_analysis(df, mean_thresh):
     print(f"\nOptimal thresholds:")
     print(f"  Best F2 ({best_f2_row['f2']:.3f}):    threshold={best_f2_row['threshold']:.2f}, "
           f"recall={best_f2_row['recall']:.3f}, flagged={best_f2_row['flagged_pct']:.1f}%")
-    print(f"  Lowest cost (£{int(best_cost_row['cost']):,}): threshold={best_cost_row['threshold']:.2f}, "
+    print(f"  Lowest cost (GBP {int(best_cost_row['cost']):,}): threshold={best_cost_row['threshold']:.2f}, "
           f"recall={best_cost_row['recall']:.3f}, flagged={best_cost_row['flagged_pct']:.1f}%")
     print(f"  ~30% workload:          threshold={workload_30.iloc[0]['threshold']:.2f}, "
           f"recall={workload_30.iloc[0]['recall']:.3f}, F2={workload_30.iloc[0]['f2']:.3f}")
@@ -82,11 +73,11 @@ def run_tiered_deployment(df, mean_thresh, tier_high=0.65):
     """
     Classify emails into HIGH/MEDIUM/LOW tiers and report catch rates per tier.
 
-    Overall this is the recommended deployment design, the basic idea is that one
+    This is the recommended deployment design, the aim is that one
     threshold gives a binary flag/no-flag decision but a real customer service team
     needs more nuance, so I propose three tiers. HIGH probability means immediate
-    escalation, MEDIUM means priority review, LOW means standard handling. What this
-    also reports is how many of my actual escalations get caught at each tier.
+    escalation, MEDIUM means priority review, LOW means standard handling. This
+    also reports how many of my actual escalations get caught at each tier.
     """
     print("\n" + "=" * 70)
     print("RECOMMENDED TIERED DEPLOYMENT")
@@ -131,3 +122,7 @@ def run_tiered_deployment(df, mean_thresh, tier_high=0.65):
 
     tier_df = pd.DataFrame(tier_stats)
     return tier_df, high_mask, medium_mask, low_mask, high_catch, med_catch, low_miss, total_pos
+
+
+
+

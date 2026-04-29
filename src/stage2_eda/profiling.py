@@ -1,13 +1,4 @@
-"""
-Stage 2 feature profiling, text analysis and timestamp module.
-
-Overall this module is where I explore each feature in my dataset, the basic idea is to
-understand what every column looks like before any modelling. In my project I focused on
-three things here, the categorical and numeric features through profiling, the email text
-through length and vocabulary stats, and the timestamp through year/day/hour patterns.
-What this module demonstrates is the raw shape of my data so I can spot anything weird
-before Stage 3 preprocessing.
-"""
+"""Profiling module."""
 
 import pandas as pd
 from collections import Counter
@@ -17,10 +8,10 @@ def run_feature_profiling(df):
     """
     Profile my categorical, numeric and text features.
 
-    Overall this function shows me the value counts of every categorical feature and the
-    escalation rate inside each category, this is really important because it tells me
+    This function shows me the value counts of every categorical feature and the
+    escalation rate inside each category, this matters because it tells me
     where the imbalance lives in the data. For numeric features I just describe them so
-    I can see the spread. The basic idea is to flag anything obvious before I move on.
+    I can see the spread. the aim is to flag anything obvious before I move on.
     """
     print("\n" + "="*70)
     print("FEATURE PROFILING")
@@ -31,7 +22,7 @@ def run_feature_profiling(df):
                 'sentiment', 'issue_category', 'manual_annotation']
 
     for col in cat_cols:
-        print(f"\n── {col} ──")
+        print(f"\n-- {col} --")
         vc = df[col].value_counts(dropna=False)
         print(vc)
         # I skip manual_annotation here because it is a leakage feature and I do not want it
@@ -43,9 +34,9 @@ def run_feature_profiling(df):
             print(cross.sort_values('escalation_rate', ascending=False))
 
     # Numeric features, I include resolution_time only for reference, it is excluded as a feature
-    print(f"\n── emotion_intensity ──")
+    print(f"\n-- emotion_intensity --")
     print(df['emotion_intensity'].describe())
-    print(f"\n── resolution_time (EXCLUDED - for reference only) ──")
+    print(f"\n-- resolution_time (EXCLUDED - for reference only) --")
     print(df['resolution_time'].describe())
 
 
@@ -53,10 +44,10 @@ def run_text_analysis(df):
     """
     Analyse my email text, the length, the duplicates and the word frequency.
 
-    Overall this is where I look at how long my emails are in characters and words, whether
-    there are repeat texts in the dataset, and what the most common words look like. The basic
+    This is where I look at how long my emails are in characters and words, whether
+    there are repeat texts in the dataset, and what the most common words look like. The main
     idea is to find anything that could mess up my TF-IDF in Stage 3, for example loads of
-    duplicates would inflate the importance of certain phrases. What this also gives me is the
+    duplicates would inflate the importance of certain phrases. This also gives me the
     text length and word count split by escalation, which is useful as a feature later.
     """
     print("\n" + "="*70)
@@ -99,10 +90,10 @@ def run_timestamp_analysis(df):
     """
     Analyse temporal patterns in my email escalation.
 
-    Overall this function parses the timestamp into year, month, day of week and hour, and
-    then groups escalation rate by each of those. The basic idea is to check if there is any
+    This function parses the timestamp into year, month, day of week and hour, and
+    then groups escalation rate by each of those. the aim is to check if there is any
     temporal signal in escalation, for example if escalation happens more on weekends or at
-    night. What this also produces is the hour and day_of_week features I will use as numeric
+    night. This also produces the hour and day_of_week features I will use as numeric
     inputs in my Stage 3 pipeline.
     """
     print("\n" + "="*70)
@@ -129,3 +120,8 @@ def run_timestamp_analysis(df):
     print(hour_esc.sort_values('mean', ascending=False).head(5))
 
     return df
+
+
+
+
+

@@ -1,14 +1,4 @@
-"""
-Stage 2 visualisations module, EDA overview, correlation heatmap and region plot.
-
-Overall this module is where I generate all my Stage 2 plots, the basic idea is to
-turn the numbers from my analysis modules into figures I can put in the report. In my
-project I focused on three plots here, the EDA overview which is a 2 by 3 grid showing
-target distribution, sentiment, issue category, text length, emotion intensity and
-sentiment missingness, the correlation heatmap on the numeric features, and the
-escalation rate by region bar chart. What this module demonstrates is the visual
-evidence behind my Stage 2 findings.
-"""
+"""Visualisations module."""
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -19,9 +9,9 @@ def generate_visualisations(df, corr):
     """
     Generate and save all my Stage 2 plots into outputs/stage2.
 
-    Overall this is the function that builds three figures and saves them as PNGs. The
-    basic idea is to keep the plot generation in one place so the report screenshots are
-    consistent and reproducible. What this also does is confirm at print time which file
+    This is the function that builds three figures and saves them as PNGs. The
+    main aim is to keep the plot generation in one place so the report screenshots are
+    consistent and reproducible. This also confirms at print time which file
     each plot got saved to.
     """
     print("\n" + "="*70)
@@ -110,3 +100,7 @@ def generate_visualisations(df, corr):
     plt.tight_layout()
     plt.savefig('outputs/stage2/escalation_by_region.png', dpi=150, bbox_inches='tight')
     print("Saved: outputs/stage2/escalation_by_region.png")
+
+
+
+

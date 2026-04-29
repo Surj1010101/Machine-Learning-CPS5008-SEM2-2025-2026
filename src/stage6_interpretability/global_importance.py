@@ -1,14 +1,4 @@
-"""
-Stage 6 global feature importance: LR coefficients and permutation importance.
-
-Overall this module is where I produce the global "what does my model rely on" answer,
-the basic idea is to attack the question two ways. First I pull the raw LR coefficients
-which show direction and magnitude per feature, then I run permutation importance which
-measures the actual F2 drop when each input column is shuffled. In my project this is
-really important because the brief asks for both feature ranking and the WHY behind the
-ranking, and combining the two methods gives me cross-evidence. What this module
-demonstrates is the global interpretability the brief expects in Stage 6.
-"""
+"""Global Importance module."""
 
 import numpy as np
 import pandas as pd
@@ -20,9 +10,9 @@ def run_lr_coefficient_importance(pipeline):
     """
     Extract and rank my LR coefficients by absolute value.
 
-    Overall this is the cheapest interpretability method, the basic idea is that the
+    This is the cheapest interpretability method, the aim is that the
     coefficients are already there inside the fitted classifier, I just have to pair
-    them with the feature names from the preprocessor. What this also produces is the
+    them with the feature names from the preprocessor. This also produces the
     top 15 escalation indicators and top 15 de-escalation indicators which is what
     the report quotes directly.
     """
@@ -68,11 +58,11 @@ def run_permutation_importance(pipeline, X_val, y_val, best_thresh):
     """
     Run permutation importance on the validation set using F2 as the scorer.
 
-    Overall this is the more rigorous global importance method, the basic idea is that
+    This is the more rigorous global importance method, the aim is that
     coefficients tell me what the model is doing internally but they do not tell me how
     much each feature contributes to actual F2 on held-out data. Permutation importance
     fixes that by shuffling one feature at a time and measuring how much F2 drops. What
-    this also uses is the F2-tuned threshold from the representative fold so the
+    this also uses the F2-tuned threshold from the representative fold so the
     importance reflects deployment performance, not default-threshold performance.
     """
     print("\n" + "=" * 70)
@@ -108,3 +98,7 @@ def run_permutation_importance(pipeline, X_val, y_val, best_thresh):
               f"(+/- {row['importance_std']:.4f}){sig}")
 
     return perm_df
+
+
+
+

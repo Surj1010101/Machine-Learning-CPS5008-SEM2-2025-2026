@@ -1,14 +1,4 @@
-"""
-Stage 5 false negative and false positive deep dive module.
-
-Overall this module is where I take the per-sample predictions and dig into the errors,
-the basic idea is to compare the characteristics of my missed escalations (FN) against
-the ones I caught (TP), and the false alarms (FP) against the correct non-flags (TN).
-In my project this is really important because the brief explicitly penalises generic
-discussion in the error analysis section, so I have to show specific patterns about
-which kinds of emails my model gets wrong. What this module demonstrates is exactly
-that, broken down by every demographic and feature.
-"""
+"""Error Breakdown module."""
 
 import numpy as np
 
@@ -17,10 +7,10 @@ def analyse_false_negatives(df, fold_metrics):
     """
     Characterise my missed escalations (FN) against the ones I caught (TP).
 
-    Overall this is the deep dive on the most expensive error type for my use case, the
-    basic idea is to compare the predicted probability distribution of FN vs TP, count
+    This is the deep dive on the most expensive error type for my use case, the
+    main aim is to compare the predicted probability distribution of FN vs TP, count
     how many FNs were close to the threshold, and break the FNs down by every
-    categorical feature. What this also reports is the miss rate per escalation_level
+    categorical feature. This also reports the miss rate per escalation_level
     which tells me whether the model is missing harder cases or all levels equally.
     """
     print("\n" + "=" * 70)
@@ -87,9 +77,9 @@ def analyse_false_positives(df):
     """
     Characterise my unnecessary alerts (FP) against the correct non-alerts (TN).
 
-    Overall this is the FP equivalent of the FN deep dive, the basic idea is to find
-    out which non-escalating emails my model is flagging by mistake. What this matters
-    for is operational cost, every FP is a wasted human review, so I want to see if
+    This is the FP equivalent of the FN deep dive, the aim is to find
+    out which non-escalating emails my model is flagging by mistake. This matters
+    because operational cost, every FP is a wasted human review, so I want to see if
     there are systematic patterns I could fix in Stage 6 or Stage 7.
     """
     print("\n" + "=" * 70)
@@ -130,3 +120,7 @@ def analyse_false_positives(df):
         print(f"  [{row['escalation_level']}] p={row['y_prob']:.3f}: \"{row['email_body_text']}\"")
 
     return fp_df, tn_df
+
+
+
+

@@ -1,17 +1,4 @@
-"""
-Stage 6: Interpretability, Fairness and Ethics
-
-Stage 6 is the interpretability and fairness stage. Here I take my selected Logistic
-Regression model from Stage 4 and explain WHY it makes the predictions it does, both
-globally and per-instance, then check whether it treats different protected groups
-fairly. Five pieces of work happen in this file, the global feature importance
-through LR coefficients, permutation importance on the validation set, local
-explanations through LIME, an equalised odds fairness audit, and a written ethical
-reflection. The whole package satisfies the interpretability and fairness
-requirements in the brief with concrete evidence for every claim.
-
-Run with: python src/stage6_interpretability/run.py
-"""
+"""Run module."""
 
 import os
 import sys
@@ -175,3 +162,4 @@ Outputs:
 """)
 
 print("STAGE 6 COMPLETE")
+

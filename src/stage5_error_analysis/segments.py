@@ -1,14 +1,4 @@
-"""
-Stage 5 segment-level performance and fairness disparity module.
-
-Overall this module is where I break my model performance down by every protected
-attribute and check for fairness disparities, the basic idea is to compute F2, recall,
-precision and FPR per category and then run the 80% rule on recall across region and
-customer_type. In my project this is really important because the brief asks for
-demographic and regional bias evidence, and an aggregate F2 alone hides the fact that
-some segments may be systematically under-served. What this module demonstrates is
-the formal fairness check the brief requires.
-"""
+"""Segments module."""
 
 import numpy as np
 import pandas as pd
@@ -19,8 +9,8 @@ def run_segment_analysis(df):
     """
     Compute F2, recall, precision and FPR per category for every protected attribute.
 
-    Overall this loops through every categorical feature and every value inside it, the
-    basic idea is to find segments where the model is under-performing. What this also
+    This loops through every categorical feature and every value inside it, the
+    main aim is to find segments where the model is under-performing. This also
     handles is the case where a segment has zero positives, which would make F2 undefined,
     so those get skipped with a clear note rather than silently broken.
     """
@@ -85,10 +75,10 @@ def run_fairness_analysis(seg_df, fairness_attrs=('region', 'customer_type')):
     """
     Recall disparity and 80% rule check for each protected attribute.
 
-    Overall this is the formal fairness audit, the basic idea is that for each protected
+    This is the formal fairness audit, the aim is that for each protected
     attribute I compute the ratio of the lowest recall segment to the highest recall
     segment, and if that ratio falls below 0.8 then the segment is being systematically
-    under-served. What this also reports is the FPR range across categories so the
+    under-served. This also reports the FPR range across categories so the
     report can discuss both miss disparities and false-alarm disparities.
     """
     print("\n" + "=" * 70)
@@ -123,3 +113,6 @@ def run_fairness_analysis(seg_df, fairness_attrs=('region', 'customer_type')):
         fpr_min = fprs.loc[fprs['fpr'].idxmin()]
         print(f"  FPR range: {fpr_min['category']} ({fpr_min['fpr']:.3f}) to "
               f"{fpr_max['category']} ({fpr_max['fpr']:.3f})")
+
+
+

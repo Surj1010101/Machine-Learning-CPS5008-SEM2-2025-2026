@@ -1,12 +1,4 @@
-"""
-Stage 6 visualisations module: feature importance, permutation, fairness and LIME.
-
-Overall this module is where I generate all four figures for my Stage 6 report
-section, the basic idea is to turn each interpretability and fairness analysis into a
-picture the report can reference. In my project I focused on four plots here, the LR
-coefficient bar chart (top escalation vs de-escalation words), the permutation
-importance bar chart, the equalised odds 3-panel comparison, and the LIME examples.
-"""
+"""Visualisations module."""
 
 import numpy as np
 import matplotlib
@@ -18,7 +10,7 @@ def plot_feature_importance_coefficients(top_escalation, top_deescalation, outpu
     """
     Side by side, top escalation words (positive coefs) next to top de-escalation words.
 
-    Overall this is the most direct interpretability picture, the basic idea is to put
+    This is the most direct interpretability picture, the aim is to put
     the words that increase escalation risk on the left and the words that decrease it
     on the right so the marker can read the model's logic at a glance.
     """
@@ -47,7 +39,7 @@ def plot_permutation_importance(perm_df, output_path):
     """
     Bar chart of mean F2 decrease when each feature is shuffled.
 
-    Overall this complements the coefficient picture, the basic idea is to show which
+    This complements the coefficient picture, the aim is to show which
     input columns actually matter for held-out F2, with error bars from the 10 shuffle
     repeats so the marker can see which differences are reliable.
     """
@@ -75,9 +67,9 @@ def plot_fairness(fairness_df, output_path):
     """
     Three panel TPR vs FPR comparison across region, customer_type and tenure_type.
 
-    Overall this is the fairness picture, the basic idea is to put TPR (recall) and
+    This is the fairness picture, the aim is to put TPR (recall) and
     FPR (false alarm rate) side by side per group so any disparity is visually obvious.
-    What this also annotates is the exact rate above each bar so the report can quote
+    This also annotates the exact rate above each bar so the report can quote
     the numbers without going back to the CSV.
     """
     fig, axes = plt.subplots(1, 3, figsize=(16, 5.5))
@@ -119,7 +111,7 @@ def plot_lime_examples(lime_results, output_path):
     """
     Two panel bar chart for the first two LIME explanations.
 
-    Overall this is the LIME picture, the basic idea is to show the marker exactly
+    This is the LIME picture, the aim is to show the marker exactly
     which words drove the first two example predictions, with red bars for words that
     pushed toward escalation and green bars for words that pushed away from it.
     """
@@ -142,3 +134,6 @@ def plot_lime_examples(lime_results, output_path):
     plt.tight_layout()
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     print(f"Saved: {output_path}")
+
+
+

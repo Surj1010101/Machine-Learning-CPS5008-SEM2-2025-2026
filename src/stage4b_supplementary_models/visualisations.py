@@ -1,11 +1,4 @@
-"""
-Stage 4b visualisations module, combined 2 by 3 figure for the supplementary analyses.
-
-Overall this module is where I generate one big summary figure for my Stage 4b section,
-the basic idea is to fit all six supplementary analyses into one figure so the report
-can reference them in one place. In my project I focused on KNN, regularisation, learning
-curves, PCA, K-Means and linear vs logistic regression all in this one figure.
-"""
+"""Visualisations module."""
 
 import matplotlib
 matplotlib.use('Agg')
@@ -18,9 +11,9 @@ def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
     """
     One combined figure with 6 panels summarising my Stage 4b results.
 
-    Overall this is the headline Stage 4b figure, the basic idea is to put one panel per
+    This is the headline Stage 4b figure, the aim is to put one panel per
     analysis on a 2 by 3 grid so the report can show the whole supplementary story in
-    one image. What this also adds is a red dashed line across the relevant panels at
+    one image. This also adds a red dashed line across the relevant panels at
     the LR baseline F2 of 0.36 so each comparison is anchored to my main result.
     """
     fig, axes = plt.subplots(2, 3, figsize=(18, 11))
@@ -111,3 +104,6 @@ def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
     plt.savefig(output_path, dpi=150, bbox_inches='tight')
     plt.close()
     print(f"  Saved: {output_path}")
+
+
+

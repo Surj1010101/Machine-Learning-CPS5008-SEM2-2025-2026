@@ -1,14 +1,4 @@
-"""
-Stage 3b multicollinearity analysis module: numeric correlations, Cramer's V, and VIF.
-
-Overall this module is where I formally test whether any of my features are too
-correlated with each other to safely use together in Logistic Regression. The basic idea
-is to attack the question from three different angles, pairwise correlations on numerics,
-Cramer's V on categoricals, and VIF on the numerics again. In my project this is really
-important because if multicollinearity is high then my coefficient interpretation in the
-report becomes unreliable. What this module demonstrates is the formal evidence that
-my pipeline does not have a multicollinearity problem.
-"""
+"""Multicollinearity module."""
 
 import numpy as np
 import pandas as pd
@@ -20,8 +10,8 @@ def cramers_v(x, y):
     """
     Calculate Cramer's V for two categorical variables.
 
-    Overall this is the small helper that powers the categorical pairwise analysis. The
-    basic idea is to derive an effect size between 0 and 1 from a chi-square contingency,
+    This is the small helper that powers the categorical pairwise analysis. The
+    main aim is to derive an effect size between 0 and 1 from a chi-square contingency,
     where 0 means independent and 1 means perfectly associated.
     """
     ct = pd.crosstab(x, y)
@@ -37,12 +27,12 @@ def run_numeric_correlation(df, numeric_cols):
     """
     Compute pairwise Pearson correlations for my numeric features and find the worst pair.
 
-    Overall this function builds the correlation matrix, prints it, and then scans the
-    upper triangle to find the most correlated pair. The basic idea is to flag any
-    numeric pair that is too close to perfect correlation, in my project the threshold
+    This function builds the correlation matrix, prints it, and then scans the
+    upper triangle to find the most correlated pair. the aim is to flag any
+    numeric pair that is too close to perfect correlation, In this work the threshold
     I use for concern is 0.7 but I report the value either way.
     """
-    print("\n── Numeric Feature Correlations ──")
+    print("\n-- Numeric Feature Correlations --")
     numeric_features = df[numeric_cols].copy()
     corr_matrix = numeric_features.corr()
     print(corr_matrix.round(4))
@@ -72,12 +62,12 @@ def run_cramers_v_analysis(df, cat_features):
     """
     Pairwise Cramer's V across my categorical features.
 
-    Overall this is the categorical equivalent of the numeric correlation check, the basic
+    This is the categorical equivalent of the numeric correlation check, The main
     idea is to compute Cramer's V for every pair of categorical features and report the
-    highest value. What this matters for is that if two categoricals are highly associated
+    highest value. This matters because if two categoricals are highly associated
     they will compete for the same coefficient slot in my Logistic Regression.
     """
-    print("\n── Categorical Feature Independence (Cramer's V) ──")
+    print("\n-- Categorical Feature Independence (Cramer's V) --")
 
     cramers_results = []
     for i in range(len(cat_features)):
@@ -106,13 +96,13 @@ def run_vif_analysis(df, numeric_cols):
     """
     Variance Inflation Factor for my numeric features.
 
-    Overall VIF is the more rigorous version of pairwise correlation, the basic idea is
+    Overall VIF is the more rigorous version of pairwise correlation, the aim is
     that for each numeric feature I regress it against all the others and check how
-    much of its variance is explained, then convert that to VIF. What this matters for
+    much of its variance is explained, then convert that to VIF. This matters for
     is that VIF over 5 is a flag and over 10 is a real problem, so this is a hard
     numerical bar I want to clear.
     """
-    print("\n── Variance Inflation Factor (VIF) for Numeric Features ──")
+    print("\n-- Variance Inflation Factor (VIF) for Numeric Features --")
     numeric_features = df[numeric_cols].copy()
 
     vif_results = []
@@ -131,7 +121,7 @@ def run_vif_analysis(df, numeric_cols):
 
         vif = 1 / (1 - r_squared) if r_squared < 1 else float('inf')
         vif_results.append({'Feature': col, 'VIF': vif, 'R_squared': r_squared})
-        print(f"  {col:<20s}: VIF = {vif:.3f} (R² = {r_squared:.4f})")
+        print(f"  {col:<20s}: VIF = {vif:.3f} (R2 = {r_squared:.4f})")
 
     vif_df = pd.DataFrame(vif_results)
     max_vif = vif_df['VIF'].max()
@@ -150,10 +140,10 @@ def print_mitigation_summary():
     """
     Print my summary of how multicollinearity is mitigated by the pipeline design.
 
-    Overall this is the bit I quote in the report to show I have thought about
+    This is the bit I quote in the report to show I have thought about
     multicollinearity at the design level, not just diagnosed it after the fact.
     """
-    print("\n── Multicollinearity Mitigation in Pipeline ──")
+    print("\n-- Multicollinearity Mitigation in Pipeline --")
     print("1. OneHotEncoder uses drop='first' to avoid the dummy variable trap")
     print("   (perfect multicollinearity among one-hot columns for each feature)")
     print("2. TF-IDF features are inherently high-dimensional but L2-normalised,")
@@ -162,3 +152,9 @@ def print_mitigation_summary():
     print("3. StandardScaler applied to numeric features ensures comparable scales")
     print("   but does not address multicollinearity -- verified above that")
     print("   numeric correlations are negligible (max |r| < 0.3)")
+
+
+
+
+
+

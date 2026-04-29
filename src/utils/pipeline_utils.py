@@ -1,13 +1,4 @@
-"""
-Shared pipeline utilities: preprocessor factory, CV splitter and threshold tuning.
-
-Overall this module is the second foundation file under utils, the basic idea is to
-keep the standard preprocessor, the StratifiedGroupKFold splitter and the F2 threshold
-tuner in one place so every stage uses the exact same versions. In my project this is
-really important because if Stage 5 used a different preprocessor than Stage 4, my
-error analysis would not actually reflect the model the brief sees. What this module
-demonstrates is the single source of truth for my pipeline plumbing.
-"""
+"""Pipeline Utils module."""
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -26,9 +17,9 @@ def make_preprocessor():
     """
     Create the standard ColumnTransformer used across all my models.
 
-    Overall this is the preprocessor factory, the basic idea is that every stage that
+    This is the preprocessor factory, the aim is that every stage that
     builds a model calls this so the text/categorical/numeric handling is identical.
-    What this also fixes are the TF-IDF hyperparameters from my Stage 3b ablation
+    This also applies the TF-IDF hyperparameters from my Stage 3b ablation
     study (max_features=500 + bigrams + sublinear_tf was the winning configuration).
     """
     return ColumnTransformer(
@@ -50,9 +41,9 @@ def find_best_threshold_f2(y_true, y_prob):
     """
     Find the classification threshold that maximises F2 score.
 
-    Overall this is my threshold helper used by every stage, the basic idea is to walk
+    This is my threshold helper used by every stage, the aim is to walk
     along the precision-recall curve, compute F2 at every operating point, and return
-    the threshold where F2 peaks. What this matters for is that an imbalanced problem
+    the threshold where F2 peaks. This matters because an imbalanced problem
     like mine should not use the default 0.5 cutoff, the brief explicitly asks for
     threshold tuning and this is the helper that does it.
     """
@@ -68,3 +59,7 @@ def find_best_threshold_f2(y_true, y_prob):
     if len(f2_scores) == 0:
         return 0.5
     return thresholds[np.argmax(f2_scores)]
+
+
+
+

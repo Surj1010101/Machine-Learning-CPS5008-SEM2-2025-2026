@@ -1,15 +1,4 @@
-"""
-Stage 5 business impact framing and confidence calibration module.
-
-Overall this module is where I translate my model performance into pounds-and-pence
-business cost, the basic idea is to assign costs to each prediction outcome (TP, FP,
-FN, TN) and then compare four scenarios, no model, flag everything, current model and
-perfect model. In my project this is really important because the brief explicitly
-penalises generic discussion in error analysis, so quantifying the trade-off in money
-is what makes the discussion concrete. What this module also adds is the calibration
-table which checks whether my predicted probabilities line up with actual escalation
-rates, this is the "are my probabilities trustworthy" check.
-"""
+"""Business module."""
 
 import pandas as pd
 
@@ -18,10 +7,10 @@ def run_business_impact(df, tp_all, fp_all, fn_all, tn_all):
     """
     Compare model cost vs no-model, flag-all and perfect-model scenarios.
 
-    Overall this is where I put numbers on the cost of each error type, the basic idea
+    This is where I put numbers on the cost of each error type, the main aim
     is that an FN (missed escalation) costs much more than an FP (false alarm) because
     missed escalations turn into regulatory issues, while false alarms only cost human
-    review time. What this also reports is the operational summary, how many emails
+    review time. This also reports the operational summary, how many emails
     get flagged out of the total, and what proportion of those flags are real.
     """
     print("\n" + "=" * 70)
@@ -35,10 +24,10 @@ def run_business_impact(df, tp_all, fp_all, fn_all, tn_all):
     cost_tn = 0
 
     print(f"\nAssumed cost structure (per email):")
-    print(f"  Missed escalation (FN): £{cost_fn}")
-    print(f"  False alarm (FP):       £{cost_fp}")
-    print(f"  Correct flag (TP):      £{cost_tp}")
-    print(f"  Correct non-flag (TN):  £{cost_tn}")
+    print(f"  Missed escalation (FN): GBP {cost_fn}")
+    print(f"  False alarm (FP):       GBP {cost_fp}")
+    print(f"  Correct flag (TP):      GBP {cost_tp}")
+    print(f"  Correct non-flag (TN):  GBP {cost_tn}")
 
     model_cost = (tp_all * cost_tp + fp_all * cost_fp +
                   fn_all * cost_fn + tn_all * cost_tn)
@@ -48,13 +37,13 @@ def run_business_impact(df, tp_all, fp_all, fn_all, tn_all):
     perfect_cost = (tp_all + fn_all) * cost_tp
 
     print(f"\nCost comparison (across all {len(df)} emails):")
-    print(f"  No model (flag nothing):  £{no_model_cost:,.0f}")
-    print(f"  Flag everything:          £{flag_all_cost:,.0f}")
-    print(f"  Current model:            £{model_cost:,.0f}")
-    print(f"  Perfect model:            £{perfect_cost:,.0f}")
-    print(f"\nModel savings vs no-model: £{no_model_cost - model_cost:,.0f} "
+    print(f"  No model (flag nothing):  GBP {no_model_cost:,.0f}")
+    print(f"  Flag everything:          GBP {flag_all_cost:,.0f}")
+    print(f"  Current model:            GBP {model_cost:,.0f}")
+    print(f"  Perfect model:            GBP {perfect_cost:,.0f}")
+    print(f"\nModel savings vs no-model: GBP {no_model_cost - model_cost:,.0f} "
           f"({(no_model_cost - model_cost)/no_model_cost*100:.1f}% reduction)")
-    print(f"Model savings vs flag-all: £{flag_all_cost - model_cost:,.0f} "
+    print(f"Model savings vs flag-all: GBP {flag_all_cost - model_cost:,.0f} "
           f"({(flag_all_cost - model_cost)/flag_all_cost*100:.1f}% reduction)")
 
     emails_reviewed = tp_all + fp_all
@@ -79,9 +68,9 @@ def run_calibration(df):
     """
     Bin my predictions and compare predicted probability with actual escalation rate.
 
-    Overall this is the calibration check, the basic idea is that a well-calibrated
+    This is the calibration check, the aim is that a well-calibrated
     model should have its predicted 0.6 probability roughly match an actual 60% positive
-    rate inside the bin. What this matters for is downstream business decisions, if my
+    rate inside the bin. This matters because downstream business decisions, if my
     probabilities are uncalibrated then any cost-aware threshold I pick later is built
     on shaky foundations.
     """
@@ -107,3 +96,6 @@ def run_calibration(df):
               f"{row['actual_rate']*100:>7.1f}% {row['mean_prob']*100:>9.1f}%")
 
     return cal_table
+
+
+

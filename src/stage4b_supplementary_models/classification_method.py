@@ -1,13 +1,4 @@
-"""
-Stage 4b classification method comparisons: KNN, regularisation and linear regression.
-
-Overall this module is where I run three of my supplementary analyses, the basic idea is
-to compare my main Logistic Regression against alternatives that the brief asks about.
-In my project I focused on K-Nearest Neighbours at different k values, Logistic Regression
-under L1, L2 and no regularisation, and a Linear Regression baseline that demonstrates
-why LR is the correct choice for a binary target. What this module demonstrates is my
-understanding of when each method is and is not appropriate.
-"""
+"""Classification Method module."""
 
 import numpy as np
 import pandas as pd
@@ -23,9 +14,9 @@ def run_knn_comparison(X, y, groups):
     """
     Compare KNN classification at k values of 3, 5, 7, 11 and 15.
 
-    Overall this function loops over five k values and runs StratifiedGroupKFold for
-    each one, the basic idea is to find the k that best balances over-smoothing and
-    over-fitting in my dataset. What this also shows is that KNN is not a strong
+    This function loops over five k values and runs StratifiedGroupKFold for
+    each one, the aim is to find the k that best balances over-smoothing and
+    over-fitting in my dataset. This also shows that KNN is not a strong
     competitor in my high-dimensional sparse TF-IDF feature space, which justifies
     sticking with Logistic Regression for the main Stage 4 result.
     """
@@ -69,9 +60,9 @@ def run_regularisation_comparison(X, y, groups):
     """
     Compare L1, L2 and no regularisation for Logistic Regression at multiple C values.
 
-    Overall this function tests six configurations, the basic idea is that L1 produces
+    This function tests six configurations, the aim is that L1 produces
     sparse models with implicit feature selection, L2 shrinks all coefficients evenly,
-    and no regularisation is the unconstrained baseline. What this also tracks is the
+    and no regularisation is the unconstrained baseline. This also tracks the
     number of non-zero features per fold which is what makes the L1 vs L2 difference
     visible in the report.
     """
@@ -136,10 +127,10 @@ def run_linear_regression_baseline(X_dense, y, groups):
     """
     Demonstrate why linear regression is inappropriate for my binary target.
 
-    Overall this function fits an unconstrained Linear Regression on the same features
-    and shows that its predictions go outside the [0, 1] range. The basic idea is to
+    This function fits an unconstrained Linear Regression on the same features
+    and shows that its predictions go outside the [0, 1] range. the aim is to
     make the case for Logistic Regression with concrete numbers, not just theory. What
-    this also reports is per-fold counts of predictions below 0 and above 1 which is
+    This also reports per-fold counts of predictions below 0 and above 1 which is
     the most concrete evidence that linear regression is the wrong tool here.
     """
     print("\n" + "=" * 70)
@@ -174,7 +165,7 @@ def run_linear_regression_baseline(X_dense, y, groups):
 
     linreg_df = pd.DataFrame(fold_results)
     print(f"  Mean F2 (at 0.5 threshold): {linreg_df['f2'].mean():.4f}")
-    print(f"  Mean R²: {linreg_df['r2'].mean():.4f}")
+    print(f"  Mean R2: {linreg_df['r2'].mean():.4f}")
     print(f"  Predictions below 0: {linreg_df['preds_below_0'].mean():.0f} per fold")
     print(f"  Predictions above 1: {linreg_df['preds_above_1'].mean():.0f} per fold")
     print("\n  Linear regression produces predictions outside [0,1], which are")
@@ -183,3 +174,7 @@ def run_linear_regression_baseline(X_dense, y, groups):
     print("  binary classification. This justifies Decision 008.")
 
     return linreg_df
+
+
+
+

@@ -1,12 +1,4 @@
-"""
-Stage 4b bias-variance trade-off analysis through learning curves.
-
-Overall this module is where I diagnose whether my main Logistic Regression model is
-suffering from high bias or high variance. The basic idea is to plot training and
-validation F1 across increasing training set sizes, then look at the gap between them.
-What this module demonstrates is the formal evidence for whether more data, more
-features or stronger regularisation would help my model.
-"""
+"""Bias Variance module."""
 
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
@@ -19,10 +11,10 @@ def run_learning_curve_analysis(X, y):
     """
     Fit learning curves and diagnose bias vs variance for my LR baseline.
 
-    Overall this function uses sklearn's learning_curve helper at five training fractions
-    from 20% to 100%, the basic idea is that if the train and validation curves converge
+    This function uses sklearn's learning_curve helper at five training fractions
+    from 20% to 100%, the aim is that if the train and validation curves converge
     high then my model is good, if they converge low then it is high-bias, and if there
-    is a big persistent gap then it is high-variance. What this also returns is a textual
+    is a big persistent gap then it is high-variance. This also returns a textual
     diagnosis I can quote in the report directly.
     """
     print("\n" + "=" * 70)
@@ -64,3 +56,6 @@ def run_learning_curve_analysis(X, y):
     print("  The overall weak validation performance reflects limited signal in short emails.")
 
     return train_sizes_abs, train_scores, val_scores, gap, diagnosis
+
+
+
