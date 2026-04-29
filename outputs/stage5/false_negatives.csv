@@ -1,0 +1,163 @@
+customer_id,email_body_text,escalation_level,customer_type,tenure_type,region,issue_category,sentiment,y_prob,fold
+CUST5134,Emergency service DID NOT arrive... within expected time.,2,Domestic,Long-term,Wales,Customer Service,Negative,0.2534982135345955,3
+CUST6271,"INTERESTED, in off-peak electricity usage benefits. thanks",3,Domestic,New,Scotland,Customer Service,Neutral,0.2965746910823378,5
+CUST3080,"Customer service transferred me multiple times, unresolved.",2,Domestic,Long-term,Wales,Safety,Negative,0.3186985075992307,2
+CUST4949,"Electricity supply voltage unstable, appliances at RISK.",3,Commercial,Long-term,Scotland,Billing,Negative,0.44012391799497713,3
+CUST2402,How to review HISTORICAL billing... statements online?,2,Commercial,Long-term,England,Outage,Neutral,0.3441228925713513,4
+CUST2555,"Electricity consumption spike unexplained, urgent review needed.",2,Domestic,Long-term,England,Customer Service,Negative,0.40714810566664894,4
+CUST7375,Automatic bill payment deducted wrong amount.,2,Commercial,New,Wales,Meter,Negative,0.3601160212936519,3
+CUST5891,"Had to reset smart meter multiple, times to due syncing hi issues.",3,Domestic,New,England,Outage,Negative,0.2572167976393959,1
+CUST8211,Incorrect account balance shown help online.!,2,Commercial,Long-term,England,Meter,Negative,0.21769771060607285,3
+CUST2959,"Gas, Supply unexpectedly interrupted overnight.",2,Domestic,New,England,Safety,Negative,0.2433048068038665,3
+CUST6649,Power restored but appliances still tripping circuits.,2,Commercial,New,Scotland,Customer Service,Unknown,0.3180446135946036,3
+CUST3082,Looking for steps to switch between Different tariffs.,2,Domestic,Long-term,England,Meter,Neutral,0.34042311872971004,1
+CUST7238,"Meter Readings seem off, can, SOMEONE check?",3,Domestic,Long-term,England,Customer Service,Negative,0.2540671184270099,2
+CUST1913,"APP showing wrong! consumption data, need CORRECTION.",2,Commercial,New,Wales,Technical Fault,Neutral,0.4116606580812485,4
+CUST2564,Received assistance to register MULTIPLE users for my account smoothly.,2,Domestic,New,England,Outage,Unknown,0.3216522592970691,5
+CUST5619,"Quick response to emergency service request, very professional.",2,Commercial,Long-term,England,Customer Service,Unknown,0.4002644951891775,4
+CUST6408,"Invoices. contain unexplained fees, Requesting breakdown.",2,Commercial,Long-term,England,Meter,Negative,0.21459357110191388,3
+CUST2714,Heating system thermostat not responsive.,3,Commercial,Long-term,Wales,Safety,Negative,0.19402338948881045,3
+CUST5214,"App fails to load outage alerts, misleading information.",3,Commercial,Long-term,England,Billing,Unknown,0.41067718502615025,3
+CUST1441,Received paper bill despite opting for e-billing.,2,Domestic,Long-term,England,Meter,Unknown,0.353656447646872,1
+CUST3684,Received final warning for! payment already made.,2,Domestic,Long-term,Wales,Outage,Unknown,0.263726919153949,5
+CUST3282,"Prompt follow-up after I reported a meter issue, appreciated that.",2,Commercial,Long-term,Wales,Outage,Positive,0.3067859947432409,4
+CUST8236,"Gas connection appears faulty, pilot light keeps going out.",3,Commercial,Long-term,England,Customer Service,Negative,0.12933543014986365,3
+CUST3039,Heating system thermostat not Responsive.,2,Domestic,Long-term,Wales,Billing,Negative,0.4220871601212303,3
+CUST2800,"Had to call multiple times for the same ISSUE, FRUSTRATING.",2,Domestic,Long-term,England,Tariff,Negative,0.35442632317734973,5
+CUST9844,"Unexpected late payment charges, pls review.",3,Commercial,New,Scotland,Billing,Negative,0.3550520035871784,5
+CUST5947,Want to understand how Meter readings affect billing accuracy..,3,Commercial,Long-term,Scotland,Outage,Neutral,0.25276582102745077,1
+CUST5740,Customer support EMAIL unanswered for days.,2,Domestic,Long-term,England,Safety,Unknown,0.3594760849787487,1
+CUST4063,"Electricity outage notification sent late, no prior warning.",3,Commercial,Long-term,Scotland,Safety,Negative,0.305327795621498,2
+CUST8564,"Heating! system fails intermittently, very uncomfortable.",2,Domestic,Long-term,Wales,Safety,Negative,0.3487307391552373,3
+CUST1723,Customer support callback never received. received.,2,Commercial,New,Wales,Tariff,Negative,0.3600753390497449,4
+CUST7615,How to verify! account charges and! payment history?,2,Commercial,New,England,Billing,Neutral,0.20862755426318752,1
+CUST1247,Outage repair completed but service still unstable.,3,Commercial,Long-term,Scotland,Technical Fault,Negative,0.3527684335100866,1
+CUST7380,"Smart meter Firmware update failed, Unable to read data.",2,Commercial,New,Scotland,Technical Fault,Negative,0.2119459963554611,1
+CUST5920,"Meter INSTALLATION delayed, living without proper service.",2,Domestic,Long-term,Scotland,Meter,Negative,0.2807605537055297,3
+CUST9277,Still no update on MY outage report from yesterday.,2,Domestic,New,Scotland,Billing,Negative,0.22396836114600815,4
+CUST6324,How! does the smart METER. communicate data data to the provider?,2,Commercial,New,Scotland,Outage,Neutral,0.4069142471125667,4
+CUST9776,ENERGY efficiency Report shows wrong data for my property.,3,Domestic,New,Wales,Tariff,Negative,0.3835527467078792,4
+CUST8597,Incorrect meter reading charged for multiple months.,3,Domestic,New,Wales,Billing,Negative,0.32879194204641704,1
+CUST4228,"Repeated Notifications about planned maintenance, but no action Taken. taken.",2,Domestic,Long-term,Wales,Technical Fault,Negative,0.19517375105956275,3
+CUST2659,"Gas help leak reported, still No technician visit.",3,Commercial,New,Scotland,Tariff,Negative,0.4084474057963714,3
+CUST2548,"Disconnected ok without notification, unsafe conditions created.",2,Domestic,New,England,Safety,Negative,0.36739449320728057,3
+CUST5569,"Heating timer not following settings, unpredictable behaviour.",3,Domestic,Long-term,Scotland,Technical Fault,Negative,0.36531196017240014,4
+CUST8707,"App login reset Required frequently, INCONVENIENT.",2,Commercial,Long-term,Wales,Customer Service,Negative,0.4160510424282254,5
+CUST4251,"Smart meter NOT asap syncing with app, readings Are missing.!",2,Domestic,New,Wales,Meter,Negative,0.3117403157746758,3
+CUST3497,"Planned outage communicated! caused incorrectly, inconvenience.",2,Domestic,New,Scotland,Customer Service,Negative,0.3568426515795461,5
+CUST5252,Curious about renewable energy certificates. pls,3,Commercial,New,England,Technical Fault,Neutral,0.25490691815451155,2
+CUST5833,Want clarification on automatic payment options.,2,Commercial,Long-term,England,Safety,Unknown,0.17848501727484975,3
+CUST7695,Billing period mismatch causing confusion in Charges.,2,Domestic,New,England,Billing,Unknown,0.18113389970938204,1
+CUST2641,NO confirmation received after submitting outage report.,2,Domestic,New,England,Outage,Negative,0.27608825499944756,2
+CUST3647,"Electricity consumption consumption spike unexplained, urgent needed. review",3,Domestic,New,Wales,Tariff,Negative,0.2550822385771621,4
+CUST8887,Want to understand how billing cycles! are calculated.,2,Commercial,New,Wales,Technical Fault,Neutral,0.2990918560977073,3
+CUST1098,App energy usage reports Not updating in real-time.,2,Commercial,Long-term,England,Meter,Negative,0.22747114476806307,1
+CUST8594,Website payment gateway help failing during submission.,3,Commercial,Long-term,Wales,Customer Service,Negative,0.18387602659888275,3
+CUST9542,Curious about energy-saving incentives available ok regionally.,2,Commercial,Long-term,England,Customer Service,Neutral,0.38905400529238593,3
+CUST1526,"Gas meter Seems tampered or faulty, readings inconsistent.",3,Commercial,Long-term,Scotland,Billing,Negative,0.3183097736836973,2
+CUST2682,WANT to understand the smart meter installation process.,3,Domestic,Long-term,Scotland,Technical Fault,Neutral,0.21366322202872134,3
+CUST4840,Looking for thanks INSTRUCTIONS to dispute a billing query.,2,Domestic,New,England,Meter,Neutral,0.12875184413265858,5
+CUST2459,How do I set up direct debit for my account?,3,Commercial,Long-term,England,Technical Fault,Neutral,0.4242994447006136,2
+CUST3077,How to request notifications for energy-saving programs?,3,Domestic,Long-term,Scotland,Tariff,Neutral,0.33864773485600425,2
+CUST3959,How to... access emergency contact numbers for my area?,3,Domestic,New,Scotland,Technical Fault,Neutral,0.4280782059895199,5
+CUST6302,"Looking, for steps to Correct personal details on MY account.",2,Domestic,Long-term,England,Technical Fault,Neutral,0.42586010817046194,2
+CUST6221,Heating system thermostat not responsive.,2,Domestic,New,Wales,Customer Service,Negative,0.3984731054227652,3
+CUST5666,"Customer portal login keeps failing, Can't access my account.",2,Domestic,New,England,Safety,Negative,0.2029726166992237,1
+CUST7201,Energy usage estimate differs DRASTICALLY from actual.,2,Domestic,Long-term,Wales,Safety,Negative,0.3269440593797215,2
+CUST1637,Customer support team was ok friendly and knowledgeable.,2,Commercial,Long-term,Wales,Outage,Positive,0.2646042892433805,4
+CUST2055,How can I update my payment method online?,2,Commercial,New,Scotland,Safety,Unknown,0.2086412208480515,3
+CUST6053,Incorrect METER reading charged for multiple months.,2,Commercial,New,Scotland,Outage,Unknown,0.26928095655582146,1
+CUST4416,Looking for advice on reducing peak-time energy USAGE.,2,Commercial,New,Wales,Technical Fault,Unknown,0.33309656471103194,3
+CUST9329,Unexpected FEES AFTER! switching plan.,2,Commercial,New,Wales,Customer Service,Unknown,0.444211301749821,3
+CUST9347,Gas supply unexpectedly interrupted overnight..,2,Domestic,Long-term,England,Outage,Negative,0.36064120395035665,2
+CUST2861,HOW TO request a technician for Meter maintenance?,2,Commercial,Long-term,England,Meter,Neutral,0.3953636257965349,5
+CUST8718,How to check current tariff rates in my my area?,2,Commercial,Long-term,Scotland,Billing,Neutral,0.2968287617870346,5
+CUST2832,Fluctuating... electricity SUPPLY causing appliances to fail.,3,Domestic,New,Scotland,Billing,Negative,0.2411937223118434,1
+CUST7863,"Overcharged for previous month's usage, REQUESTING refund.",2,Commercial,Long-term,Wales,Safety,Negative,0.3395345103343143,3
+CUST7671,How to schedule a meter reading appointment?,2,Domestic,Long-term,England,Safety,Unknown,0.4266175482496157,3
+CUST4227,"Electricity consumption pls spike urgent unexplained, review needed.",3,Commercial,Long-term,Wales,Customer Service,Negative,0.2722091739095976,4
+CUST7566,Billing errors recurring despite corrections last month.,2,Commercial,Long-term,Scotland,Tariff,Negative,0.18481744598350908,4
+CUST7662,"Smart meter firmware update Failed, unable to read DATA.",2,Domestic,New,Scotland,Safety,Negative,0.1562412065732203,1
+CUST1367,"Power went out yesterday evening, when will it BE fixed?",2,Domestic,Long-term,Wales,Customer Service,Negative,0.18539748782527865,5
+CUST5456,"Repeated notifications About planned but maintenance, NO action taken.",2,Domestic,New,England,Technical Fault,Negative,0.3348196389585783,2
+CUST8310,"Really unhappy with Service, been waiting ok ages for support.",3,Domestic,New,Wales,Tariff,Negative,0.18232151081551642,1
+CUST9935,How to set UP notifications for planned maintenance?,3,Domestic,Long-term,Wales,Billing,Neutral,0.3086005050365079,2
+CUST3047,Payment history not visible in online account.,2,Domestic,Long-term,Scotland,Customer Service,Negative,0.2528849306134379,2
+CUST4469,"Meter installation delayed, without living proper service.",3,Commercial,New,Wales,Customer Service,Negative,0.2746164420571708,2
+CUST1652,Very pleased With how my SERVICE TRANSFER was handled.,3,Commercial,New,England,Customer Service,Positive,0.31215179304983254,1
+CUST3043,Website account settings settings not saving changes.,3,Commercial,Long-term,Scotland,Outage,Unknown,0.2885046817172054,2
+CUST7840,Incorrect account balance shown online.,2,Commercial,Long-term,Scotland,Tariff,Negative,0.23297990811062033,4
+CUST4559,"Electricity supply voltage unstable, Appliances at risk.",2,Commercial,New,Wales,Outage,Negative,0.3650686836778105,1
+CUST8472,"Unable TO, set up direct debit, system error persists.",2,Commercial,Long-term,England,Technical Fault,Negative,0.3219779702276472,5
+CUST6844,Outage repair completed but service still Ok unstable.,2,Commercial,Long-term,Scotland,Outage,Unknown,0.13092844378385055,1
+CUST1930,Looking for instructions to update personal preferences in the App.,3,Commercial,New,Scotland,Billing,Unknown,0.19745022315166574,5
+CUST5182,How to access emergency contact numbers for my... area?,3,Commercial,Long-term,Wales,Safety,Neutral,0.3310119411696335,1
+CUST9914,How to compare different energy plans for cost-effectiveness?,2,Domestic,Long-term,Scotland,Tariff,Neutral,0.3903475929409664,1
+CUST3934,"Heating cost higher than usual, despite reduced usage.",2,Domestic,New,Wales,Outage,Negative,0.3659930843954817,1
+CUST6839,How To access usage alerts for specific appliances?!,2,Domestic,Long-term,Scotland,Technical Fault,Neutral,0.3175199001307571,1
+CUST7866,"Had to call multiple for times the Same issue, frustrating.",3,Domestic,Long-term,Wales,Outage,Negative,0.3770991572050043,4
+CUST8971,Electricity supply keeps flickering throughout the day.,3,Domestic,Long-term,England,Billing,Negative,0.40299484118564544,2
+CUST1874,"Received double billing For the same period, need correction.",2,Commercial,New,Wales,Tariff,Unknown,0.12800687852451118,5
+CUST4538,Received professional and timely assistance with smart meter setup.,3,Domestic,Long-term,England,Billing,Positive,0.3476998710574597,5
+CUST5379,"Gas leak reported, still no technician visit.",3,Commercial,Long-term,Scotland,Technical Fault,Negative,0.3487588352419508,3
+CUST4208,"Account shows old address, bills sent to wrong location.",2,Domestic,New,England,Meter,Negative,0.4090401450580818,4
+CUST8855,"Unexpected late payment charges, pls review.",2,Domestic,Long-term,England,Customer Service,Negative,0.44971768689268254,3
+CUST1763,Customer support agent unhelpful and rude.!,3,Commercial,New,Wales,Customer Service,Unknown,0.3345845110195854,1
+CUST7374,Want TO learn! about online account management features.,2,Commercial,New,Scotland,Billing,Neutral,0.4082500890161173,2
+CUST9802,"Billing charges are unclear, I need an explanation.",2,Domestic,New,Scotland,Customer Service,Negative,0.2631840788427042,3
+CUST4307,Can I Get an energy USAGE report for the last 6 months?,2,Domestic,New,England,Meter,Unknown,0.16652463630026199,1
+CUST9351,Energy comparison... tool shows INACCURATE information.!,2,Commercial,Long-term,Scotland,Customer Service,Negative,0.12418202829096603,2
+CUST1835,Want to understand how meter readings affect billing accuracy.,3,Domestic,New,Scotland,Customer Service,Neutral,0.2537907602023243,1
+CUST6935,How to track past energy Usage trends?,2,Commercial,Long-term,Wales,Tariff,Neutral,0.39077410919834854,5
+CUST3957,ASAP Curious About the role of THE regulator in energy billing.,2,Domestic,Long-term,Scotland,Outage,Neutral,0.31226450206161593,4
+CUST3446,How to read and INTERPRET. my meter readings?!,2,Domestic,New,Wales,Technical Fault,Neutral,0.2735085808517693,1
+CUST4814,Smart home integration with asap meter not working.,2,Commercial,Long-term,Wales,Meter,Negative,0.19437159921282426,4
+CUST3365,Electricity supply flickering keeps throughout the day.,2,Commercial,New,Scotland,Technical Fault,Negative,0.3976340725376413,4
+CUST1249,How to access usage alerts for specific appliances?,3,Commercial,New,Wales,Billing,Neutral,0.3032779231923909,1
+CUST7495,"Gas meter. reading seems. frozen, not updating.",3,Commercial,New,England,Meter,Unknown,0.2066037646688087,1
+CUST4694,"Meter readings. seem off, can Someone CHECK?",2,Domestic,New,Scotland,Billing,Negative,0.4020583483647943,2
+CUST2793,"urgent Planned, outage communicated incorrectly, Caused inconvenience.",2,Commercial,Long-term,England,Safety,Negative,0.27967135326763987,5
+CUST1487,High usage alerts are inaccurate or misleading.,3,Domestic,New,England,Outage,Negative,0.2873399702953788,1
+CUST6403,"Gas flame KEEPS extinguishing, unsafe to use stove.",2,Domestic,New,England,Billing,Negative,0.28405183984618204,1
+CUST8146,Automatic Meter readings show wrong consumption.,3,Commercial,New,Wales,Outage,Negative,0.43946578488745447,2
+CUST9398,"Service update emails not received,, UNAWARE of OUTAGE schedules.",2,Domestic,Long-term,Wales,Meter,Negative,0.23050560061709333,1
+CUST6231,Website keeps crashing while trying to submit meter readings.,3,Commercial,New,Wales,Meter,Negative,0.3646541464358657,2
+CUST1661,Technician provided excellent explanation of energy-saving appliances.,2,Domestic,Long-term,England,Outage,Positive,0.41289636530646506,5
+CUST7961,Outage! map. shows incorrect information For THANKS my area.,2,Commercial,Long-term,Wales,Safety,Negative,0.2597957622187752,2
+CUST6989,Multiple outage REPORTS urgent show as resolved but issue persists.,2,Commercial,Long-term,Scotland,Outage,Negative,0.3831207948869815,4
+CUST6878,"How to submit meter, readings! via the app or website?",2,Commercial,Long-term,Scotland,Tariff,Neutral,0.35213439233426297,4
+CUST5051,"Billing... cycle not aligned, causing Confusion in, charges.",3,Commercial,New,Scotland,Meter,Negative,0.3027281343497897,1
+CUST9202,Had To reset smart meter multiple times due to SYNCING issues.,3,Domestic,New,Scotland,Billing,Negative,0.38403169328136455,3
+CUST4165,Want to know HOW ESTIMATED bills are calculated.,2,Domestic,New,Scotland,Technical Fault,Neutral,0.4405370977556457,3
+CUST3898,"Supply during interruption severe weather, no prior warning.",2,Domestic,Long-term,England,Meter,Negative,0.3464367175376221,3
+CUST5571,"Tariff options confusing, need advice on cheapest plan.",2,Domestic,New,England,Meter,Neutral,0.28205304666085856,4
+CUST8414,"Gas meter seems. tampered or faulty, readings inconsistent.",3,Domestic,New,England,Tariff,Negative,0.4056306289217365,4
+CUST4659,Energy efficiency report shows wrong Data For hi my property.,3,Commercial,New,England,Meter,Negative,0.20241881900665573,1
+CUST2218,"App pls provides real-time updates on energy consumption,, very useful.",2,Domestic,New,Wales,Billing,Positive,0.41163957644722604,4
+CUST8180,How do I set up direct debit for my account?,3,Commercial,Long-term,England,Outage,Neutral,0.35548836585067484,4
+CUST3692,"Account shows old Address, bills sent to wrong location.",2,Domestic,New,Wales,Technical Fault,Negative,0.31806006245274726,4
+CUST9514,Emergency support not RESPONDING despite urgency.,2,Commercial,Long-term,Scotland,Tariff,Negative,0.28355304368240714,4
+CUST3760,"Gas! meter installation pending, affecting supply.",2,Domestic,New,Wales,Outage,Negative,0.23972371586113891,3
+CUST4965,Website Account settings not saving changes.,2,Domestic,New,Wales,Billing,Unknown,0.3599128071245677,1
+CUST9047,"hi Unexpected late payment charges, pls review.",2,Domestic,New,Wales,Technical Fault,Negative,0.38613794132188833,5
+CUST9853,Power surge damaged some hi of... my home electronics.,2,Commercial,Long-term,Scotland,Customer Service,Negative,0.27032375449032414,5
+CUST7414,Electricity supply keeps flickering throughout The day.,2,Commercial,New,Scotland,Tariff,Negative,0.4070166411304857,2
+CUST2832,High electricity demand demand not acknowledged in Billing.,2,Domestic,Long-term,Scotland,Safety,Unknown,0.38652464764650535,1
+CUST1321,Fluctuating electricity supply causing appliances to fail.,2,Commercial,New,Scotland,Safety,Negative,0.2780554336357235,4
+CUST1484,"Multiple outage reports show as resolved but issue persists.,",3,Commercial,New,Scotland,Outage,Unknown,0.3857097076783155,1
+CUST9337,Looking for details about energy efficiency Programs.,2,Commercial,New,Wales,Outage,Neutral,0.39642824411328187,1
+CUST3554,Want to UNDERSTAND the billing Adjustment process.,3,Domestic,Long-term,England,Technical Fault,Neutral,0.3419291415861368,3
+CUST8176,Network issues causing repeated meter read failures. failures.,3,Domestic,New,Wales,Technical Fault,Negative,0.24673490312259813,3
+CUST8389,Electricity supply keeps Flickering throughout the,3,Commercial,Long-term,Wales,Safety,Negative,0.36643952398232804,4
+CUST1554,"Detected a GAS smell in the kitchen, need urgent help!",2,Domestic,New,England,Meter,Negative,0.34973619355985813,4
+CUST7097,Technician visit pls Cancelled without notice.,3,Domestic,New,Wales,Tariff,Negative,0.2344895668822574,2
+CUST6362,"Heating cost higher Than usual, despite reduced usage.",2,Domestic,New,England,Customer Service,Negative,0.44876145587421756,3
+CUST2988,Outage map shows incorrect information hi for my area.,2,Domestic,New,Wales,Tariff,Negative,0.35763515349856706,5
+CUST1719,Portal interface is user-friendly and intuitive. intuitive.,2,Domestic,New,England,Customer Service,Unknown,0.37626517076293087,5
+CUST9801,Looking for instructions to Register on the customer portal.,3,Domestic,New,Scotland,Safety,Neutral,0.35030422989749577,5
+CUST2489,Incorrect account balance SHOWN online.,2,Commercial,New,Scotland,Technical Fault,Negative,0.3355231807119641,4
+CUST5755,Unexplained spike in electricity usage overnight.,3,Commercial,New,Scotland,Outage,Unknown,0.27957142455349593,3
+CUST5238,How to request an energy efficiency assessment at home?,2,Commercial,New,Wales,Outage,Neutral,0.24482403768961628,4
+CUST8090,App shows incorrect Historic usage. for my account.,2,Domestic,Long-term,Scotland,Technical Fault,Negative,0.33665403045407544,3
+CUST8594,"Heating cost higher THAN usual, despite reduced usage.",3,Commercial,New,England,Technical Fault,Negative,0.30368872488007187,3
+CUST4627,"Hi, noticed my LAST bill is way higher, Than usual, not sure why.",3,Commercial,Long-term,Wales,Meter,Negative,0.30779779901448284,1

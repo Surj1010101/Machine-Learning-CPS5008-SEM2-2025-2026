@@ -1,0 +1,27 @@
+{
+  "overall_f2": 0.3611898016997167,
+  "overall_recall": 0.5573770491803278,
+  "overall_precision": 0.15,
+  "confusion_matrix": {
+    "TP": 204,
+    "FP": 1156,
+    "FN": 162,
+    "TN": 978
+  },
+  "fn_analysis": {
+    "total_fn": 162,
+    "fn_mean_prob": 0.31223097763980184,
+    "fn_close_to_threshold": 39,
+    "miss_rate_level2": 44.11764705882353,
+    "miss_rate_level3": 44.53125
+  },
+  "business_cost": {
+    "no_model": 183000,
+    "flag_all": 60980,
+    "current_model": 114320,
+    "perfect_model": 18300,
+    "savings_vs_no_model": 68680
+  },
+  "emails_flagged": 1360,
+  "flagged_pct": 54.400000000000006
+}
