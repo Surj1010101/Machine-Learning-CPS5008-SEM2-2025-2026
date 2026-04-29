@@ -55,3 +55,27 @@ def cross_validate_all(models, X, y, groups):
             print(f"  Fold {fold_idx+1}: F2_default={f2_default:.4f} | "
                   f"F2_tuned={f2_tuned:.4f} | PR-AUC={pr_auc_val:.4f} | "
                   f"thresh={best_thresh:.3f}")
+            
+        metrics_df = pd.DataFrame(fold_metrics)
+        all_results[model_name] = {
+            'metrics_df': metrics_df,
+            'mean_f2_default': metrics_df['f2_default'].mean(),
+            'std_f2_default': metrics_df['f2_default'].std(),
+            'mean_f2_tuned': metrics_df['f2_tuned'].mean(),
+            'std_f2_tuned': metrics_df['f2_tuned'].std(),
+            'mean_pr_auc': metrics_df['pr_auc'].mean(),
+            'std_pr_auc': metrics_df['pr_auc'].std(),
+            'mean_threshold': metrics_df['threshold'].mean(),
+            'mean_precision': metrics_df['precision_tuned'].mean(),
+            'mean_recall': metrics_df['recall_tuned'].mean(),
+            'overall_f2_default': fbeta_score(all_y_true, all_y_pred_default, beta=2),
+            'overall_f2_tuned': fbeta_score(all_y_true, all_y_pred_tuned, beta=2),
+        }
+
+        print(f"  MEAN: F2_default={all_results[model_name]['mean_f2_default']:.4f} "
+              f"(+/-{all_results[model_name]['std_f2_default']:.4f}) | "
+              f"F2_tuned={all_results[model_name]['mean_f2_tuned']:.4f} "
+              f"(+/-{all_results[model_name]['std_f2_tuned']:.4f}) | "
+              f"PR-AUC={all_results[model_name]['mean_pr_auc']:.4f}")
+
+    return all_results
