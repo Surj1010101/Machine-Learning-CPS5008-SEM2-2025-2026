@@ -1,4 +1,11 @@
-"""Combined 2x3 figure for Stage 4b supplementary analyses."""
+"""
+Stage 4b visualisations module, combined 2 by 3 figure for the supplementary analyses.
+
+Overall this module is where I generate one big summary figure for my Stage 4b section,
+the basic idea is to fit all six supplementary analyses into one figure so the report
+can reference them in one place. In my project I focused on KNN, regularisation, learning
+curves, PCA, K-Means and linear vs logistic regression all in this one figure.
+"""
 
 import matplotlib
 matplotlib.use('Agg')
@@ -8,11 +15,18 @@ import matplotlib.pyplot as plt
 def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
                                 val_scores, pca_df, cumvar, cluster_df,
                                 linreg_df, output_path):
-    """One combined figure with 6 panels summarising Stage 4b."""
+    """
+    One combined figure with 6 panels summarising my Stage 4b results.
+
+    Overall this is the headline Stage 4b figure, the basic idea is to put one panel per
+    analysis on a 2 by 3 grid so the report can show the whole supplementary story in
+    one image. What this also adds is a red dashed line across the relevant panels at
+    the LR baseline F2 of 0.36 so each comparison is anchored to my main result.
+    """
     fig, axes = plt.subplots(2, 3, figsize=(18, 11))
     fig.suptitle('Stage 4b: Supplementary ML Analyses', fontsize=14, fontweight='bold')
 
-    # Panel 1: KNN comparison
+    # Panel 1, KNN F2 comparison across k values
     ax = axes[0, 0]
     ax.bar(knn_df['k'].astype(str), knn_df['f2_mean'],
            yerr=knn_df['f2_std'], capsize=4, color='steelblue', alpha=0.8)
@@ -22,7 +36,7 @@ def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
     ax.set_title('KNN: Effect of K')
     ax.legend(fontsize=8)
 
-    #2Regularisation comparison
+    # Panel 2, regularisation comparison, L1 in orange, L2 in blue, none in green
     ax = axes[0, 1]
     configs = [r.replace('LR_', '') for r in reg_df['config']]
     colors = ['#2196F3' if 'L2' in c else '#FF9800' if 'L1' in c else '#4CAF50'
@@ -34,7 +48,7 @@ def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
     ax.set_title('Regularisation: L1 vs L2 vs None')
     ax.legend(fontsize=8)
 
-    #3Learning curves (bias-variance)
+    # Panel 3, learning curves for the bias-variance diagnosis
     ax = axes[0, 2]
     ax.plot(train_sizes_abs, train_scores.mean(axis=1), 'o-',
             label='Training', color='steelblue')
@@ -53,7 +67,7 @@ def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
     ax.set_title('Bias-Variance: Learning Curves')
     ax.legend(fontsize=8)
 
-    #4PCA explained variance + F2
+    # Panel 4, PCA explained variance with F2 overlay on a twin axis
     ax = axes[1, 0]
     ax2 = ax.twinx()
     n_plot = min(100, len(cumvar))
@@ -67,7 +81,7 @@ def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
     ax2.set_ylabel('F2 Score', color='darkorange')
     ax.set_title('PCA: Variance & Performance')
 
-    #5 K-Means silhouette scores
+    # Panel 5, K-Means silhouette scores plus escalation rate range across clusters
     ax = axes[1, 1]
     ax.plot(cluster_df['k'], cluster_df['silhouette'], 'o-',
             color='steelblue', label='Silhouette')
@@ -79,7 +93,7 @@ def plot_supplementary_analyses(knn_df, reg_df, train_sizes_abs, train_scores,
     ax2.set_ylabel('Escalation Rate Range (%)', color='darkorange')
     ax.set_title('K-Means: Cluster Quality')
 
-    # 6:Linear vs Logistic regression
+    # Panel 6, linear vs logistic regression comparison with the out-of-bounds annotation
     ax = axes[1, 2]
     models = ['Linear Reg\n(inappropriate)', 'Logistic Reg\n(appropriate)']
     f2_vals = [linreg_df['f2'].mean(), 0.360]
