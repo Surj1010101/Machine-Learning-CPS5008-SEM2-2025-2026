@@ -1,0 +1,116 @@
+feb2ad1 | 2026-04-29 | Surj1010101 | Update requirements to include additional libraries and versions for compatibility
+bbcfd8c | 2026-04-29 | Surj1010101 |  linear regression baseline results for Stage 4b analysis
+5d983da | 2026-04-29 | Surj1010101 | AddED PCA comparison data and supplementary summary for Stage 4b analysis
+814de7a | 2026-04-29 | Surj1010101 | regularisation comparison CSV and supplementary analysis images for Stage 4 and Stage 5
+e66a328 | 2026-04-29 | Surj1010101 | ADDED error analysis overview image and summary JSON for Stage 5
+2e70766 | 2026-04-29 | Surj1010101 | Add outputs for Stage 5 and Stage 6 including performance metrics, ethical considerations, and fairness analysis
+d8169e1 | 2026-04-29 | Surj1010101 | Add new output images for LIME examples and permutation importance analysis
+681b80e | 2026-04-29 | Surj1010101 | Add LIME explanations, permutation importance, and final summary JSON files for enhanced model evaluation and analysis
+fcaa118 | 2026-04-29 | Surj1010101 | Add cost sensitivity and temporal stability CSV files for enhanced analysis
+68ed543 | 2026-04-29 | Surj1010101 | Add monitoring plan JSON with real-time, weekly, and monthly metrics; include stability and tiered deployment visualizations
+fff9ffa | 2026-04-29 | Surj1010101 | Add threshold analysis CSV, tier distribution CSV, and threshold tradeoffs PNG; enhance visualisations documentation
+57e8a5c | 2026-04-29 | Surj1010101 | Refactor and enhance documentation across multiple modules
+b05691e | 2026-04-29 | Surj1010101 | Refactor Stage 5 and Stage 6 modules for improved clarity and documentation
+e15969f | 2026-04-29 | Surj1010101 | Enhance documentation across Stage 7 modules with detailed descriptions of functionality and purpose
+845c49e | 2026-04-29 | Surj1010101 |  model selection, XGBoost tuning results, KMeans clustering, and KNN comparison CSV files
+6834dfe | 2026-04-29 | Surj1010101 | Added model comparison CSV and visualizations for performance metrics
+d2a4bf4 | 2026-04-29 | Surj1010101 | Update requirements to include imbalanced-learn and sklearn-compat packages
+344be8a | 2026-04-29 | Surj1010101 | Add initial implementation of business recommendations module
+cd8949a | 2026-04-29 | Surj1010101 | Implement business recommendations and deployment strategy with data analysis and visualizations
+0f9188d | 2026-04-29 | Surj1010101 | threshold analysis and tiered deployment functions for email classification
+e96d3e4 | 2026-04-29 | Surj1010101 |  temporal stability check function to evaluate model performance over quarterly periods
+55dbd98 | 2026-04-29 | Surj1010101 |  Stage 7: Implement visualizations for threshold trade-offs, tiered deployment, and stability/cost analysis
+81aca95 | 2026-04-29 | Surj1010101 | added Stage 7: Implement pipeline setup and prediction collection with logistic regression
+9a71533 | 2026-04-29 | Surj1010101 | production monitoring plan specification with real-time, weekly, and monthly metrics
+5a78a6b | 2026-04-29 | Surj1010101 | add cost-sensitivity analysis function to evaluate model performance against flag-all and no-model strategies
+b251334 | 2026-04-29 | Surj1010101 | add initial files for Stage 5 error analysis and Stage 6 interpretability modules
+348f31b | 2026-04-29 | Surj1010101 | add Stage 6: Implement interpretability, fairness, and ethics analysis with global feature importance, LIME explanations, and ethical reflections
+4f41f78 | 2026-04-29 | Surj1010101 |  pipeline setup for Stage 6 including preprocessor, threshold tuning, and single-fold training
+5809eec | 2026-04-29 | Surj1010101 | implement visualisation functions for feature importance, permutation importance, fairness, and LIME explanations
+cea4c3b | 2026-04-29 | Surj1010101 | implement LIME local explanations for representative TP, FN, and FP predictions
+b6d18b1 | 2026-04-29 | Surj1010101 | implement global feature importance functions for LR coefficients and permutation importance
+528d8c1 | 2026-04-29 | Surj1010101 | more equalised odds analysis for fairness assessment across protected attributes
+afd118e | 2026-04-29 | Surj1010101 | implement stage 5 error analysis and segment breakdown
+32210bf | 2026-04-29 | Surj1010101 | visualisation functions for error analysis, calibration, and false negative deep dive
+85658ce | 2026-04-29 | Surj1010101 | implement segment-level performance and fairness analysis functions
+d406a9b | 2026-04-29 | Surj1010101 | implement supplementary model comparisons and unsupervised exploration pipeline
+a0e9b6f | 2026-04-29 | Surj1010101 | add: implement prediction pipeline with logistic regression and threshold optimization
+fb9d089 | 2026-04-29 | Surj1010101 | business impact analysis and confidence calibration functions
+2565eaf | 2026-04-29 | Surj1010101 | added functions for false negative and false positive analysis
+2611036 | 2026-04-29 | Surj1010101 | changed and added few new elements to  visualisation function for Stage 4b supplementary analyses
+ba0b7e2 | 2026-04-29 | Surj1010101 | implement PCA dimensionality reduction and K-Means clustering on TF-IDF features
+597dc07 | 2026-04-29 | Surj1010101 | update: fix module docstring formatting in bias-variance analysis
+057b6f0 | 2026-04-29 | Surj1010101 | update: add module docstring for clarity on KNN, regularisation, and linear regression
+07f660b | 2026-04-29 | Surj1010101 | feat: add KNN and regularisation comparison functions for model evaluation
+67f0cc5 | 2026-04-29 | Surj1010101 | update: enhance README with project overview, requirements, setup instructions, and pipeline execution details
+e47429d | 2026-04-29 | Surj1010101 | learning curve analysis function to diagnose bias vs variance
+4d01139 | 2026-04-29 | Surj1010101 | fix: update docstring for clarity in model development script
+e0efe9d | 2026-04-29 | Surj1010101 | more features added including  visualisations and statistical comparison for model performance in stage 4
+e67dd40 | 2026-04-29 | Surj1010101 | implement model development and comparison script for hyperparameter tuning
+f60dc27 | 2026-04-29 | Surj1010101 | fix: correct docstring formatting for hyperparameter tuning module
+26a2565 | 2026-04-29 | Surj1010101 | aded evaluate_tuned_xgb function to rerun best XGBoost model with tuned parameters across all folds
+f1208dc | 2026-04-29 | Surj1010101 | implement XGBoost hyperparameter tuning function with StratifiedGroupKFold and output results
+052cac0 | 2026-04-29 | Surj1010101 | add docstring to cross-validation module: clarify purpose of threshold tuning for models
+89b1d4b | 2026-04-29 | Surj1010101 | enhance cross-validation output: include mean metrics and standard deviations for model evaluation
+4aa78b3 | 2026-04-29 | Surj1010101 | implement cross-validation function with threshold tuning for model evaluation
+89a3185 | 2026-04-29 | Surj1010101 | update docstring in pipelines.py: clarify model pipeline definitions for LR, RF, XGBoost, and SMOTE variants
+230c62c | 2026-04-29 | Surj1010101 | refactor and added pipelines for model definition; implement Logistic Regression, Random Forest, and XGBoost with SMOTE support
+5a5cbde | 2026-04-29 | Surj1010101 | implem output files for feature engineering and multicollinearity analysis; include heatmaps, summary statistics, and correlation metrics
+05467ac | 2026-04-26 | Surj1010101 | fix docstring in run.py: correct spacing in the run command
+c0d9939 | 2026-04-26 | Surj1010101 | fix docstring in run.py: correct spelling and improve clarity of feature engineering description
+fd910fb | 2026-04-26 | Surj1010101 | refactor run.py: improve comments and add feature engineering summary output
+9326a64 | 2026-04-26 | Surj1010101 | add run.py for feature engineering and multicollinearity analysis; implement data loading, ablation study, and visualisations
+214e103 | 2026-04-26 | Surj1010101 | implemented a visualisation functions for feature impact or engeeenring  and correlation analysis; enhance feature evaluation with heatmaps
+46c6870 | 2026-04-26 | Surj1010101 | fix docstring in print_mitigation_summary function; clarify purpose of multicollinearity summary
+3155ccf | 2026-04-26 | Surj1010101 | added VIF analysis function and mitigation summary for multicollinearity; enhance feature evaluation
+5d13e91 | 2026-04-26 | Surj1010101 | adeded multicollinearity analysis functions; implement Cramer's V and numeric correlation evaluation
+6877cdb | 2026-04-26 | Surj1010101 | fix formatting in run_all_ablations function; remove space in comment for clarity
+f67a4bc | 2026-04-26 | Surj1010101 | add run_all_ablations function to evaluate multiple feature engineering configurations; improve docstrings and formatting
+3b9f6c5 | 2026-04-26 | Surj1010101 | implement evaluate_config function for 5-fold CV with tuned thresholds; add run_all_ablations for feature engineering study
+e1e3e1c | 2026-04-26 | Surj1010101 | addedfeature impact evaluation functions with threshold optimization and cross-validation
+5bd91ff | 2026-04-26 | Surj1010101 | fix formatting and comments in run.py; add __init__.py for feature engineering module
+2505c25 | 2026-04-26 | Surj1010101 | changed update import paths for pipeline utilities and data loader
+6125385 | 2026-04-26 | Surj1010101 | remove unused sentiment ablation and pipeline utility files
+665a99c | 2026-04-26 | Surj1010101 | add baseline results and feature importance files; implement sentiment ablation function for model performance comparison
+998a18e | 2026-04-24 | Surj1010101 | update docstring for stage 3 preprocessing pipeline
+00de45b | 2026-04-24 | Surj1010101 | update module docstring for sentiment ablation experiment
+a9b2c3f | 2026-04-24 | Surj1010101 | implement stage 3 preprocessing pipeline with feature importance and sentiment ablation results
+a1b7e08 | 2026-04-24 | Surj1010101 | sentiment ablation function to compare model performance with and without sentiment feature
+a56683c | 2026-04-24 | Surj1010101 | standardize docstring formatting in cross-validation functions
+065141b | 2026-04-24 | Surj1010101 |  module docstring for pipeline definition and cross-validation
+4b4aeea | 2026-04-24 | Surj1010101 | enhance cross-validation function to include detailed fold results and aggregate metrics
+e2fcf85 | 2026-04-24 | Surj1010101 | added new baseline pipeline and cross-validation functions for model evaluation
+a41ebdc | 2026-04-24 | Surj1010101 | visualizations for Stage 2: correlation heatmap, EDA overview, and escalation by region
+bbe9ba3 | 2026-04-24 | Surj1010101 | update .gitignore to include virtual environment folders; add requirements.lock.txt for dependency management; fix typo in run.py print statement
+5c0409d | 2026-04-24 | Surj1010101 | update .gitignore to include __pycache__, .pyc files, and .env; fix typo in run.py print statement
+819776a | 2026-04-24 | Surj1010101 | add requirements.txt and update run.py for encoding support
+f4d4c09 | 2026-04-24 | Surj1010101 | added run.py for Stage 2 exploratory data analysis and risk identification
+b5adb5a | 2026-04-24 | Surj1010101 | module docstring for Stage 2 visualisations
+2b582da | 2026-04-24 | Surj1010101 | remove unused visualisations script from Stage 2 EDA
+c8c74c2 | 2026-04-24 | Surj1010101 | added additional visualizations for correlation heatmap and escalation by region
+d5711dd | 2026-04-24 | Surj1010101 | added more visualizations for issue category, text length, emotion intensity, and sentiment missingness
+02a0511 | 2026-04-24 | Surj1010101 | implemented visualisation generation function for Stage 2 EDA
+022811d | 2026-04-24 | Surj1010101 |  added missing data analysis, leakage testing, class imbalance, and customer overlap functions
+99a1ca6 | 2026-04-24 | Surj1010101 | for this part i enhanced missing data analysis and leakage testing functions added more features including imballance anaylsis
+0929ad2 | 2026-04-24 | Surj1010101 | ADDED missing data analysis function for sentiment and escalation
+db571ab | 2026-04-23 | Surj1010101 | feat: add feature profiling, text analysis, and timestamp analysis functions
+1c308cf | 2026-04-23 | Surj1010101 | fix: correct formatting in text analysis function docstring
+b8fb3ad | 2026-04-23 | Surj1010101 | fix: correct spelling and formatting errors in timestamp analysis function
+140275c | 2026-04-23 | Surj1010101 | fix: correct formatting and spelling errors in feature profiling and text analysis functions
+cda17c0 | 2026-04-23 | Surj1010101 | feat: addedfeature profiling and text analysis functions with improved output and structure
+a73b600 | 2026-04-21 | Surj1010101 |  improve feature profiling and text analysis functions with enhanced output and structure
+a2900b7 | 2026-04-15 | Surj1010101 |  added feature profiling function for categorical, numerical, and text features
+732c4e6 | 2026-04-15 | Surj1010101 | fix: correct variable name for threshold return in find_best_threshold_f2 function
+1c3dcdf | 2026-04-15 | Surj1010101 | refactor: remove unused imports and clean up preprocessor function
+ce62765 | 2026-04-15 | Surj1010101 | refactor: enhance pipeline utilities with preprocessor and threshold tuning functions
+a3ad2e9 | 2026-04-14 | 2405244 | refactor and added new enhanced pipeline utilities with additional threshold finding function and improve preprocessor structure
+e57bf84 | 2026-04-14 | Surj1010101 | added preprocessing function to standardize data transformation across models
+d10ef07 | 2026-04-12 | Surj1010101 | made an initial preprocessor setup with StratifiedGroupKFold for crossvalidation
+afc9fcf | 2026-04-12 | Surj1010101 | add feature group constants for data processing and handling
+0760f86 | 2026-04-12 | Surj1010101 | reorganize imports and set up project environment in data loader
+d21ea55 | 2026-04-12 | Surj1010101 |  data loading process to handle missing sentiment values and clean email text
+32b9d51 | 2026-04-12 | Surj1010101 | changed and addded an  update text cleaning function and with  enhance data loading process
+c1df61f | 2026-04-12 | Surj1010101 | trying to add clean function for  text cleaning in data loader
+7243e0d | 2026-03-31 | Surj1010101 |  initial utility modules and data loader
+b1b8510 | 2026-03-31 | Surj1010101 | addedrequirements.txt file to track project dependencies
+b6bb1a6 | 2026-03-31 | suraj singh | Initial commit
