@@ -1,4 +1,11 @@
-"""Pipeline setup and per-sample prediction collection for Stage 7."""
+"""
+Stage 7 pipeline setup and per-sample prediction collection module.
+
+Overall this module is where I rebuild the same Logistic Regression pipeline used in
+Stages 5 and 6 and run StratifiedGroupKFold to capture predictions for the whole
+dataset. The basic idea is that Stage 7 needs every row's y_prob to do threshold
+sweeps and tiered deployment analysis, so this module is the data layer.
+"""
 
 import numpy as np
 from sklearn.model_selection import StratifiedGroupKFold
@@ -11,7 +18,13 @@ from sklearn.metrics import precision_recall_curve
 
 
 def make_preprocessor(text_col, categorical_cols, numeric_cols):
-    """Standard ColumnTransformer used for the LR baseline."""
+    """
+    Standard ColumnTransformer used by my LR baseline.
+
+    Overall this is the same preprocessor used across Stage 3, 5, 6 and now 7, the basic
+    idea is to keep it identical between stages so Stage 7's deployment analysis is on
+    the same model the marker has been seeing.
+    """
     return ColumnTransformer(
         transformers=[
             ('text', TfidfVectorizer(max_features=500, ngram_range=(1, 2),
@@ -26,7 +39,13 @@ def make_preprocessor(text_col, categorical_cols, numeric_cols):
 
 
 def find_best_threshold_f2(y_true, y_prob):
-    """Find threshold that maximises F2 on the given data."""
+    """
+    Find the threshold that maximises F2 on the given data.
+
+    Overall this is the threshold helper, the basic idea is to walk the precision-recall
+    curve and pick the F2-maximising point per fold, then average across folds at the
+    end so my deployment threshold is stable.
+    """
     precisions, recalls, thresholds = precision_recall_curve(y_true, y_prob)
     f2_scores = []
     for p, r in zip(precisions, recalls):
@@ -42,7 +61,14 @@ def find_best_threshold_f2(y_true, y_prob):
 
 
 def collect_predictions(df, X, y, groups, text_col, categorical_cols, numeric_cols):
-    """Fit LR across 5 folds and write y_prob/y_pred onto df. Returns mean threshold."""
+    """
+    Fit my LR pipeline across 5 folds and write y_prob and y_pred onto df.
+
+    Overall this is the prediction layer for Stage 7, the basic idea is to attach a
+    probability and a binary prediction to every row in the dataframe so the rest of
+    Stage 7 can do threshold sweeps without needing to refit the model. What this also
+    returns is the mean threshold across folds, which is what the deployment plan uses.
+    """
     print("\nCollecting per-sample predictions...")
 
     sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
@@ -70,6 +96,7 @@ def collect_predictions(df, X, y, groups, text_col, categorical_cols, numeric_co
 
         df.loc[df.index[val_idx], 'y_prob'] = probs
 
+    # Mean threshold across folds is what the deployment plan should use, more stable
     mean_thresh = np.mean(fold_thresholds)
     df['y_pred'] = (df['y_prob'] >= mean_thresh).astype(int)
     print(f"Mean tuned threshold: {mean_thresh:.3f}")

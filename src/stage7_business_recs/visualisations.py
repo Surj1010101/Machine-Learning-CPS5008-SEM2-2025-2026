@@ -1,4 +1,13 @@
-"""Stage 7 plots: threshold trade-offs, tiered deployment, temporal/cost stability."""
+"""
+Stage 7 visualisations module: threshold trade-offs, tiered deployment, stability and costs.
+
+Overall this module is where I generate the three figures for my Stage 7 report
+section, the basic idea is to turn each deployment analysis into a picture the
+business stakeholder can read at a glance. In my project I focused on three plots
+here, the threshold trade-off panel (metrics + workload + cost), the tiered
+deployment distribution and catch breakdown, and the stability plus cost-sensitivity
+combined figure.
+"""
 
 import numpy as np
 import matplotlib
@@ -7,9 +16,17 @@ import matplotlib.pyplot as plt
 
 
 def plot_threshold_tradeoffs(thresh_df, mean_thresh, best_cost_row, output_path):
-    """Three-panel figure: metrics vs threshold, workload, business cost."""
+    """
+    Three-panel figure: metrics vs threshold, workload vs threshold, cost vs threshold.
+
+    Overall this is the headline trade-off picture, the basic idea is to put F2/recall
+    /precision in panel one, workload percentage in panel two, and total business cost
+    in panel three. What this also marks on each panel is the current threshold and
+    where applicable the cost-optimal threshold, so the stakeholder can see the gap.
+    """
     fig, axes = plt.subplots(1, 3, figsize=(18, 5.5))
 
+    # Panel 1, F2/recall/precision curves with current threshold marked
     axes[0].plot(thresh_df['threshold'], thresh_df['f2'], 'b-o', markersize=3,
                  label='F2', linewidth=2)
     axes[0].plot(thresh_df['threshold'], thresh_df['recall'], 'g--s', markersize=3,
@@ -25,6 +42,7 @@ def plot_threshold_tradeoffs(thresh_df, mean_thresh, best_cost_row, output_path)
     axes[0].set_xlim(0.1, 0.85)
     axes[0].grid(alpha=0.3)
 
+    # Panel 2, workload curve with the 30% target marked
     axes[1].plot(thresh_df['threshold'], thresh_df['flagged_pct'], 'purple',
                  linewidth=2, marker='o', markersize=3)
     axes[1].axvline(x=mean_thresh, color='black', linestyle=':', alpha=0.7)
@@ -37,6 +55,7 @@ def plot_threshold_tradeoffs(thresh_df, mean_thresh, best_cost_row, output_path)
     axes[1].set_xlim(0.1, 0.85)
     axes[1].grid(alpha=0.3)
 
+    # Panel 3, business cost curve with both current and cost-optimal thresholds marked
     axes[2].plot(thresh_df['threshold'], thresh_df['cost'] / 1000, 'darkgreen',
                  linewidth=2, marker='o', markersize=3)
     axes[2].axvline(x=mean_thresh, color='black', linestyle=':', alpha=0.7,
@@ -58,7 +77,14 @@ def plot_threshold_tradeoffs(thresh_df, mean_thresh, best_cost_row, output_path)
 def plot_tiered_deployment(high_mask, medium_mask, low_mask,
                            high_catch, med_catch, low_miss, y_true,
                            output_path):
-    """Stacked bar chart of tier distribution + pie chart of catch by tier."""
+    """
+    Stacked bar chart of tier email distribution next to a pie chart of catch by tier.
+
+    Overall this is the deployment picture, the basic idea is that the bar chart shows
+    how my emails get distributed across tiers and the pie chart shows where my actual
+    escalations end up being caught. What this also annotates is the prevalence inside
+    each tier so the stakeholder can see how concentrated the HIGH tier really is.
+    """
     fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
     tier_labels = ['HIGH\n(Immediate)', 'MEDIUM\n(Priority)', 'LOW\n(Standard)']
@@ -82,6 +108,7 @@ def plot_tiered_deployment(high_mask, medium_mask, low_mask,
         axes[0].text(i, total + 15, f'{prev:.0f}% esc.\nn={total}',
                      ha='center', fontsize=9)
 
+    # Pie chart showing where the actual escalations get caught
     total_pos = y_true.sum()
     catch_pcts = [high_catch / total_pos * 100,
                   med_catch / total_pos * 100,
@@ -105,9 +132,17 @@ def plot_tiered_deployment(high_mask, medium_mask, low_mask,
 
 
 def plot_stability_and_costs(temp_df, f2_std, cost_sens_df, breakeven, output_path):
-    """Two-panel figure: temporal stability + cost sensitivity."""
+    """
+    Two-panel figure with temporal stability on the left and cost sensitivity on the right.
+
+    Overall this is the stability picture, the basic idea is that the left panel shows
+    F2 over time with prevalence overlaid, and the right panel shows how my model cost
+    compares against flag-all and no-model under different FN cost assumptions. What
+    this also marks is the breakeven FN cost where my model becomes preferable.
+    """
     fig, axes = plt.subplots(1, 2, figsize=(14, 5.5))
 
+    # Left, F2 over quarters with prevalence as a secondary bar
     axes[0].plot(range(len(temp_df)), temp_df['f2'], 'b-o', label='F2', linewidth=2)
     axes[0].fill_between(range(len(temp_df)),
                          temp_df['f2'] - f2_std, temp_df['f2'] + f2_std,
@@ -124,6 +159,7 @@ def plot_stability_and_costs(temp_df, f2_std, cost_sens_df, breakeven, output_pa
     axes[0].legend(loc='upper left', fontsize=8)
     ax_twin.legend(loc='upper right', fontsize=8)
 
+    # Right, three cost curves vs FN cost so the breakeven is visually obvious
     axes[1].plot(cost_sens_df['fn_cost'], cost_sens_df['model_cost'] / 1000,
                  'b-o', label='Current Model', linewidth=2)
     axes[1].plot(cost_sens_df['fn_cost'], cost_sens_df['flag_all_cost'] / 1000,

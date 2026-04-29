@@ -1,4 +1,13 @@
-"""Threshold sweep and three-tier deployment analysis."""
+"""
+Stage 7 threshold sweep and three-tier deployment analysis module.
+
+Overall this module is where I sweep through every plausible operating threshold and
+then design the recommended tiered deployment, the basic idea is to give the business
+options rather than one fixed number. In my project I focused on two things here, the
+threshold sweep across F2, recall, precision, workload and cost, and the HIGH/MEDIUM/LOW
+tier design with catch rates per tier. What this module demonstrates is the trade-off
+analysis the brief expects in the deployment recommendations.
+"""
 
 import numpy as np
 import pandas as pd
@@ -6,7 +15,14 @@ from sklearn.metrics import fbeta_score, confusion_matrix
 
 
 def run_threshold_analysis(df, mean_thresh):
-    """Sweep thresholds 0.10-0.85 and evaluate F2, recall, precision, cost, workload."""
+    """
+    Sweep thresholds from 0.10 to 0.85 and evaluate F2, recall, precision, cost and workload.
+
+    Overall this is the trade-off picture, the basic idea is to test 16 different
+    thresholds in 0.05 increments and report what each one does to my key metrics. What
+    this also picks out is the F2-best threshold, the cost-best threshold, and the
+    threshold that hits roughly 30 percent workload.
+    """
     print("\n" + "=" * 70)
     print("TIERED THRESHOLD ANALYSIS")
     print("=" * 70)
@@ -63,7 +79,15 @@ def run_threshold_analysis(df, mean_thresh):
 
 
 def run_tiered_deployment(df, mean_thresh, tier_high=0.65):
-    """Classify emails into HIGH/MEDIUM/LOW tiers and report catch rates."""
+    """
+    Classify emails into HIGH/MEDIUM/LOW tiers and report catch rates per tier.
+
+    Overall this is the recommended deployment design, the basic idea is that one
+    threshold gives a binary flag/no-flag decision but a real customer service team
+    needs more nuance, so I propose three tiers. HIGH probability means immediate
+    escalation, MEDIUM means priority review, LOW means standard handling. What this
+    also reports is how many of my actual escalations get caught at each tier.
+    """
     print("\n" + "=" * 70)
     print("RECOMMENDED TIERED DEPLOYMENT")
     print("=" * 70)

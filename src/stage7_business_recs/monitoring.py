@@ -1,10 +1,28 @@
-"""Production monitoring plan specification."""
+"""
+Stage 7 production monitoring plan specification module.
+
+Overall this module is where I write the production monitoring plan, the basic idea is
+that the brief asks me to define how the model will be supervised in production, what
+gets monitored at what cadence, and what events should trigger a retrain. In my project
+I focused on three monitoring tiers (real-time, weekly, monthly) plus five retraining
+trigger conditions. What this module demonstrates is the operational maturity the brief
+expects in the deployment recommendations.
+"""
 
 import json
 
 
 def build_monitoring_plan(df, y_probs):
-    """Return the full monitoring plan dict with expected ranges from current data."""
+    """
+    Return my full monitoring plan as a dict, with current values where applicable.
+
+    Overall this function builds a structured monitoring plan covering real-time
+    metrics (flag rate, mean probability, high risk rate), weekly metrics (observed
+    escalation rate, recall estimate, segment flag rates), monthly metrics (calibration
+    drift, feature drift, fairness audit), and the five retraining triggers. The basic
+    idea is to embed the current values from this run as the baseline so the production
+    team has a concrete starting reference.
+    """
     plan = {
         'real_time_metrics': {
             'flag_rate': {

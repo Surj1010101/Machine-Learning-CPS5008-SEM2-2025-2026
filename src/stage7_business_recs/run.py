@@ -1,11 +1,16 @@
 """
-Stage 7: Business Recommendations & Deployment Strategy
-CPS5008 Machine Learning Assessment
+Stage 7: Business Recommendations and Deployment Strategy
 
-Analyses tiered threshold deployment, monitoring requirements,
-limitations, and future work. Produces final summary outputs.
+For my final stage I turn the model from Stages 4 to 6 into a deployment plan that
+a real energy provider could adopt. Six pieces of work happen here, the threshold
+sweep and trade-off analysis, the three-tier deployment design (HIGH/MEDIUM/LOW),
+the temporal stability check across quarters, the cost-sensitivity analysis under
+different FN cost assumptions, the production monitoring plan with retraining
+triggers, and a final summary JSON capturing every Stage 7 number. The whole file
+delivers the business framing the brief asks for with concrete numbers behind every
+recommendation.
 
-Run with: py src/stage7_business_recs/run.py
+Run with: python src/stage7_business_recs/run.py
 """
 
 import os
@@ -38,7 +43,7 @@ from stage7_business_recs.visualisations import (
 np.random.seed(42)
 os.makedirs('outputs/stage7', exist_ok=True)
 
-# 1. Load and prepare data 
+# 1. Loading and preparing my data, same setup as earlier stages
 print("=" * 70)
 print("STAGE 7: BUSINESS RECOMMENDATIONS & DEPLOYMENT")
 print("=" * 70)
@@ -72,12 +77,12 @@ X = df.drop(columns=exclude_cols)
 y = df['escalated'].values
 groups = df['customer_id'].values
 
-#2. Collect predictions across all folds 
+# 2. Collecting predictions across all folds, this writes y_prob and y_pred onto df
 mean_thresh = collect_predictions(
     df, X, y, groups, text_col_clean, categorical_cols, numeric_cols
 )
 
-#  3. Threshold analysis and tiered deployment 
+# 3. Threshold analysis sweep and the tiered deployment recommendation
 thresh_df, best_f2_row, best_cost_row, workload_30 = run_threshold_analysis(df, mean_thresh)
 thresh_df.to_csv('outputs/stage7/threshold_analysis.csv', index=False)
 
@@ -86,22 +91,22 @@ tier_df, high_mask, medium_mask, low_mask, high_catch, med_catch, low_miss, tota
     run_tiered_deployment(df, mean_thresh, tier_high=tier_high)
 tier_df.to_csv('outputs/stage7/tier_distribution.csv', index=False)
 
-#  4. Temporal stability ─
+# 4. Temporal stability check, do my F2 and prevalence drift across quarters
 temp_df, f2_std = run_temporal_stability(df)
 temp_df.to_csv('outputs/stage7/temporal_stability.csv', index=False)
 
-#5. Cost sensitivity 
+# 5. Cost sensitivity, how does my model compare under different FN cost assumptions
 cost_sens_df, breakeven, tp_all, fp_all, fn_all = run_cost_sensitivity(df, thresh_df)
 cost_sens_df.to_csv('outputs/stage7/cost_sensitivity.csv', index=False)
 
-# 6. Monitoring plan 
+# 6. Monitoring plan, real-time, weekly and monthly metrics plus retraining triggers
 y_probs = df['y_prob'].values
 monitoring_plan = build_monitoring_plan(df, y_probs)
 with open('outputs/stage7/monitoring_plan.json', 'w') as f:
     json.dump(monitoring_plan, f, indent=2)
 print("\nSaved: outputs/stage7/monitoring_plan.json")
 
-# 7. Visualisations 
+# 7. Visualisations, three figures covering trade-offs, tiered deployment and stability/costs
 print("\n" + "=" * 70)
 print("GENERATING VISUALISATIONS...")
 print("=" * 70)
@@ -114,7 +119,7 @@ plot_tiered_deployment(high_mask, medium_mask, low_mask,
 plot_stability_and_costs(temp_df, f2_std, cost_sens_df, breakeven,
                           'outputs/stage7/stability_and_costs.png')
 
-# 8. Final Summary JSON 
+# 8. Final summary JSON, this captures every Stage 7 conclusion for the report
 print("\n" + "=" * 70)
 print("SAVING FINAL SUMMARY...")
 print("=" * 70)
@@ -173,7 +178,7 @@ with open('outputs/stage7/final_summary.json', 'w') as f:
     json.dump(final_summary, f, indent=2)
 print("Saved: outputs/stage7/final_summary.json")
 
-#9. Summary 
+# 9. Final summary block, the headline numbers for the Stage 7 report section
 print("\n" + "=" * 70)
 print("STAGE 7 SUMMARY")
 print("=" * 70)
