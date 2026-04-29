@@ -1,0 +1,27 @@
+{
+  "feature_engineering": {
+    "best_config": "Structured only",
+    "best_f2": 0.4265743009535461,
+    "key_findings": [
+      "Bigrams impact: +0.0066 F2 (unigrams=0.3534 vs bigrams=0.3600)",
+      "Text vs structured: text-only F2=0.3606, structured-only F2=0.4266",
+      "TF-IDF vocabulary size: 200=0.3492, 500=0.3600, 1000=0.3490",
+      "Temporal features impact: -0.0059 F2"
+    ]
+  },
+  "multicollinearity": {
+    "max_numeric_correlation": 0.024615266130538337,
+    "max_numeric_pair": [
+      "hour",
+      "day_of_week"
+    ],
+    "max_vif": 1.001198642580311,
+    "max_cramers_v": 0.04317177343171441,
+    "conclusion": "No multicollinearity concerns. All numeric VIF < 5, all categorical Cramers V < 0.3.",
+    "mitigations": [
+      "OHE drop=first avoids dummy variable trap",
+      "L1 regularisation handles correlated TF-IDF features",
+      "Verified low VIF across all numeric features"
+    ]
+  }
+}

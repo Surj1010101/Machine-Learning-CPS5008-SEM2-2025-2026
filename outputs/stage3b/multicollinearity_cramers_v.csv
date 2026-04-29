@@ -1,0 +1,16 @@
+Feature 1,Feature 2,Cramers V
+customer_type,issue_category,0.04317177343171441
+region,issue_category,0.042002792728653295
+tenure_type,issue_category,0.04049557359091852
+issue_category,sentiment,0.03646092553067596
+region,sentiment,0.034752151794554084
+meter_type,issue_category,0.033983705216000484
+customer_type,sentiment,0.03219068361624182
+customer_type,region,0.029455272102746174
+meter_type,sentiment,0.027454873623166176
+tenure_type,sentiment,0.018712903006149386
+meter_type,region,0.014958839890929483
+tenure_type,region,0.012771297932064033
+customer_type,meter_type,0.009783236064666436
+tenure_type,meter_type,0.008882829618520424
+customer_type,tenure_type,0.006761604784956715
