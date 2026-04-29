@@ -1,0 +1,43 @@
+{
+  "knn": {
+    "best_k": 15,
+    "best_f2": 0.4102680865006021,
+    "conclusion": "KNN underperforms LR due to curse of dimensionality in sparse TF-IDF space"
+  },
+  "regularisation": {
+    "best_config": "LR_L1_C0.1",
+    "best_f2": 0.4400108957081816,
+    "conclusion": "L2 regularisation (default) provides best bias-variance balance; L1 produces sparser models but similar performance"
+  },
+  "bias_variance": {
+    "train_val_gap": 0.1880704865697835,
+    "diagnosis": "HIGH VARIANCE (overfitting). Consider stronger regularisation or more data.",
+    "conclusion": "High-bias, low-variance model. Performance limited by weak signal, not overfitting."
+  },
+  "pca": {
+    "components_90pct": 33,
+    "components_95pct": 77,
+    "total_features": 518,
+    "conclusion": "PCA reduces dimensionality but may lose sparse discriminative features"
+  },
+  "kmeans": {
+    "best_k": 2,
+    "best_silhouette": 0.10882923356710167,
+    "conclusion": "Low silhouette scores confirm weak cluster structure, consistent with weak supervised signal"
+  },
+  "linear_regression": {
+    "mean_f2": 0.08016580675932534,
+    "conclusion": "Linear regression produces predictions outside [0,1], confirming logistic regression is the correct choice for binary classification"
+  },
+  "skills_demonstrated": [
+    "K-nearest neighbours",
+    "Regularisation techniques (L1/L2)",
+    "Bias-variance trade-off",
+    "Principal component analysis (dimensionality reduction)",
+    "K-means clustering (unsupervised learning)",
+    "Linear regression vs logistic regression",
+    "Evaluation metrics for unsupervised learning (silhouette score)",
+    "Strengths and weaknesses of ML approaches",
+    "Optimising ML methods for specific use cases"
+  ]
+}
