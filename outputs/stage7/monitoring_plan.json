@@ -1,0 +1,60 @@
+{
+  "real_time_metrics": {
+    "flag_rate": {
+      "description": "Percentage of incoming emails flagged as high/medium risk",
+      "expected_range": "40-60%",
+      "alert_threshold": "Flag rate moves outside 30-70% sustained over 1 week",
+      "current_value": "54.9%"
+    },
+    "mean_probability": {
+      "description": "Average predicted escalation probability across all emails",
+      "expected_range": "0.40-0.50",
+      "alert_threshold": "Mean shifts by >0.05 from training baseline",
+      "current_value": "0.446"
+    },
+    "high_risk_rate": {
+      "description": "Percentage of emails in HIGH risk tier (p >= 0.65)",
+      "expected_range": "15-25%",
+      "alert_threshold": "Rate doubles or halves vs training baseline",
+      "current_value": "9.5%"
+    }
+  },
+  "weekly_metrics": {
+    "observed_escalation_rate": {
+      "description": "Actual escalation rate among resolved emails",
+      "expected_range": "12-18%",
+      "alert_threshold": "Moves outside 8-25% sustained over 2 weeks"
+    },
+    "recall_estimate": {
+      "description": "Proportion of actual escalations that were flagged",
+      "expected_range": "50-65%",
+      "alert_threshold": "Drops below 40%"
+    },
+    "segment_flag_rates": {
+      "description": "Flag rate broken down by region and customer type",
+      "expected_range": "Within 10% of overall rate for each segment",
+      "alert_threshold": "Any segment deviates by >20% from overall"
+    }
+  },
+  "monthly_metrics": {
+    "model_recalibration_check": {
+      "description": "Compare predicted vs actual escalation rates by probability bin",
+      "action": "If calibration drift >5% in any bin, trigger model retrain"
+    },
+    "feature_drift": {
+      "description": "Monitor TF-IDF vocabulary coverage on new emails",
+      "action": "If >20% of new email tokens are out-of-vocabulary, retrain TF-IDF"
+    },
+    "fairness_audit": {
+      "description": "Recompute TPR/FPR by region and customer type",
+      "action": "If 80% rule violated for any segment, investigate and mitigate"
+    }
+  },
+  "retraining_triggers": [
+    "Observed escalation rate changes by >5% from training baseline (14.6%)",
+    "Model recall drops below 40% for 2 consecutive weeks",
+    "Vocabulary drift exceeds 20% (new words not in training TF-IDF)",
+    "Business process changes (new escalation criteria, new email templates)",
+    "Quarterly scheduled retrain regardless of triggers"
+  ]
+}
