@@ -1,3 +1,5 @@
+"""Cross validation loop with threshold tuning for all models."""
+
 import numpy as np
 import pandas as pd
 from sklearn.metrics import (fbeta_score, precision_recall_curve, auc,
