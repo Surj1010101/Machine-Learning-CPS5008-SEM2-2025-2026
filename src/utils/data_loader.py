@@ -1,15 +1,4 @@
-"""
-Shared data loader and feature group constants module.
-
-Overall this module is the foundation that every later stage builds on, the basic idea
-is to keep the data loading, target derivation and feature group definitions in one
-place so every stage gets a consistent view of the dataset. In my project I focused on
-three things here, the column lists (EXCLUDE_COLS, CATEGORICAL_COLS, NUMERIC_COLS,
-TEXT_COL_CLEAN), the load_and_prepare_data helper that returns the (df, X, y, groups)
-tuple, and the clean_text helper used by the TF-IDF stage. What this module
-demonstrates is reproducibility, every stage gets the exact same processed data with
-the same target, the same exclusions and the same temporal features.
-"""
+"""Data Loader module."""
 
 import re
 import pandas as pd
@@ -40,8 +29,8 @@ def clean_text(text):
     """
     Minimal text cleaning for my short email fragments.
 
-    Overall this function lowercases, strips punctuation and collapses extra whitespace,
-    the basic idea is to keep the cleaning conservative because the emails are already
+    This function lowercases, strips punctuation and collapses extra whitespace,
+    the aim is to keep the cleaning conservative because the emails are already
     short (around 7 to 8 words on average) and aggressive cleaning would lose signal.
     """
     text = text.lower().strip()
@@ -54,10 +43,10 @@ def load_and_prepare_data():
     """
     Load my dataset and return (df, X, y, groups) for modelling.
 
-    Overall this is the entry point that every stage uses to load data, the basic idea
+    This is the entry point that every stage uses to load data, the main aim
     is to derive the binary target, parse the timestamp into hour/day_of_week/month,
     impute missing sentiment with the 'Unknown' string, and build a feature matrix that
-    drops everything in EXCLUDE_COLS. What this also returns is the customer_id array
+    drops everything in EXCLUDE_COLS. This also returns the customer_id array
     as 'groups' which my StratifiedGroupKFold needs.
 
     Returns:
@@ -89,3 +78,6 @@ def load_and_prepare_data():
     groups = df['customer_id'].values
 
     return df, X, y, groups
+
+
+
