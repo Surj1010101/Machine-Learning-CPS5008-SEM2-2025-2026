@@ -1,9 +1,16 @@
 """
-Stage 5: Error analysis and Segment Breakdown
-Analyses misclassifications from the selected model (LR with tuned threshold),
-breaks down performance by segment, and frames business impact.
+Stage 5: Error Analysis and Segment Breakdown
 
-Run with: py src/stage5_error_analysis/run.py
+For my Stage 5 I take the selected model from Stage 4 (Logistic Regression with
+tuned threshold) and dig into where it succeeds and where it fails, broken down by
+segment, by error type and by business cost. Five things happen in this script,
+collecting per-sample predictions across all folds, doing deep dives on false
+negatives and false positives, breaking performance down by segment, running a
+fairness check using the 80% rule on recall, and framing the results as a business
+cost comparison. The whole point of this file is to satisfy the error analysis
+requirement in the brief with concrete numbers behind every claim.
+
+Run with: python src/stage5_error_analysis/run.py
 """
 
 import os
@@ -35,7 +42,7 @@ from stage5_error_analysis.visualisations import (
 np.random.seed(42)
 os.makedirs('outputs/stage5', exist_ok=True)
 
-#1. Load and prepare data 
+# 1. Loading and preparing my data, similar setup to earlier stages
 print("=" * 70)
 print("STAGE 5: ERROR ANALYSIS & SEGMENT BREAKDOWN")
 print("=" * 70)
@@ -69,7 +76,7 @@ X = df.drop(columns=exclude_cols)
 y = df['escalated'].values
 groups = df['customer_id'].values
 
-#2. Collect per-sample predictions across all folds 
+# 2. Collecting per-sample predictions across all folds, this writes y_pred onto df
 fold_metrics = collect_fold_predictions(
     df, X, y, groups, text_col_clean, categorical_cols, numeric_cols
 )
@@ -84,22 +91,22 @@ print(f"\nAggregated: F2={overall_f2:.4f}")
 print(f"  TP={tp_all}, FP={fp_all}, FN={fn_all}, TN={tn_all}")
 print(f"  Recall={tp_all/(tp_all+fn_all):.3f}, Precision={tp_all/(tp_all+fp_all):.3f}")
 
-# 3. Error analysis
+# 3. Error analysis on FN (missed escalations) and FP (false alarms)
 fn_df, tp_df, mean_thresh, close_fn = analyse_false_negatives(df, fold_metrics)
 fp_df, tn_df = analyse_false_positives(df)
 
-# ─4.Segment-level performance 
+# 4. Segment-level performance breakdown across all my categorical features
 seg_df = run_segment_analysis(df)
 seg_df.to_csv('outputs/stage5/segment_performance.csv', index=False)
 print(f"\nSaved: outputs/stage5/segment_performance.csv")
 
 run_fairness_analysis(seg_df)
 
-#5. Business impact and calibration 
+# 5. Business impact and calibration, the cost comparison and the reliability table
 cost_data = run_business_impact(df, tp_all, fp_all, fn_all, tn_all)
 cal_table = run_calibration(df)
 
-#6. Visualisations
+# 6. Visualisations, three figures covering overview, calibration/cost, and FN deep dive
 print("\n" + "=" * 70)
 print("GENERATING VISUALISATIONS...")
 print("=" * 70)
@@ -112,7 +119,7 @@ plot_calibration_and_cost(cal_table, cost_data,
 miss_df = plot_fn_deep_dive(df, fn_df, tp_df, mean_thresh,
                             'outputs/stage5/fn_deep_dive.png')
 
-#7.Save detailed error analysis data 
+# 7. Saving detailed error analysis data for the report appendix
 print("\n" + "=" * 70)
 print("SAVING DETAILED DATA...")
 print("=" * 70)
@@ -129,6 +136,7 @@ fp_export = fp_df[['customer_id', 'email_body_text', 'escalation_level',
 fp_export.to_csv('outputs/stage5/false_positives.csv', index=False)
 print(f"Saved: outputs/stage5/false_positives.csv ({len(fp_export)} rows)")
 
+# Final summary JSON capturing every Stage 5 number for the report
 summary = {
     'overall_f2': float(overall_f2),
     'overall_recall': float(tp_all / (tp_all + fn_all)),
@@ -157,7 +165,7 @@ with open('outputs/stage5/error_analysis_summary.json', 'w') as f:
     json.dump(summary, f, indent=2)
 print("Saved: outputs/stage5/error_analysis_summary.json")
 
-#8.Summary
+# 8. Final summary, the headline numbers for the report
 print("\n" + "=" * 70)
 print("STAGE 5 SUMMARY")
 print("=" * 70)

@@ -1,9 +1,16 @@
 """
-Stage 6: Interpretability, Fairness & Ethics
-Global feature importance, local explanations (LIME), fairness deep dive,
-and ethical reflection notes for the report.
+Stage 6: Interpretability, Fairness and Ethics
 
-Runs with: py src/stage6_interpretability/run.py
+Stage 6 is the interpretability and fairness stage. Here I take my selected Logistic
+Regression model from Stage 4 and explain WHY it makes the predictions it does, both
+globally and per-instance, then check whether it treats different protected groups
+fairly. Five pieces of work happen in this file, the global feature importance
+through LR coefficients, permutation importance on the validation set, local
+explanations through LIME, an equalised odds fairness audit, and a written ethical
+reflection. The whole package satisfies the interpretability and fairness
+requirements in the brief with concrete evidence for every claim.
+
+Run with: python src/stage6_interpretability/run.py
 """
 
 import os
@@ -37,7 +44,7 @@ from stage6_interpretability.visualisations import (
 np.random.seed(42)
 os.makedirs('outputs/stage6', exist_ok=True)
 
-#1.Load and prepare data 
+# 1. Loading and preparing my data, same setup as Stage 5
 print("=" * 70)
 print("STAGE 6: INTERPRETABILITY, FAIRNESS & ETHICS")
 print("=" * 70)
@@ -74,21 +81,21 @@ groups = df['customer_id'].values
 sgkf = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
 folds = list(sgkf.split(X, y, groups))
 
-# 2.Train representative fold for interpretation
+# 2. Training a representative fold for interpretation, I use fold 0 as my pivot
 pipeline, best_thresh, train_idx, val_idx, y_prob_val, y_pred_val = train_representative_fold(
     X, y, folds, text_col_clean, categorical_cols, numeric_cols
 )
 X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
 y_val = y[val_idx]
 
-#3 Global Feature Importance
+# 3. Global feature importance through LR coefficients and permutation importance
 feat_imp, top_escalation, top_deescalation, feature_names = run_lr_coefficient_importance(pipeline)
 feat_imp.to_csv('outputs/stage6/feature_importance_lr.csv', index=False)
 
 perm_df = run_permutation_importance(pipeline, X_val, y_val, best_thresh)
 perm_df.to_csv('outputs/stage6/permutation_importance.csv', index=False)
 
-#4.Local Explanations (LIME
+# 4. Local explanations through LIME for representative TP, FN and FP examples
 lime_results = run_lime_explanations(
     pipeline, X_train, X_val, val_idx, df, y_prob_val, y_pred_val, feature_names
 )
@@ -96,14 +103,14 @@ with open('outputs/stage6/lime_explanations.json', 'w') as f:
     json.dump(lime_results, f, indent=2, default=str)
 print(f"\nSaved: outputs/stage6/lime_explanations.json")
 
-#  5 Fairness Deep Dive
+# 5. Fairness deep dive, equalised odds across region, customer_type and tenure_type
 fairness_df = run_equalised_odds(
     df, X, y, groups, text_col_clean, categorical_cols, numeric_cols
 )
 fairness_df.to_csv('outputs/stage6/fairness_equalised_odds.csv', index=False)
 print(f"\nSaved: outputs/stage6/fairness_equalised_odds.csv")
 
-#6.Visualisations 
+# 6. Visualisations, four figures covering coefficients, permutation, fairness and LIME
 print("\n" + "=" * 70)
 print("GENERATING VISUALISATIONS...")
 print("=" * 70)
@@ -116,13 +123,13 @@ plot_permutation_importance(perm_df, 'outputs/stage6/permutation_importance.png'
 plot_fairness(fairness_df, 'outputs/stage6/fairness_equalised_odds.png')
 plot_lime_examples(lime_results, 'outputs/stage6/lime_examples.png')
 
-#7.Ethical Reflection Notes
+# 7. Ethical reflection notes saved to file as evidence for the report
 ethical_notes = print_ethical_notes()
 with open('outputs/stage6/ethical_notes.txt', 'w') as f:
     f.write(ethical_notes)
 print("Saved: outputs/stage6/ethical_notes.txt")
 
-#8. Summary 
+# 8. Final summary block, this is what I quote in the Stage 6 report section
 print("\n" + "=" * 70)
 print("STAGE 6 SUMMARY")
 print("=" * 70)

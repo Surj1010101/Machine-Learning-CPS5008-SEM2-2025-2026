@@ -1,4 +1,13 @@
-"""Stage 5 plots:error overview, calibration/cost, FN deep dive."""
+"""
+Stage 5 visualisations module: error overview, calibration/cost and FN deep dive.
+
+Overall this module is where I generate the three figures for my Stage 5 report
+section, the basic idea is to turn the error analysis numbers into pictures the
+marker can read at a glance. In my project I focused on three plots here, the
+overall error overview (confusion matrix + probability distributions + segment
+recall + per-issue F2), the calibration plot next to the business cost comparison,
+and the false negative deep dive showing miss rate per escalation level.
+"""
 
 import numpy as np
 import pandas as pd
@@ -9,9 +18,18 @@ import matplotlib.pyplot as plt
 
 def plot_error_overview(df, seg_df, fn_all, fp_all, tn_all, tp_all,
                         mean_thresh, overall_f2, output_path):
-    """Confusion matrix + probability distributions + segment recall + F2 by issue."""
+    """
+    Overall 2 by 2 figure with confusion matrix, probability distribution by outcome,
+    recall by region and customer type, and F2 by issue category.
+
+    Overall this is the headline Stage 5 figure, the basic idea is to put four
+    different angles on my error analysis into one image so the report can reference
+    everything in one place. What this also annotates is the threshold line on the
+    probability distribution panel, so the gap between FN and TP is visually obvious.
+    """
     fig, axes = plt.subplots(2, 2, figsize=(14, 11))
 
+    # Panel 1, confusion matrix as a heatmap with cell counts and percentages
     cm_display = np.array([[tn_all, fp_all], [fn_all, tp_all]])
     axes[0, 0].imshow(cm_display, cmap='Blues', interpolation='nearest')
     axes[0, 0].set_xticks([0, 1])
@@ -29,6 +47,7 @@ def plot_error_overview(df, seg_df, fn_all, fp_all, tn_all, tp_all,
                             ha='center', va='center', fontsize=12,
                             color='white' if val > cm_display.max()/2 else 'black')
 
+    # Panel 2, predicted probability distribution split by outcome type
     for ptype, color, label in [('TP', '#4CAF50', 'True Pos'),
                                  ('FP', '#FF9800', 'False Pos'),
                                  ('FN', '#F44336', 'False Neg'),
@@ -44,6 +63,7 @@ def plot_error_overview(df, seg_df, fn_all, fp_all, tn_all, tp_all,
     axes[0, 1].set_title('Probability Distribution by Outcome', fontweight='bold')
     axes[0, 1].legend(fontsize=8)
 
+    # Panel 3, recall by region and customer_type combined into one chart
     region_seg = seg_df[seg_df['segment'] == 'region'].sort_values('recall')
     ctype_seg = seg_df[seg_df['segment'] == 'customer_type'].sort_values('recall')
     combined_seg = pd.concat([region_seg, ctype_seg])
@@ -64,6 +84,7 @@ def plot_error_overview(df, seg_df, fn_all, fp_all, tn_all, tp_all,
         axes[1, 0].text(val + 0.02, bar.get_y() + bar.get_height()/2,
                         f'{val:.3f}', va='center', fontsize=9)
 
+    # Panel 4, F2 by issue category, this is where category-level performance lives
     issue_seg = seg_df[seg_df['segment'] == 'issue_category'].sort_values('f2')
     bars2 = axes[1, 1].barh(issue_seg['category'], issue_seg['f2'],
                              color='#7E57C2', alpha=0.85)
@@ -80,9 +101,16 @@ def plot_error_overview(df, seg_df, fn_all, fp_all, tn_all, tp_all,
 
 
 def plot_calibration_and_cost(cal_table, cost_data, output_path):
-    """calibration plot and business cost bar chart."""
+    """
+    Side by side calibration plot and business cost bar chart.
+
+    Overall this is the second Stage 5 figure, the basic idea is to put my reliability
+    diagram next to the four-scenario cost comparison so the report can show probability
+    quality and business value in one shot.
+    """
     fig, axes = plt.subplots(1, 2, figsize=(14, 5.5))
 
+    # Calibration plot, only showing bins with at least 10 samples to avoid noise
     cal_valid = cal_table[cal_table['n'] >= 10].copy()
     axes[0].plot([0, 1], [0, 1], 'k--', alpha=0.5, label='Perfect calibration')
     axes[0].scatter(cal_valid['mean_prob'], cal_valid['actual_rate'],
@@ -97,6 +125,7 @@ def plot_calibration_and_cost(cal_table, cost_data, output_path):
     axes[0].set_xlim(0, 1)
     axes[0].set_ylim(0, 1)
 
+    # Business cost bar chart, four scenarios from worst to best
     scenarios = ['No Model\n(flag nothing)', 'Flag\nEverything',
                  'Current\nModel', 'Perfect\nModel']
     costs = [cost_data['no_model_cost'], cost_data['flag_all_cost'],
@@ -116,9 +145,18 @@ def plot_calibration_and_cost(cal_table, cost_data, output_path):
 
 
 def plot_fn_deep_dive(df, fn_df, tp_df, mean_thresh, output_path):
-    """FN probability histogram +miss rate by escalation level."""
+    """
+    FN probability histogram next to miss rate by escalation level.
+
+    Overall this is the final Stage 5 figure, the basic idea is to zoom into just the
+    false negatives, the basic idea is that this is where my model loses the most
+    business value, so the report needs a dedicated picture of it. What this also
+    breaks down is whether my misses are concentrated at borderline level 2 cases or
+    whether even level 3 cases are slipping through.
+    """
     fig, axes = plt.subplots(1, 2, figsize=(14, 5.5))
 
+    # Probability histogram comparing FN against TP, with threshold marked
     axes[0].hist(fn_df['y_prob'], bins=20, color='#F44336', alpha=0.7,
                  edgecolor='white', label=f'False Negatives (n={len(fn_df)})')
     axes[0].hist(tp_df['y_prob'], bins=20, color='#4CAF50', alpha=0.5,
@@ -130,6 +168,7 @@ def plot_fn_deep_dive(df, fn_df, tp_df, mean_thresh, output_path):
     axes[0].set_title('Probability Distribution: Escalated Emails', fontweight='bold')
     axes[0].legend(fontsize=9)
 
+    # Miss rate per escalation level for the levels that count as positives (2 and 3)
     levels_in_target = [2, 3]
     miss_data = []
     for level in levels_in_target:

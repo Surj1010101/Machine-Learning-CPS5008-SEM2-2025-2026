@@ -1,4 +1,14 @@
-"""Segmentlevel performance breakdown and fairness disparity analysis."""
+"""
+Stage 5 segment-level performance and fairness disparity module.
+
+Overall this module is where I break my model performance down by every protected
+attribute and check for fairness disparities, the basic idea is to compute F2, recall,
+precision and FPR per category and then run the 80% rule on recall across region and
+customer_type. In my project this is really important because the brief asks for
+demographic and regional bias evidence, and an aggregate F2 alone hides the fact that
+some segments may be systematically under-served. What this module demonstrates is
+the formal fairness check the brief requires.
+"""
 
 import numpy as np
 import pandas as pd
@@ -6,7 +16,14 @@ from sklearn.metrics import fbeta_score, precision_recall_curve, auc, confusion_
 
 
 def run_segment_analysis(df):
-    """Compute F2/recall/precision/FPR per category for each protected attribute."""
+    """
+    Compute F2, recall, precision and FPR per category for every protected attribute.
+
+    Overall this loops through every categorical feature and every value inside it, the
+    basic idea is to find segments where the model is under-performing. What this also
+    handles is the case where a segment has zero positives, which would make F2 undefined,
+    so those get skipped with a clear note rather than silently broken.
+    """
     print("\n" + "=" * 70)
     print("SEGMENT-LEVEL PERFORMANCE BREAKDOWN")
     print("=" * 70)
@@ -40,6 +57,7 @@ def run_segment_analysis(df):
             precision_seg = tp_s / (tp_s + fp_s) if (tp_s + fp_s) > 0 else 0
             fpr_seg = fp_s / (fp_s + tn_s) if (fp_s + tn_s) > 0 else 0
 
+            # PR-AUC needs at least 5 positives to be meaningful, otherwise NaN
             if n_pos >= 5:
                 prec_arr, rec_arr, _ = precision_recall_curve(y_true_seg, y_prob_seg)
                 prauc_seg = auc(rec_arr, prec_arr)
@@ -64,7 +82,15 @@ def run_segment_analysis(df):
 
 
 def run_fairness_analysis(seg_df, fairness_attrs=('region', 'customer_type')):
-    """Recall disparity and 80% rule check for each protected attribute."""
+    """
+    Recall disparity and 80% rule check for each protected attribute.
+
+    Overall this is the formal fairness audit, the basic idea is that for each protected
+    attribute I compute the ratio of the lowest recall segment to the highest recall
+    segment, and if that ratio falls below 0.8 then the segment is being systematically
+    under-served. What this also reports is the FPR range across categories so the
+    report can discuss both miss disparities and false-alarm disparities.
+    """
     print("\n" + "=" * 70)
     print("FAIRNESS ANALYSIS (Recall Disparity)")
     print("=" * 70)

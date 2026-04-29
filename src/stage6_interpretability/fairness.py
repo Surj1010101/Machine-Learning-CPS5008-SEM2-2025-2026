@@ -1,4 +1,14 @@
-"""Equalised odds analysis across protected attributes (all-fold predictions)."""
+"""
+Stage 6 equalised odds analysis module across protected attributes.
+
+Overall this module is where I run the formal fairness audit, the basic idea is to
+collect predictions across all 5 folds and then compute the True Positive Rate, False
+Positive Rate, Positive Predictive Value and F2 per protected group. In my project
+this is really important because the brief asks for demographic and regional bias
+evidence, and the equalised odds gap is the standard metric for whether my model
+treats different groups consistently. What this module demonstrates is the formal
+fairness check the brief requires, with concrete TPR and FPR gaps.
+"""
 
 import numpy as np
 import pandas as pd
@@ -11,7 +21,16 @@ from stage6_interpretability.model import make_preprocessor, find_best_threshold
 
 
 def run_equalised_odds(df, X, y, groups, text_col, categorical_cols, numeric_cols):
-    """Collect per-sample predictions across all folds, then compute TPR/FPR/PPV gaps."""
+    """
+    Collect per-sample predictions across all my folds, then compute TPR, FPR and PPV gaps.
+
+    Overall this function re-runs the full StratifiedGroupKFold loop just to capture
+    every prediction at the row level, then it groups by each protected attribute and
+    reports the rates. The basic idea is that an aggregate F2 hides whether one group
+    is being systematically under-served, and this analysis surfaces that. What this
+    also reports is whether the gaps are within acceptable thresholds (TPR gap < 0.10,
+    FPR gap < 0.15) so the report has a clear pass/fail verdict per attribute.
+    """
     print("\n" + "=" * 70)
     print("FAIRNESS DEEP DIVE: EQUALISED ODDS")
     print("=" * 70)
@@ -42,6 +61,7 @@ def run_equalised_odds(df, X, y, groups, text_col, categorical_cols, numeric_col
 
     df['y_pred_all'] = df['y_pred_all'].astype(int)
 
+    # Three protected attributes the brief asks me to audit
     fairness_attrs = {
         'region': ['England', 'Scotland', 'Wales'],
         'customer_type': ['Commercial', 'Domestic'],
@@ -79,6 +99,7 @@ def run_equalised_odds(df, X, y, groups, text_col, categorical_cols, numeric_col
             print(f"  {group:<15s} {tpr:>6.3f} {fpr:>6.3f} {ppv:>6.3f} {f2:>6.3f} "
                   f"{len(sub):>6d} {int(y_true_g.sum()):>5d} {tp:>4d} {fp:>5d} {fn:>4d}")
 
+        # Equalised odds verdict per attribute
         attr_data = [r for r in fairness_results if r['attribute'] == attr]
         tprs = [r['tpr'] for r in attr_data]
         fprs = [r['fpr'] for r in attr_data]

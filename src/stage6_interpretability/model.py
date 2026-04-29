@@ -1,4 +1,13 @@
-"""Pipeline setup for Stage 6 for preprocessor, threshold tuning, single-fold training."""
+"""
+Stage 6 model setup module: preprocessor, threshold tuning and single-fold training.
+
+Overall this module is where I rebuild the same Logistic Regression pipeline used in
+earlier stages so my interpretability analysis is on the same model the brief actually
+sees. The basic idea is to train on a single representative fold rather than full CV,
+because LIME and permutation importance work on a fitted model not on cross-validation
+folds. What this module demonstrates is the bridge between my Stage 4 model and my
+Stage 6 explanations.
+"""
 
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -10,7 +19,13 @@ from sklearn.metrics import precision_recall_curve, fbeta_score
 
 
 def make_preprocessor(text_col, categorical_cols, numeric_cols):
-    """Standard ColumnTransformer for the LR baseline."""
+    """
+    Standard ColumnTransformer used by my LR baseline.
+
+    Overall this is the same preprocessor I used in Stage 3 and Stage 5, the basic idea
+    is to keep the preprocessing identical between stages so the model under inspection
+    here behaves the same way as in the main pipeline.
+    """
     return ColumnTransformer(
         transformers=[
             ('text', TfidfVectorizer(max_features=500, ngram_range=(1, 2),
@@ -25,7 +40,12 @@ def make_preprocessor(text_col, categorical_cols, numeric_cols):
 
 
 def find_best_threshold_f2(y_true, y_prob):
-    """Finds the threshold that maximises F2 on the given data."""
+    """
+    Find the threshold that maximises F2 on the given data.
+
+    Overall this is the same threshold-tuning helper used in earlier stages, the basic
+    idea is to walk the precision-recall curve and pick where F2 peaks.
+    """
     precisions, recalls, thresholds = precision_recall_curve(y_true, y_prob)
     f2_scores = []
     for p, r in zip(precisions, recalls):
@@ -41,7 +61,15 @@ def find_best_threshold_f2(y_true, y_prob):
 
 
 def train_representative_fold(X, y, folds, text_col, categorical_cols, numeric_cols):
-    """Trains LR on fold 0 and return the fitted pipeline, threshold, and fold indices."""
+    """
+    Train LR on fold 0 and return the fitted pipeline plus the threshold and indices.
+
+    Overall this gives me one fully fitted model to do interpretability on, the basic
+    idea is that I do not need to retrain inside every interpretability function, I
+    just train once and pass the fitted pipeline around. What this also returns is
+    everything the LIME and permutation modules need, the train and val indices, the
+    validation probabilities and the validation predictions.
+    """
     print("\nTraining model on largest fold for interpretation...")
 
     train_idx, val_idx = folds[0]
@@ -56,6 +84,7 @@ def train_representative_fold(X, y, folds, text_col, categorical_cols, numeric_c
     ])
     pipeline.fit(X_train, y_train)
 
+    # Tuning threshold on training probabilities, never on validation
     y_prob_train = pipeline.predict_proba(X_train)[:, 1]
     best_thresh = find_best_threshold_f2(y_train, y_prob_train)
     print(f"Tuned threshold: {best_thresh:.3f}")

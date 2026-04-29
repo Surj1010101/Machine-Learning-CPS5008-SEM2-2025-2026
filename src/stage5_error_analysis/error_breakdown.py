@@ -1,10 +1,28 @@
-"""False negative and false positive deep dives."""
+"""
+Stage 5 false negative and false positive deep dive module.
+
+Overall this module is where I take the per-sample predictions and dig into the errors,
+the basic idea is to compare the characteristics of my missed escalations (FN) against
+the ones I caught (TP), and the false alarms (FP) against the correct non-flags (TN).
+In my project this is really important because the brief explicitly penalises generic
+discussion in the error analysis section, so I have to show specific patterns about
+which kinds of emails my model gets wrong. What this module demonstrates is exactly
+that, broken down by every demographic and feature.
+"""
 
 import numpy as np
 
 
 def analyse_false_negatives(df, fold_metrics):
-    """Characterise the missed escalations (FN) vs correctly caught ones (TP)."""
+    """
+    Characterise my missed escalations (FN) against the ones I caught (TP).
+
+    Overall this is the deep dive on the most expensive error type for my use case, the
+    basic idea is to compare the predicted probability distribution of FN vs TP, count
+    how many FNs were close to the threshold, and break the FNs down by every
+    categorical feature. What this also reports is the miss rate per escalation_level
+    which tells me whether the model is missing harder cases or all levels equally.
+    """
     print("\n" + "=" * 70)
     print("FALSE NEGATIVE ANALYSIS (Missed Escalations)")
     print("=" * 70)
@@ -24,11 +42,13 @@ def analyse_false_negatives(df, fold_metrics):
           f"median={tp_df['y_prob'].median():.3f}, "
           f"min={tp_df['y_prob'].min():.3f}")
 
+    # Counting FNs that were within 0.05 of the threshold, these are "almost caught" cases
     mean_thresh = np.mean([m['threshold'] for m in fold_metrics])
     close_fn = fn_df[fn_df['y_prob'] >= mean_thresh - 0.05]
     print(f"\n  FNs within 0.05 of mean threshold ({mean_thresh:.3f}): "
           f"{len(close_fn)} ({len(close_fn)/len(fn_df)*100:.1f}%)")
 
+    # Comparing FN vs TP distributions across every categorical feature
     print(f"\nFalse Negative characteristics vs True Positives:")
     for col in ['customer_type', 'tenure_type', 'meter_type', 'region',
                 'issue_category', 'sentiment']:
@@ -44,6 +64,7 @@ def analyse_false_negatives(df, fold_metrics):
             print(f"    {cat:20s}: FN={fn_pct:5.1f}%  TP={tp_pct:5.1f}%  "
                   f"diff={diff:+5.1f}%{marker}")
 
+    # Miss rate per escalation_level, this tells me if the model is biased against harder cases
     print(f"\nFalse Negatives by original escalation_level:")
     fn_esc = fn_df['escalation_level'].value_counts().sort_index()
     tp_esc = tp_df['escalation_level'].value_counts().sort_index()
@@ -54,6 +75,7 @@ def analyse_false_negatives(df, fold_metrics):
         miss_rate = fn_c / total * 100 if total > 0 else 0
         print(f"  Level {level}: {fn_c} missed / {total} total ({miss_rate:.1f}% miss rate)")
 
+    # Sample FNs so the report can quote specific examples of missed escalations
     print(f"\nSample FALSE NEGATIVE emails (missed escalations):")
     for i, row in fn_df.head(10).iterrows():
         print(f"  [{row['escalation_level']}] p={row['y_prob']:.3f}: \"{row['email_body_text']}\"")
@@ -62,7 +84,14 @@ def analyse_false_negatives(df, fold_metrics):
 
 
 def analyse_false_positives(df):
-    """characterise the unnecessary alerts FP vs correct non-alerts TN."""
+    """
+    Characterise my unnecessary alerts (FP) against the correct non-alerts (TN).
+
+    Overall this is the FP equivalent of the FN deep dive, the basic idea is to find
+    out which non-escalating emails my model is flagging by mistake. What this matters
+    for is operational cost, every FP is a wasted human review, so I want to see if
+    there are systematic patterns I could fix in Stage 6 or Stage 7.
+    """
     print("\n" + "=" * 70)
     print("FALSE POSITIVE ANALYSIS (Unnecessary Alerts)")
     print("=" * 70)

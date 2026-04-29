@@ -1,4 +1,12 @@
-"""Stage 6 plots: feature importance, permutation importance, fairness, LIME."""
+"""
+Stage 6 visualisations module: feature importance, permutation, fairness and LIME.
+
+Overall this module is where I generate all four figures for my Stage 6 report
+section, the basic idea is to turn each interpretability and fairness analysis into a
+picture the report can reference. In my project I focused on four plots here, the LR
+coefficient bar chart (top escalation vs de-escalation words), the permutation
+importance bar chart, the equalised odds 3-panel comparison, and the LIME examples.
+"""
 
 import numpy as np
 import matplotlib
@@ -7,7 +15,13 @@ import matplotlib.pyplot as plt
 
 
 def plot_feature_importance_coefficients(top_escalation, top_deescalation, output_path):
-    """Side-by-side: top escalation words (positive coefs) vs de-escalation words (negative)."""
+    """
+    Side by side, top escalation words (positive coefs) next to top de-escalation words.
+
+    Overall this is the most direct interpretability picture, the basic idea is to put
+    the words that increase escalation risk on the left and the words that decrease it
+    on the right so the marker can read the model's logic at a glance.
+    """
     fig, axes = plt.subplots(1, 2, figsize=(16, 8))
 
     esc_plot = top_escalation.head(15).sort_values('coefficient')
@@ -30,9 +44,16 @@ def plot_feature_importance_coefficients(top_escalation, top_deescalation, outpu
 
 
 def plot_permutation_importance(perm_df, output_path):
-    """Bar chart of mean F2 decrease when each feature is shuffled."""
+    """
+    Bar chart of mean F2 decrease when each feature is shuffled.
+
+    Overall this complements the coefficient picture, the basic idea is to show which
+    input columns actually matter for held-out F2, with error bars from the 10 shuffle
+    repeats so the marker can see which differences are reliable.
+    """
     fig, ax = plt.subplots(figsize=(10, 6))
 
+    # Filtering to the meaningful features so the chart is readable
     perm_plot = perm_df[perm_df['importance_mean'].abs() > 0.001].sort_values('importance_mean')
     if len(perm_plot) == 0:
         perm_plot = perm_df.sort_values('importance_mean')
@@ -51,7 +72,14 @@ def plot_permutation_importance(perm_df, output_path):
 
 
 def plot_fairness(fairness_df, output_path):
-    """3 panel TPR vs FPR comparison across region, customer type, tenure type."""
+    """
+    Three panel TPR vs FPR comparison across region, customer_type and tenure_type.
+
+    Overall this is the fairness picture, the basic idea is to put TPR (recall) and
+    FPR (false alarm rate) side by side per group so any disparity is visually obvious.
+    What this also annotates is the exact rate above each bar so the report can quote
+    the numbers without going back to the CSV.
+    """
     fig, axes = plt.subplots(1, 3, figsize=(16, 5.5))
 
     for ax_idx, (attr, title) in enumerate([
@@ -88,7 +116,13 @@ def plot_fairness(fairness_df, output_path):
 
 
 def plot_lime_examples(lime_results, output_path):
-    """Twopanel bar chart for the first two LIME explanations."""
+    """
+    Two panel bar chart for the first two LIME explanations.
+
+    Overall this is the LIME picture, the basic idea is to show the marker exactly
+    which words drove the first two example predictions, with red bars for words that
+    pushed toward escalation and green bars for words that pushed away from it.
+    """
     fig, axes = plt.subplots(1, 2, figsize=(16, 6))
 
     for plot_idx, ex in enumerate(lime_results[:2]):

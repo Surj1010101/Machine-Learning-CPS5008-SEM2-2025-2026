@@ -1,4 +1,12 @@
-"""Pipeline setup and persample prediction collection across all CV folds."""
+"""
+Stage 5 pipeline setup and per-sample prediction collection module.
+
+Overall this module is where I rebuild my selected Logistic Regression pipeline and
+re-run StratifiedGroupKFold to capture every prediction at the per-row level. The basic
+idea is that for error analysis I do not just need aggregate metrics, I need to know
+exactly which emails my model got right and which ones it missed. What this module
+demonstrates is the prediction collection that everything else in Stage 5 depends on.
+"""
 
 import numpy as np
 from sklearn.model_selection import StratifiedGroupKFold
@@ -11,7 +19,13 @@ from sklearn.metrics import fbeta_score, precision_recall_curve, confusion_matri
 
 
 def make_preprocessor(text_col, categorical_cols, numeric_cols):
-    """Standard ColumnTransformer used by the LR baseline."""
+    """
+    Standard ColumnTransformer used by my LR baseline.
+
+    Overall this is the same preprocessor I used in Stage 3, the basic idea is to keep
+    the preprocessing identical between stages so the predictions I analyse here come
+    from the same model the brief sees.
+    """
     return ColumnTransformer(
         transformers=[
             ('text', TfidfVectorizer(max_features=500, ngram_range=(1, 2),
@@ -26,7 +40,13 @@ def make_preprocessor(text_col, categorical_cols, numeric_cols):
 
 
 def find_best_threshold_f2(y_true, y_prob):
-    """Find threshold that maximises F2 on the given data."""
+    """
+    Find the threshold that maximises F2 on the given data.
+
+    Overall this is my threshold-tuning helper, the basic idea is to walk along the
+    precision-recall curve and pick the point where F2 peaks, since the default 0.5
+    cutoff is wrong for an imbalanced problem like mine.
+    """
     precisions, recalls, thresholds = precision_recall_curve(y_true, y_prob)
     f2_scores = []
     for p, r in zip(precisions, recalls):
@@ -43,9 +63,13 @@ def find_best_threshold_f2(y_true, y_prob):
 
 
 def collect_fold_predictions(df, X, y, groups, text_col, categorical_cols, numeric_cols):
-    """Fit LR across 5 folds with tuned thresholds, writes predictions onto df.
-    Adds columns to df: y_prob, y_pred, fold, prediction_type (TP/FP/FN/TN).
-    Returns: fold_metrics list.
+    """
+    Fit my LR pipeline across 5 folds with tuned thresholds, and write predictions onto df.
+
+    Overall this is the workhorse of Stage 5, the basic idea is to attach y_prob, y_pred
+    and prediction_type (TP/FP/FN/TN) directly onto the dataframe so every other module
+    can filter rows by error type. What this also returns is the per-fold metrics list
+    so run.py can quote the threshold per fold.
     """
     print("\nCollecting per-sample predictions from LR (tuned threshold)...")
 
@@ -71,6 +95,7 @@ def collect_fold_predictions(df, X, y, groups, text_col, categorical_cols, numer
         pipeline.fit(X_train, y_train)
         y_prob_val = pipeline.predict_proba(X_val)[:, 1]
 
+        # Tuning threshold on training probabilities, never on validation
         y_prob_train = pipeline.predict_proba(X_train)[:, 1]
         best_thresh = find_best_threshold_f2(y_train, y_prob_train)
         y_pred_val = (y_prob_val >= best_thresh).astype(int)
@@ -89,6 +114,7 @@ def collect_fold_predictions(df, X, y, groups, text_col, categorical_cols, numer
         print(f"  Fold {fold_idx+1}: F2={f2:.4f}, thresh={best_thresh:.3f}, "
               f"TP={tp}, FP={fp}, FN={fn}, TN={tn}")
 
+    # Labelling each row by its prediction type so downstream filters are easy
     df['y_pred'] = df['y_pred'].astype(int)
     df['prediction_type'] = 'TN'
     df.loc[(df['escalated'] == 1) & (df['y_pred'] == 1), 'prediction_type'] = 'TP'

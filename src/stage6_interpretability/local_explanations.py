@@ -1,4 +1,14 @@
-"""LIME local explanations for representative TP/FN/FP predictions."""
+"""
+Stage 6 LIME local explanations module for representative TP, FN and FP predictions.
+
+Overall this module is where I generate per-instance explanations using LIME, the basic
+idea is that global importance tells me what the model uses on average but I also need
+to defend specific predictions, which is what local explanations give me. In my project
+I focused on five examples here, two true positives (showing the model working), two
+false negatives (showing why missed escalations were missed) and one false positive
+(showing why a non-escalation got flagged). What this module demonstrates is the local
+interpretability evidence the brief expects.
+"""
 
 import numpy as np
 from scipy.sparse import issparse
@@ -7,11 +17,19 @@ from lime.lime_tabular import LimeTabularExplainer
 
 def run_lime_explanations(pipeline, X_train, X_val, val_idx, df, y_prob_val,
                           y_pred_val, feature_names):
-    """Generate LIME explanations for representative TP, FN, and FP examples."""
+    """
+    Generate LIME explanations for representative TP, FN and FP examples.
+
+    Overall this function builds a LIME tabular explainer on my training matrix and
+    then explains five carefully picked validation examples, the basic idea is to show
+    the marker which words drove specific predictions for each error type. What this
+    also handles is the sparse-to-dense conversion that LIME needs to work correctly.
+    """
     print("\n" + "=" * 70)
     print("LOCAL EXPLANATIONS: LIME")
     print("=" * 70)
 
+    # LIME needs dense input, so I materialise the transformed matrices once
     X_train_transformed = pipeline.named_steps['preprocessor'].transform(X_train)
     X_val_transformed = pipeline.named_steps['preprocessor'].transform(X_val)
 
@@ -35,6 +53,7 @@ def run_lime_explanations(pipeline, X_train, X_val, val_idx, df, y_prob_val,
 
     classifier = pipeline.named_steps['classifier']
 
+    # Building a small dataframe of the validation predictions so I can pick examples
     val_df = df.iloc[val_idx].copy()
     val_df['y_prob'] = y_prob_val
     val_df['y_pred'] = y_pred_val
@@ -43,7 +62,8 @@ def run_lime_explanations(pipeline, X_train, X_val, val_idx, df, y_prob_val,
     val_df.loc[(val_df['escalated'] == 0) & (val_df['y_pred'] == 1), 'prediction_type'] = 'FP'
     val_df.loc[(val_df['escalated'] == 1) & (val_df['y_pred'] == 0), 'prediction_type'] = 'FN'
 
-    # Pick representative e like 2 TP, 2 FN, 1 FP
+    # Picking representative examples, 2 TP (most confident + median), 2 FN (highest +
+    # lowest probability misses) and 1 FP (most confident false alarm)
     examples = {}
     for ptype in ['TP', 'FN', 'FP']:
         subset = val_df[val_df['prediction_type'] == ptype]
@@ -74,6 +94,7 @@ def run_lime_explanations(pipeline, X_train, X_val, val_idx, df, y_prob_val,
                 num_features=10, labels=(1,)
             )
 
+            # Handling LIME's quirk where the label key may not always be 1
             try:
                 exp_list = exp.as_list(label=1)
             except KeyError:
