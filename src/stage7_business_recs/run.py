@@ -204,7 +204,6 @@ Outputs:
 print("STAGE 7 COMPLETE")
 print("\n" + "=" * 70)
 print("ALL ANALYSIS STAGES COMPLETE (Stages 0-7)")
-print("Stage 8 (Report Support) available on request.")
 print("=" * 70)
 
 
