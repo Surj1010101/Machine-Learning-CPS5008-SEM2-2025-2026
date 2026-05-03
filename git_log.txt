@@ -1,3 +1,12 @@
+31da6f8 | 2026-05-01 | Surj1010101 |  ethical notes for clarity and precision in automation bias, privacy, feedback loops, synthetic data caveat, fairness limits, and explainability sections.
+27a91a0 | 2026-05-01 | Surj1010101 | Update stability and cost analysis images in stage7 outputs
+4575df2 | 2026-04-30 | Surj1010101 | Update calibration and cost visualization image in stage5 outputs
+d4e8431 | 2026-04-30 | Surj1010101 | Remove redundant availability from run.py
+6507563 | 2026-04-29 | Surj1010101 | Refactor README for improved clarity and structure; update project overview, setup instructions, and add reproducibility notes.
+3398090 | 2026-04-29 | Surj1010101 | ADDDED git log file to track commit history and changes across modules
+3c38f4b | 2026-04-29 | Surj1010101 | Refactor data loader module documentation for clarity and conciseness
+08eb741 | 2026-04-29 | Surj1010101 | Refactor documentation and improve clarity across multiple modules
+0c753b3 | 2026-04-29 | Surj1010101 | Add Stage 2 analysis modules for missing data, leakage testing, feature profiling, and visualisations
 feb2ad1 | 2026-04-29 | Surj1010101 | Update requirements to include additional libraries and versions for compatibility
 bbcfd8c | 2026-04-29 | Surj1010101 |  linear regression baseline results for Stage 4b analysis
 5d983da | 2026-04-29 | Surj1010101 | AddED PCA comparison data and supplementary summary for Stage 4b analysis
