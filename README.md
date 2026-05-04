@@ -17,7 +17,7 @@ This project predicts whether a customer support email is likely to escalate to 
 
 From the project root:
 
-#Windows PowerShell
+### Windows PowerShell
 
 ```powershell
 python -m venv .venv
@@ -33,7 +33,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
 
 ### Windows Git Bash
 
-#bash
+```bash
 python -m venv .venv
 source .venv/Scripts/activate
 pip install -r requirements.lock.txt
