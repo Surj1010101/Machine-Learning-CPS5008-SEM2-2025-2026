@@ -8,66 +8,40 @@ This project predicts whether a customer support email is likely to escalate to 
 - Main objective: maximise F2 score (higher weight on recall to reduce missed escalations).
 - Selected final model: Logistic Regression, because it achieved the best tuned F2 in this repository and remains interpretable for reporting and stakeholder review.
 
-## Requirements
+## Quick Start
 
-- Python 3.10+ (developed and tested on Python 3.13)
-- A virtual environment (recommended)
+You need **Python 3.10 or newer** installed. The dataset is already included in the repo. From the project root, do these 3 steps:
 
-## Setup
+**Step 1 — Make a virtual environment**
 
-From the project root:
-
-### Windows PowerShell
-
+Windows (PowerShell):
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.lock.txt
 ```
 
-If PowerShell blocks activation:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-```
-
-### Windows Git Bash
+**Step 2 — Install the packages**
 
 ```bash
-python -m venv .venv
-source .venv/Scripts/activate
 pip install -r requirements.lock.txt
 ```
 
-## Data Placement
-
-Place the dataset at:
-
-```text
-data/customer_support_emails.csv
-```
-
-The scripts expect this relative path when run from the project root.
-
-## Run Commands
-
-Run from project root after activating the virtual environment.
+**Step 3 — Run a stage** (any of them)
 
 ```bash
 python src/stage2_eda/run.py
 python src/stage3_preprocessing/run.py
+python src/stage3b_feature_engineering/run.py
 python src/stage4_models/run.py
+python src/stage4b_supplementary_models/run.py
 python src/stage5_error_analysis/run.py
 python src/stage6_interpretability/run.py
 python src/stage7_business_recs/run.py
 ```
 
-Supplementary analysis scripts used in this repo:
+Each stage saves its results to `outputs/<stage_name>/`.
 
-```bash
-python src/stage3b_feature_engineering/run.py
-python src/stage4b_supplementary_models/run.py
-```
+If PowerShell blocks the activate script, run this once: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`
 
 ## Output Files
 
