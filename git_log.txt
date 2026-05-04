@@ -1,3 +1,7 @@
+c95dc98 | 2026-05-04 | Surj1010101 | Fix wording in Quick Start section for clarity on running instructions
+3e99291 | 2026-05-04 | Surj1010101 | Refactor README.md for clarity in setup instructions and streamline quick start guide
+144f371 | 2026-05-04 | Surj1010101 | Fix formatting in README.md and add __init__.py file for stage2 EDA module
+e477b52 | 2026-05-04 | Surj1010101 | Update git log to include recent commits and maintain history tracking
 31da6f8 | 2026-05-01 | Surj1010101 |  ethical notes for clarity and precision in automation bias, privacy, feedback loops, synthetic data caveat, fairness limits, and explainability sections.
 27a91a0 | 2026-05-01 | Surj1010101 | Update stability and cost analysis images in stage7 outputs
 4575df2 | 2026-04-30 | Surj1010101 | Update calibration and cost visualization image in stage5 outputs
