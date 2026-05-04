@@ -10,7 +10,7 @@ This project predicts whether a customer support email is likely to escalate to 
 
 ## Quick Start
 
-You need **Python 3.10 or newer** installed. The dataset is already included in the repo. From the project root, do these 3 steps:
+You need **Python 3.10 or newer** installed. The dataset is already in this in the repo. From the project root:TO RUN
 
 **Step 1 — Make a virtual environment**
 
