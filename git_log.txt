@@ -96,22 +96,22 @@ e2fcf85 | 2026-04-24 | Surj1010101 | added new baseline pipeline and cross-valid
 a41ebdc | 2026-04-24 | Surj1010101 | visualizations for Stage 2: correlation heatmap, EDA overview, and escalation by region
 bbe9ba3 | 2026-04-24 | Surj1010101 | update .gitignore to include virtual environment folders; add requirements.lock.txt for dependency management; fix typo in run.py print statement
 5c0409d | 2026-04-24 | Surj1010101 | update .gitignore to include __pycache__, .pyc files, and .env; fix typo in run.py print statement
-819776a | 2026-04-24 | Surj1010101 | add requirements.txt and update run.py for encoding support
-f4d4c09 | 2026-04-24 | Surj1010101 | added run.py for Stage 2 exploratory data analysis and risk identification
-b5adb5a | 2026-04-24 | Surj1010101 | module docstring for Stage 2 visualisations
-2b582da | 2026-04-24 | Surj1010101 | remove unused visualisations script from Stage 2 EDA
-c8c74c2 | 2026-04-24 | Surj1010101 | added additional visualizations for correlation heatmap and escalation by region
-d5711dd | 2026-04-24 | Surj1010101 | added more visualizations for issue category, text length, emotion intensity, and sentiment missingness
-02a0511 | 2026-04-24 | Surj1010101 | implemented visualisation generation function for Stage 2 EDA
-022811d | 2026-04-24 | Surj1010101 |  added missing data analysis, leakage testing, class imbalance, and customer overlap functions
-99a1ca6 | 2026-04-24 | Surj1010101 | for this part i enhanced missing data analysis and leakage testing functions added more features including imballance anaylsis
-0929ad2 | 2026-04-24 | Surj1010101 | ADDED missing data analysis function for sentiment and escalation
-db571ab | 2026-04-23 | Surj1010101 | feat: add feature profiling, text analysis, and timestamp analysis functions
-1c308cf | 2026-04-23 | Surj1010101 | fix: correct formatting in text analysis function docstring
-b8fb3ad | 2026-04-23 | Surj1010101 | fix: correct spelling and formatting errors in timestamp analysis function
-140275c | 2026-04-23 | Surj1010101 | fix: correct formatting and spelling errors in feature profiling and text analysis functions
-cda17c0 | 2026-04-23 | Surj1010101 | feat: addedfeature profiling and text analysis functions with improved output and structure
-a73b600 | 2026-04-21 | Surj1010101 |  improve feature profiling and text analysis functions with enhanced output and structure
+819776a | 2026-04-22 | Surj1010101 | add requirements.txt and update run.py for encoding support
+f4d4c09 | 2026-04-22 | Surj1010101 | added run.py for Stage 2 exploratory data analysis and risk identification
+b5adb5a | 2026-04-22 | Surj1010101 | module docstring for Stage 2 visualisations
+2b582da | 2026-04-21 | Surj1010101 | remove unused visualisations script from Stage 2 EDA
+c8c74c2 | 2026-04-19 | Surj1010101 | added additional visualizations for correlation heatmap and escalation by region
+d5711dd | 2026-04-19 | Surj1010101 | added more visualizations for issue category, text length, emotion intensity, and sentiment missingness
+02a0511 | 2026-04-19 | Surj1010101 | implemented visualisation generation function for Stage 2 EDA
+022811d | 2026-04-17 | Surj1010101 |  added missing data analysis, leakage testing, class imbalance, and customer overlap functions
+99a1ca6 | 2026-04-17 | Surj1010101 | for this part i enhanced missing data analysis and leakage testing functions added more features including imballance anaylsis
+0929ad2 | 2026-04-17 | Surj1010101 | ADDED missing data analysis function for sentiment and escalation
+db571ab | 2026-04-17 | Surj1010101 | feat: add feature profiling, text analysis, and timestamp analysis functions
+1c308cf | 2026-04-17 | Surj1010101 | fix: correct formatting in text analysis function docstring
+b8fb3ad | 2026-04-16 | Surj1010101 | fix: correct spelling and formatting errors in timestamp analysis function
+140275c | 2026-04-16 | Surj1010101 | fix: correct formatting and spelling errors in feature profiling and text analysis functions
+cda17c0 | 2026-04-16 | Surj1010101 | feat: addedfeature profiling and text analysis functions with improved output and structure
+a73b600 | 2026-04-16 | Surj1010101 |  improve feature profiling and text analysis functions with enhanced output and structure
 a2900b7 | 2026-04-15 | Surj1010101 |  added feature profiling function for categorical, numerical, and text features
 732c4e6 | 2026-04-15 | Surj1010101 | fix: correct variable name for threshold return in find_best_threshold_f2 function
 1c3dcdf | 2026-04-15 | Surj1010101 | refactor: remove unused imports and clean up preprocessor function
