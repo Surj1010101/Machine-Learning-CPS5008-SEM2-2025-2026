@@ -65,26 +65,26 @@ f60dc27 | 2026-04-29 | Surj1010101 | fix: correct docstring formatting for hyper
 f1208dc | 2026-04-29 | Surj1010101 | implement XGBoost hyperparameter tuning function with StratifiedGroupKFold and output results
 052cac0 | 2026-04-29 | Surj1010101 | add docstring to cross-validation module: clarify purpose of threshold tuning for models
 89b1d4b | 2026-04-29 | Surj1010101 | enhance cross-validation output: include mean metrics and standard deviations for model evaluation
-4aa78b3 | 2026-04-29 | Surj1010101 | implement cross-validation function with threshold tuning for model evaluation
-89a3185 | 2026-04-29 | Surj1010101 | update docstring in pipelines.py: clarify model pipeline definitions for LR, RF, XGBoost, and SMOTE variants
-230c62c | 2026-04-29 | Surj1010101 | refactor and added pipelines for model definition; implement Logistic Regression, Random Forest, and XGBoost with SMOTE support
-5a5cbde | 2026-04-29 | Surj1010101 | implem output files for feature engineering and multicollinearity analysis; include heatmaps, summary statistics, and correlation metrics
+4aa78b3 | 2026-04-27 | Surj1010101 | implement cross-validation function with threshold tuning for model evaluation
+89a3185 | 2026-04-27 | Surj1010101 | update docstring in pipelines.py: clarify model pipeline definitions for LR, RF, XGBoost, and SMOTE variants
+230c62c | 2026-04-27 | Surj1010101 | refactor and added pipelines for model definition; implement Logistic Regression, Random Forest, and XGBoost with SMOTE support
+5a5cbde | 2026-04-27 | Surj1010101 | implem output files for feature engineering and multicollinearity analysis; include heatmaps, summary statistics, and correlation metrics
 05467ac | 2026-04-26 | Surj1010101 | fix docstring in run.py: correct spacing in the run command
 c0d9939 | 2026-04-26 | Surj1010101 | fix docstring in run.py: correct spelling and improve clarity of feature engineering description
 fd910fb | 2026-04-26 | Surj1010101 | refactor run.py: improve comments and add feature engineering summary output
 9326a64 | 2026-04-26 | Surj1010101 | add run.py for feature engineering and multicollinearity analysis; implement data loading, ablation study, and visualisations
-214e103 | 2026-04-26 | Surj1010101 | implemented a visualisation functions for feature impact or engeeenring  and correlation analysis; enhance feature evaluation with heatmaps
-46c6870 | 2026-04-26 | Surj1010101 | fix docstring in print_mitigation_summary function; clarify purpose of multicollinearity summary
-3155ccf | 2026-04-26 | Surj1010101 | added VIF analysis function and mitigation summary for multicollinearity; enhance feature evaluation
-5d13e91 | 2026-04-26 | Surj1010101 | adeded multicollinearity analysis functions; implement Cramer's V and numeric correlation evaluation
-6877cdb | 2026-04-26 | Surj1010101 | fix formatting in run_all_ablations function; remove space in comment for clarity
-f67a4bc | 2026-04-26 | Surj1010101 | add run_all_ablations function to evaluate multiple feature engineering configurations; improve docstrings and formatting
-3b9f6c5 | 2026-04-26 | Surj1010101 | implement evaluate_config function for 5-fold CV with tuned thresholds; add run_all_ablations for feature engineering study
-e1e3e1c | 2026-04-26 | Surj1010101 | addedfeature impact evaluation functions with threshold optimization and cross-validation
-5bd91ff | 2026-04-26 | Surj1010101 | fix formatting and comments in run.py; add __init__.py for feature engineering module
-2505c25 | 2026-04-26 | Surj1010101 | changed update import paths for pipeline utilities and data loader
-6125385 | 2026-04-26 | Surj1010101 | remove unused sentiment ablation and pipeline utility files
-665a99c | 2026-04-26 | Surj1010101 | add baseline results and feature importance files; implement sentiment ablation function for model performance comparison
+214e103 | 2026-04-25 | Surj1010101 | implemented a visualisation functions for feature impact or engeeenring  and correlation analysis; enhance feature evaluation with heatmaps
+46c6870 | 2026-04-25 | Surj1010101 | fix docstring in print_mitigation_summary function; clarify purpose of multicollinearity summary
+3155ccf | 2026-04-25 | Surj1010101 | added VIF analysis function and mitigation summary for multicollinearity; enhance feature evaluation
+5d13e91 | 2026-04-25 | Surj1010101 | adeded multicollinearity analysis functions; implement Cramer's V and numeric correlation evaluation
+6877cdb | 2026-04-25 | Surj1010101 | fix formatting in run_all_ablations function; remove space in comment for clarity
+f67a4bc | 2026-04-25 | Surj1010101 | add run_all_ablations function to evaluate multiple feature engineering configurations; improve docstrings and formatting
+3b9f6c5 | 2026-04-25 | Surj1010101 | implement evaluate_config function for 5-fold CV with tuned thresholds; add run_all_ablations for feature engineering study
+e1e3e1c | 2026-04-25 | Surj1010101 | addedfeature impact evaluation functions with threshold optimization and cross-validation
+5bd91ff | 2026-04-25 | Surj1010101 | fix formatting and comments in run.py; add __init__.py for feature engineering module
+2505c25 | 2026-04-25 | Surj1010101 | changed update import paths for pipeline utilities and data loader
+6125385 | 2026-04-25 | Surj1010101 | remove unused sentiment ablation and pipeline utility files
+665a99c | 2026-04-25 | Surj1010101 | add baseline results and feature importance files; implement sentiment ablation function for model performance comparison
 998a18e | 2026-04-24 | Surj1010101 | update docstring for stage 3 preprocessing pipeline
 00de45b | 2026-04-24 | Surj1010101 | update module docstring for sentiment ablation experiment
 a9b2c3f | 2026-04-24 | Surj1010101 | implement stage 3 preprocessing pipeline with feature importance and sentiment ablation results
