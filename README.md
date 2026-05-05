@@ -18,6 +18,9 @@ Windows (PowerShell):
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+THAN GO TO THIS FOLDER ONE STEP BELOW.
+cd .\Machine-Learning-CPS5008-SEM2-2025-2026-main
+
 ```
 
 **Step 2 — Install the packages**
@@ -41,17 +44,17 @@ python src/stage7_business_recs/run.py
 
 Each stage saves its results to `outputs/<stage_name>/`.
 
-If PowerShell blocks the activate script, run this once: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`
+If PowerShell blocks the activate script, run this once: Set ExecutionPolicy Scope Process -ExecutionPolicy RemoteSigned
 
 ## Output Files
 
-- Each stage writes CSV/JSON/PNG outputs to its matching folder under `outputs/`.
-- Core model comparison artefacts are in `outputs/stage4/`.
-- Error analysis artefacts are in `outputs/stage5/`.
-- Interpretability and fairness artefacts are in `outputs/stage6/`.
+- Each stage writes CSV/JSON/PNG outputs to its matching folder under outputs/.
+- Core model comparison artefacts are in outputs/stage4/.
+- Error analysis artefacts are in outputs/stage5/.
+- Interpretability and fairness artefacts are in outputs/stage6/.
 - Business recommendation artefacts are in `outputs/stage7/`.
 
-Note on `outputs/stage4b/linear_regression_baseline.csv`:
+Note on outputs/stage4b/linear_regression_baseline.csv:
 
 - This file is a sanity-check output from supplementary analysis only.
 - It is included to show why linear regression is not appropriate for the final binary classifier.
