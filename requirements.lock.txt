@@ -11,7 +11,7 @@ lime==0.2.0.1
 matplotlib==3.10.9
 networkx==3.6.1
 numpy==2.4.4
-packaging==26.1
+packaging==26.2
 pandas==3.0.2
 pillow==12.2.0
 pyparsing==3.3.2
